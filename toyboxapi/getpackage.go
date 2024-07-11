@@ -27,6 +27,7 @@ import (
 	"strconv"
 )
 
+// getpackage returns package metadata
 func GetPackage(w http.ResponseWriter, r *http.Request) {
 	if !utils.ValidateKey(r.URL.String()) {
 		utils.WriteError(w, r, "invalid key value")

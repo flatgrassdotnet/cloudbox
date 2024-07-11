@@ -32,6 +32,8 @@ func (vdf VDF) Marshal() string {
 	return output
 }
 
+// very crude VDF string encoder specifically targeting toybox's implementation
+// all values become strings, even though VDF supports non-string values
 func (vdf VDF) encode(output *string) {
 	for k, v := range vdf {
 		switch data := v.(type) {

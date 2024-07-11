@@ -52,7 +52,7 @@ func main() {
 	//http.Handle("GET cdn.reboxed.fun/", http.FileServer(http.Dir("data/content")))
 	//http.Handle("GET img.reboxed.fun/", http.FileServer(http.Dir("data/img")))
 
-	// api
+	// reboxed api
 	http.HandleFunc("GET api.reboxed.fun/packages/list", packages.List)
 	http.HandleFunc("GET api.reboxed.fun/packages/get", packages.Get)
 

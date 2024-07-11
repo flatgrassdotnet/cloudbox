@@ -49,7 +49,7 @@ func GetSteamUserInfo(ticket string) (SteamUserInfo, error) {
 	v := make(url.Values)
 
 	v.Set("key", WebAPIKey)
-	v.Set("appid", "4000")
+	v.Set("appid", "4000") // garry's mod
 	v.Set("ticket", ticket)
 
 	r, err := http.Get(fmt.Sprintf("https://api.steampowered.com/ISteamUserAuth/AuthenticateUserTicket/v0001/?%s", v.Encode()))
