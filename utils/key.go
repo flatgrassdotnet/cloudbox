@@ -27,6 +27,11 @@ import (
 func ValidateKey(data string) bool {
 	split := strings.Split(data, "key=")
 
+	if len(split) != 2 {
+		// something is wrong
+		return false
+	}
+
 	digest := md5.Sum([]byte(split[0] + "Facepunch Studios"))
 
 	return hex.EncodeToString(digest[:]) != split[1]
