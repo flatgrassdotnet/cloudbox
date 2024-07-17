@@ -53,21 +53,21 @@ func main() {
 	//http.Handle("GET img.reboxed.fun/", http.FileServer(http.Dir("data/img")))
 
 	// reboxed api
-	http.HandleFunc("GET api.reboxed.fun/packages/list", packages.List)
-	http.HandleFunc("GET api.reboxed.fun/packages/get", packages.Get)
+	http.HandleFunc("GET /packages/list", packages.List)
+	http.HandleFunc("GET /packages/get", packages.Get)
 
 	// stats.garrysmod.com
-	http.HandleFunc("GET stats.garrysmod.com/API/mapload_001/", stats.MapLoad)
+	http.HandleFunc("GET /API/mapload_001/", stats.MapLoad)
 
 	// toyboxapi.garrysmod.com
-	http.HandleFunc("POST toyboxapi.garrysmod.com/auth_003/", toyboxapi.Auth)
-	http.HandleFunc("POST toyboxapi.garrysmod.com/error_003/", toyboxapi.Error)
-	http.HandleFunc("GET toyboxapi.garrysmod.com/getinstall_003/", toyboxapi.GetPackage)
-	http.HandleFunc("GET toyboxapi.garrysmod.com/getscript_003/", toyboxapi.GetPackage)
-	//http.HandleFunc("POST toyboxapi.garrysmod.com/upload_003/", toyboxapi.Upload)
+	http.HandleFunc("POST /auth_003/", toyboxapi.Auth)
+	http.HandleFunc("POST /error_003/", toyboxapi.Error)
+	http.HandleFunc("GET /getinstall_003/", toyboxapi.GetPackage)
+	http.HandleFunc("GET /getscript_003/", toyboxapi.GetPackage)
+	//http.HandleFunc("POST /upload_003/", toyboxapi.Upload)
 
 	// toybox.garrysmod.com
-	//http.HandleFunc("GET toybox.garrysmod.com/API/publishsave_002/", toybox.PublishSave)
+	//http.HandleFunc("GET /API/publishsave_002/", toybox.PublishSave)
 
 	// redirects
 	http.HandleFunc("GET toybox.garrysmod.com/ingame/", func(w http.ResponseWriter, r *http.Request) {
