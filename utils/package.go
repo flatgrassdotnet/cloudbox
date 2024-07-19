@@ -72,7 +72,7 @@ func (pkg Package) Marshal() []byte {
 			item["id"] = c.ID
 			item["rev"] = c.Revision
 			item["name"] = c.Path
-			item["url"] = fmt.Sprintf("http://cdn.reboxed.fun/%d/%d", c.ID, c.Revision)
+			item["url"] = fmt.Sprintf("http://content.reboxed.fun/%d/%d", c.ID, c.Revision)
 			item["size"] = c.PSize
 
 			content[fmt.Sprintf("content_%d", c.ID)] = item

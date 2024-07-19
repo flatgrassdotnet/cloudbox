@@ -48,10 +48,6 @@ func main() {
 	// browser
 	http.HandleFunc("GET /browse/{category}/", browser.Handle)
 
-	// static content - using nginx now
-	//http.Handle("GET cdn.reboxed.fun/", http.FileServer(http.Dir("data/content")))
-	//http.Handle("GET img.reboxed.fun/", http.FileServer(http.Dir("data/img")))
-
 	// reboxed api
 	http.HandleFunc("GET /packages/list", packages.List)
 	http.HandleFunc("GET /packages/get", packages.Get)

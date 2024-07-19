@@ -59,7 +59,7 @@ func Handle(w http.ResponseWriter, r *http.Request) {
 
 	body := header
 
-	body += `<div class="nav"><div class="logo"><img src="//img.reboxed.fun/logo.png"><h1>reboxed</h1></div>`
+	body += `<div class="nav"><div class="logo"><img src="//image.reboxed.fun/logo.png"><h1>reboxed</h1></div>`
 
 	if category != "map" {
 		body += `<a href="/browse/entities">Entities</a><a href="/browse/weapons">Weapons</a><a href="/browse/saves">Saves</a>`
@@ -87,7 +87,7 @@ func Handle(w http.ResponseWriter, r *http.Request) {
 
 		link := fmt.Sprintf(`href="garrysmod://%s/%s/%d/%d"`, action, category, pkg.ID, pkg.Revision)
 
-		body += fmt.Sprintf(`<div class="item"><a %s><div class="thumb" style="background-image: url(//img.reboxed.fun/%d_thumb_128.png), url(//img.reboxed.fun/no_thumb_128.png);"><img src="//img.reboxed.fun/overlay_128.png"></div>%s</a></div>`, link, pkg.ID, pkg.Name)
+		body += fmt.Sprintf(`<div class="item"><a %s><div class="thumb" style="background-image: url(//image.reboxed.fun/%d_thumb_128.png), url(//image.reboxed.fun/no_thumb_128.png);"><img src="//image.reboxed.fun/overlay_128.png"></div>%s</a></div>`, link, pkg.ID, pkg.Name)
 	}
 
 	body += "</div></html>"
