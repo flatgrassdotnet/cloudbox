@@ -43,7 +43,7 @@ func Auth(w http.ResponseWriter, r *http.Request) {
 	}
 
 	if !utils.ValidateKey(r.Form.Encode()) {
-		utils.WriteError(w, r, "invalid key value")
+		utils.WriteError(w, r, "invalid key")
 		return
 	}
 

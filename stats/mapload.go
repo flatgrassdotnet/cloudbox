@@ -30,7 +30,7 @@ import (
 // mapload records statistics about map usage
 func MapLoad(w http.ResponseWriter, r *http.Request) {
 	if !utils.ValidateKey(r.URL.String()) {
-		utils.WriteError(w, r, "invalid key value")
+		utils.WriteError(w, r, "invalid key")
 		return
 	}
 

@@ -30,7 +30,7 @@ import (
 // error records errors from users
 func Error(w http.ResponseWriter, r *http.Request) {
 	if !utils.ValidateKey(r.URL.String()) {
-		utils.WriteError(w, r, "invalid key value")
+		utils.WriteError(w, r, "invalid key")
 		return
 	}
 
