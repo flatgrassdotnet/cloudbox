@@ -23,10 +23,10 @@ import (
 	"log"
 	"net/http"
 	"reboxed/api/packages"
-	"reboxed/browser"
 	"reboxed/db"
-	"reboxed/stats"
-	"reboxed/toyboxapi"
+	"reboxed/ingame/browser"
+	"reboxed/ingame/stats"
+	"reboxed/ingame/toyboxapi"
 	"reboxed/utils"
 )
 
