@@ -25,5 +25,5 @@ import (
 
 func WriteError(w http.ResponseWriter, r *http.Request, message string) {
 	log.Printf("%s: %s", r.URL, message)
-	http.Error(w, "", http.StatusBadRequest)
+	w.WriteHeader(http.StatusBadRequest)
 }
