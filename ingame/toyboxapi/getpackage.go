@@ -46,6 +46,9 @@ func GetPackage(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	// getscript also specifies "type" but scriptids are unique between types
+	// we don't need its value because of this
+
 	pkg, err := db.FetchPackage(scriptid, rev)
 	if err != nil {
 		utils.WriteError(w, r, fmt.Sprintf("failed to fetch package: %s", err))
