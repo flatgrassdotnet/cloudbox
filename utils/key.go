@@ -24,9 +24,13 @@ import (
 	"strings"
 )
 
+// validates the key in toybox api calls
 func ValidateKey(data string) bool {
-	split := strings.Split(data, "key=")
+	// "key" is a MD5 of the data before it with "Facepunch Studios" appended
+	// we assume here that key is the final value in the URL or POST body
+	// this is always the case for requests from garry's mod
 
+	split := strings.Split(data, "key=")
 	if len(split) != 2 {
 		// something is wrong
 		return false
