@@ -106,7 +106,17 @@ func Handle(w http.ResponseWriter, r *http.Request) {
 
 	body += "</div>"
 
-	body += fmt.Sprintf(`<div class="pagenav"><a href="?page=%d">Previous</a>%d<a href="?page=%d">Next</a></div>`, page-1, page, page+1)
+	previous := fmt.Sprintf("?page=%d", page-1)
+	if page <= 1 {
+		previous = "#"
+	}
+
+	next := fmt.Sprintf("?page=%d", page+1)
+	if len(list) < itemsPerPage {
+		next = "#"
+	}
+
+	body += fmt.Sprintf(`<div class="pagenav"><a href="%s">Previous</a>%d<a href="%s">Next</a></div>`, previous, page, next)
 
 	body += "</html>"
 
