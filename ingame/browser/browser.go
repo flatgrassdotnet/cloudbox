@@ -37,7 +37,7 @@ var categories = map[string]string{
 const header = `<html>
 <title>reboxed</title>
 <style>
-	body {margin: 0px; font-family: Helvetica; background-color: #36393D; color: #EEE;}
+	body {margin: 0px; font-family: Helvetica; background-color: #36393D; color: #EEE; padding-bottom: 50px;}
 	a {color: #FFF; text-decoration: none;}
 	a:hover {color: #0AF;}
 	.nav {padding: 8px; background-color: #4096EE; height: 20px; border-bottom: 1px solid #90C6FE; box-shadow: 0px 16px 16px rgba(0, 0, 0, 0.1);}
