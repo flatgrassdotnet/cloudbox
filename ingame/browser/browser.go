@@ -23,6 +23,7 @@ import (
 	"net/http"
 	"reboxed/db"
 	"reboxed/utils"
+	"strconv"
 )
 
 var categories = map[string]string{
@@ -42,12 +43,16 @@ const header = `<html>
 	.nav a {margin: 20px; font-size: 20px; font-weight: bolder;}
 	.logo h1 {margin: 0px; font-size: 20px; font-style: italic; float: left; color: #FFF;}
 	.logo img {margin: 0px; width: 20px; height: 20px; float: left;}
+	.pagenav {float: right;}
+	.pagenav a {margin: 8px; font-weight: bolder;}
 	.content {padding: 16px 8px;}
 	.item {margin-left: 2px; margin-right: 2px; display: inline-block; font-size: 11px; font-weight: bolder; width: 128px; height: 125px; text-align: center; text-shadow: 1px 1px 1px #000; text-overflow: ellipsis; overflow: hidden; white-space: nowrap; letter-spacing: -0.1px;}
 	.item img {width: 128px; height: 100px;}
 	.thumb {background-position: center;}
 </style>
 `
+
+const itemsPerPage = 25
 
 func Handle(w http.ResponseWriter, r *http.Request) {
 	var category string
@@ -67,7 +72,12 @@ func Handle(w http.ResponseWriter, r *http.Request) {
 
 	body += `</div><div class="content">`
 
-	list, err := db.FetchPackageListByType(category)
+	page, _ := strconv.Atoi(r.URL.Query().Get("page"))
+	if page < 1 {
+		page = 1
+	}
+
+	list, err := db.FetchPackageListByTypePaged(category, page * itemsPerPage, itemsPerPage)
 	if err != nil {
 		utils.WriteError(w, r, fmt.Sprintf("failed to fetch package list: %s", err))
 		return
@@ -90,7 +100,11 @@ func Handle(w http.ResponseWriter, r *http.Request) {
 		body += fmt.Sprintf(`<div class="item"><a %s><div class="thumb" style="background-image: url(//image.reboxed.fun/%d_thumb_128.png), url(//image.reboxed.fun/no_thumb_128.png);"><img src="//image.reboxed.fun/overlay_128.png"></div>%s</a></div>`, link, pkg.ID, pkg.Name)
 	}
 
-	body += "</div></html>"
+	body += "</div>"
+
+	body += fmt.Sprintf(`<div class="pagenav"><a href="?page=%d">Previous</a>%d<a href="?page=%d">Next</a></div>`, page-1, page, page+1)
+
+	body += "</html>"
 
 	w.Write([]byte(body))
 }
