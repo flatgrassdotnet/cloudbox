@@ -66,6 +66,14 @@ func main() {
 	//http.HandleFunc("GET /API/publishsave_002/", toybox.PublishSave)
 
 	// redirects
+	http.HandleFunc("GET /", func(w http.ResponseWriter, r *http.Request) {
+		if r.URL.Path != "/" { // there has to be a better way to do this
+			w.WriteHeader(http.StatusNotFound)
+			return
+		}
+
+		http.Redirect(w, r, "/browse/entities", http.StatusSeeOther)
+	})
 	http.HandleFunc("GET toybox.garrysmod.com/ingame/", func(w http.ResponseWriter, r *http.Request) {
 		http.Redirect(w, r, "//toybox.garrysmod.com/browse/entities", http.StatusSeeOther)
 	})

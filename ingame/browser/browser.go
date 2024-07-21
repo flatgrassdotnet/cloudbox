@@ -65,8 +65,12 @@ func Handle(w http.ResponseWriter, r *http.Request) {
 
 	body += `<div class="nav"><div class="logo"><h1>reboxed</h1></div>`
 
-	if category != "map" {
-		body += `<a href="/browse/entities">Entities</a><a href="/browse/weapons">Weapons</a><a href="/browse/props">Props</a><a href="/browse/saves">Saves</a>`
+	if r.Header.Get("MAP") != "" { // ingame
+		if category != "map" { // don't show nav buttons if browsing maps
+			body += `<a href="/browse/entities">Entities</a><a href="/browse/weapons">Weapons</a><a href="/browse/props">Props</a><a href="/browse/saves">Saves</a>`
+		}
+	} else { // not ingame
+		body += `<a href="/browse/entities">Entities</a><a href="/browse/weapons">Weapons</a><a href="/browse/props">Props</a><a href="/browse/saves">Saves</a><a href="/browse/maps">Maps</a>`
 	}
 
 	body += `</div><div class="content">`
