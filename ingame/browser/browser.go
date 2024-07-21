@@ -44,7 +44,7 @@ const header = `<html>
 	.nav a {margin: 20px; font-size: 20px; font-weight: bolder;}
 	.logo h1 {padding-right: 20px; margin: 0px; font-size: 20px; font-style: italic; float: right; color: #FFF;}
 	.content {padding: 16px 8px;}
-	.pagenav {padding: 16px 8px; float: right;}
+	.pagenav {padding: 0px 20px; float: right;}
 	.pagenav a {margin: 8px; font-weight: bolder;}
 	.item {margin-left: 2px; margin-right: 2px; display: inline-block; font-size: 11px; font-weight: bolder; width: 128px; height: 125px; text-align: center; text-shadow: 1px 1px 1px #000; text-overflow: ellipsis; overflow: hidden; white-space: nowrap; letter-spacing: -0.1px;}
 	.item img {width: 128px; height: 100px;}
