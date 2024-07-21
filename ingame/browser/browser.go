@@ -39,10 +39,9 @@ const header = `<html>
 	body {margin: 0px; font-family: Helvetica; background-color: #36393D; color: #EEE;}
 	a {color: #FFF; text-decoration: none;}
 	a:hover {color: #0AF;}
-	.nav {padding: 8px; background-color: #4096EE; height: 20px; text-align: center; border-bottom: 1px solid #90C6FE; box-shadow: 0px 16px 16px rgba(0, 0, 0, 0.1);}
+	.nav {padding: 8px; background-color: #4096EE; height: 20px; border-bottom: 1px solid #90C6FE; box-shadow: 0px 16px 16px rgba(0, 0, 0, 0.1);}
 	.nav a {margin: 20px; font-size: 20px; font-weight: bolder;}
-	.logo h1 {margin: 0px; font-size: 20px; font-style: italic; float: left; color: #FFF;}
-	.logo img {margin: 0px; width: 20px; height: 20px; float: left;}
+	.logo h1 {margin: 0px; font-size: 20px; font-style: italic; float: right; color: #FFF;}
 	.pagenav {float: right;}
 	.pagenav a {margin: 8px; font-weight: bolder;}
 	.content {padding: 16px 8px;}
@@ -64,10 +63,10 @@ func Handle(w http.ResponseWriter, r *http.Request) {
 
 	body := header
 
-	body += `<div class="nav"><div class="logo"><img src="//image.reboxed.fun/logo.png"><h1>reboxed</h1></div>`
+	body += `<div class="nav"><div class="logo"><h1>reboxed</h1></div>`
 
 	if category != "map" {
-		body += `<a href="/browse/entities">Entities</a><a href="/browse/weapons">Weapons</a><a href="/browse/saves">Saves</a>`
+		body += `<a href="/browse/entities">Entities</a><a href="/browse/weapons">Weapons</a><a href="/browse/props">Props</a><a href="/browse/saves">Saves</a>`
 	}
 
 	body += `</div><div class="content">`
@@ -77,7 +76,7 @@ func Handle(w http.ResponseWriter, r *http.Request) {
 		page = 1
 	}
 
-	list, err := db.FetchPackageListByTypePaged(category, page * itemsPerPage, itemsPerPage)
+	list, err := db.FetchPackageListByTypePaged(category, (page-1)*itemsPerPage, itemsPerPage)
 	if err != nil {
 		utils.WriteError(w, r, fmt.Sprintf("failed to fetch package list: %s", err))
 		return
