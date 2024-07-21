@@ -52,7 +52,7 @@ const header = `<html>
 </style>
 `
 
-const itemsPerPage = 25
+const itemsPerPage = 50
 
 func Handle(w http.ResponseWriter, r *http.Request) {
 	var category string
