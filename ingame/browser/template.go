@@ -10,7 +10,7 @@ const tmpl = `<html>
 			.nav {padding: 8px; background-color: #4096EE; height: 20px; border-bottom: 1px solid #90C6FE; box-shadow: 0px 16px 16px rgba(0, 0, 0, 0.1);}
 			.nav a {margin: 20px; font-size: 20px; font-weight: bolder;}
 			.logo h1 {padding-right: 20px; margin: 0px; font-size: 20px; font-style: italic; float: right; color: #FFF;}
-			.content {padding: 16px 8px;}
+			.items {padding: 16px 8px;}
 			.pagenav {padding: 0px 20px; float: right;}
 			.pagenav a {margin: 8px; font-weight: bolder;}
 			.item {margin-left: 2px; margin-right: 2px; display: inline-block; font-size: 11px; font-weight: bolder; width: 128px; height: 125px; text-align: center; text-shadow: 1px 1px 1px #000; text-overflow: ellipsis; overflow: hidden; white-space: nowrap; letter-spacing: -0.1px;}
@@ -29,7 +29,7 @@ const tmpl = `<html>
 				<a href="/browse/entities">Entities</a><a href="/browse/weapons">Weapons</a><a href="/browse/props">Props</a><a href="/browse/saves">Saves</a><a href="/browse/maps">Maps</a>
 			{{end}}
 		</div>
-		<div class="content">
+		<div class="items">
 			{{range .Packages}}
 				<div class="item">
 					<a href="garrysmod://{{if (.Type | eq "map")}}install{{else}}spawn{{end}}/{{.Type}}/{{.ID}}/{{.Revision}}">
