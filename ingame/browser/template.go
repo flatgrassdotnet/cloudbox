@@ -22,11 +22,18 @@ const tmpl = `<html>
 		<div class="nav">
 			<div class="logo"><h1>reboxed</h1></div>
 			{{if .InGame}}
-				{{if not (.Category | eq "maps")}}
-					<a href="/browse/entities">Entities</a><a href="/browse/weapons">Weapons</a><a href="/browse/props">Props</a><a href="/browse/saves">Saves</a>
+				{{if not (.Category | eq "map")}}
+					<a href="/browse/entities">Entities</a>
+					<a href="/browse/weapons">Weapons</a>
+					<a href="/browse/props">Props</a>
+					<a href="/browse/saves">Saves</a>
 				{{end}}
 			{{else}}
-				<a href="/browse/entities">Entities</a><a href="/browse/weapons">Weapons</a><a href="/browse/props">Props</a><a href="/browse/saves">Saves</a><a href="/browse/maps">Maps</a>
+				<a href="/browse/entities">Entities</a>
+				<a href="/browse/weapons">Weapons</a>
+				<a href="/browse/props">Props</a>
+				<a href="/browse/saves">Saves</a>
+				<a href="/browse/maps">Maps</a>
 			{{end}}
 		</div>
 		<div class="items">
