@@ -50,7 +50,7 @@ var (
 		"saves":    "savemap",
 		"maps":     "map",
 	}
-	t, _ = template.New("Browser").Parse(tmpl)
+	t = template.Must(template.New("Browser").Parse(tmpl))
 )
 
 func Handle(w http.ResponseWriter, r *http.Request) {

@@ -19,18 +19,13 @@
 	<body>
 		<div class="nav">
 			<span id="logo">reboxed</span>
-			{{if .InGame}}
-				{{if not (.Category | eq "map")}}
-					<a href="/browse/entities">Entities</a>
-					<a href="/browse/weapons">Weapons</a>
-					<a href="/browse/props">Props</a>
-					<a href="/browse/saves">Saves</a>
-				{{end}}
-			{{else}}
+			{{if or (not .InGame) (.Category | ne "map")}}
 				<a href="/browse/entities">Entities</a>
 				<a href="/browse/weapons">Weapons</a>
 				<a href="/browse/props">Props</a>
 				<a href="/browse/saves">Saves</a>
+			{{end}}
+			{{if not .InGame}}
 				<a href="/browse/maps">Maps</a>
 			{{end}}
 		</div>
