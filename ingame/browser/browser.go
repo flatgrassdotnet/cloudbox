@@ -19,6 +19,7 @@
 package browser
 
 import (
+	_ "embed"
 	"fmt"
 	"html/template"
 	"net/http"
@@ -37,6 +38,9 @@ type BrowserTemplateData struct {
 }
 
 const itemsPerPage = 50
+
+//go:embed browser.tmpl
+var tmpl string
 
 var (
 	categories = map[string]string{
