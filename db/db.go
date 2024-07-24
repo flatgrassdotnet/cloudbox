@@ -58,7 +58,7 @@ func InsertMapLoad(version int, steamid int, duration float64, mapName string, p
 }
 
 func InsertError(version int, steamid int, error string, content string, realm string, platform string) error {
-	_, err := handle.Exec("INSERT INTO errors (version, steamid, error, content, realm, platform) VALUES (?, ?, ?, ?, ?, ?)", version, steamid, error, content, platform)
+	_, err := handle.Exec("INSERT INTO errors (version, steamid, error, content, realm, platform) VALUES (?, ?, ?, ?, ?, ?)", version, steamid, error, content, realm, platform)
 	if err != nil {
 		return err
 	}
