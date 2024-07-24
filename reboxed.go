@@ -57,7 +57,7 @@ func main() {
 
 	// toyboxapi.garrysmod.com
 	http.HandleFunc("POST /auth_003/", toyboxapi.Auth)
-	http.HandleFunc("POST /error_003/", toyboxapi.Error)
+	http.HandleFunc("GET /error_003/", toyboxapi.Error)
 	http.HandleFunc("GET /getinstall_003/", toyboxapi.GetPackage)
 	http.HandleFunc("GET /getscript_003/", toyboxapi.GetPackage)
 	//http.HandleFunc("POST /upload_003/", toyboxapi.Upload)
