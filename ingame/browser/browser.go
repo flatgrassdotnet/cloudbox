@@ -28,7 +28,7 @@ import (
 	"strconv"
 )
 
-type BrowserTemplateData struct {
+type Browser struct {
 	InGame   bool
 	Category string
 	PageNum  int
@@ -81,7 +81,7 @@ func Handle(w http.ResponseWriter, r *http.Request) {
 		next = "#"
 	}
 
-	err = t.Execute(w, BrowserTemplateData{
+	err = t.Execute(w, Browser{
 		InGame:   r.Header.Get("GMOD_VERSION") != "",
 		Category: category,
 		PageNum:  page,

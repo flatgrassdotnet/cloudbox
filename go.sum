@@ -1,4 +1,8 @@
 filippo.io/edwards25519 v1.1.0 h1:FNf4tywRC1HmFuKW5xopWpigGjJKiJSV0Cqo0cJWDaA=
 filippo.io/edwards25519 v1.1.0/go.mod h1:BxyFTGdWcka3PhytdK4V28tE5sGfRvvvRV7EaN4VDT4=
+github.com/blezek/tga v0.0.0-20150626111426-80720cbc1017 h1:TWk6m6k3qegbUZsdsHk/ix22ANqPgLau40bPwiNQN40=
+github.com/blezek/tga v0.0.0-20150626111426-80720cbc1017/go.mod h1:WnX8JiQN+UtyUPq/1EIUaB2WVX3wdAmOBH5K52NyOO0=
+github.com/ftrvxmtrx/tga v0.0.0-20150524081124-bd8e8d5be13a h1:eSqaRmdlZ9JsJ7JuWfDr3ym3monToXRczohBOL+heVQ=
+github.com/ftrvxmtrx/tga v0.0.0-20150524081124-bd8e8d5be13a/go.mod h1:US5WvgEHtG+BvWNNs6gk937h0QL2g2x+r7RH8m3g80Y=
 github.com/go-sql-driver/mysql v1.8.1 h1:LedoTUt/eveggdHS9qUFC1EFSa8bU2+1pZjSRpvNJ1Y=
 github.com/go-sql-driver/mysql v1.8.1/go.mod h1:wEBSXgmK//2ZFJyE+qWnIsVGmvmEKlqwuVSjsCm7DZg=

@@ -25,6 +25,7 @@ import (
 	"reboxed/api/packages"
 	"reboxed/db"
 	"reboxed/ingame/browser"
+	"reboxed/ingame/publishsave"
 	"reboxed/ingame/stats"
 	"reboxed/ingame/toyboxapi"
 	"reboxed/utils"
@@ -45,6 +46,11 @@ func main() {
 
 	utils.WebAPIKey = *apikey
 
+	// static assets
+	http.Handle("GET /assets/", http.StripPrefix("/assets/", http.FileServer(http.Dir("data/assets"))))
+	http.Handle("GET cdn.reboxed.fun/", http.FileServer(http.Dir("data/cdn")))
+	http.Handle("GET img.reboxed.fun/", http.FileServer(http.Dir("data/img")))
+
 	// browser
 	http.HandleFunc("GET /browse/{category}/", browser.Handle)
 
@@ -60,10 +66,11 @@ func main() {
 	http.HandleFunc("GET /error_003/", toyboxapi.Error)
 	http.HandleFunc("GET /getinstall_003/", toyboxapi.GetPackage)
 	http.HandleFunc("GET /getscript_003/", toyboxapi.GetPackage)
-	//http.HandleFunc("POST /upload_003/", toyboxapi.Upload)
+	http.HandleFunc("POST /upload_003/", toyboxapi.Upload)
 
 	// toybox.garrysmod.com
-	//http.HandleFunc("GET /API/publishsave_002/", toybox.PublishSave)
+	http.HandleFunc("GET /API/publishsave_002/", publishsave.Get)
+	http.HandleFunc("POST /API/publishsave_002/", publishsave.Post)
 
 	// redirects
 	http.HandleFunc("GET /", func(w http.ResponseWriter, r *http.Request) {
@@ -81,7 +88,7 @@ func main() {
 		http.Redirect(w, r, "//toybox.garrysmod.com/browse/maps", http.StatusSeeOther)
 	})
 
-	err = http.ListenAndServe(":8080", nil)
+	err = http.ListenAndServe(":80", nil)
 	if err != nil {
 		log.Fatalf("error while serving: %s", err)
 	}

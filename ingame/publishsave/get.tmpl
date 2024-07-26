@@ -1,0 +1,19 @@
+<html>
+	<head>
+		<title>reboxed - Publish Save</title>
+		<link rel="stylesheet" href="/assets/reboxed.css">
+	</head>
+	<body>
+		<div class="nav">
+			<span id="logo">reboxed</span>
+		</div>
+		<div class="saveform">
+			<h1>Publish Saved Game</h1>
+			<form action="/API/publishsave_002/?id={{.ID}}&sid={{.SID}}" method="post">
+				<label>Name: <input type="text" id="name" name="name" size="40"></label>
+				<label>Description: <input type="text" id="desc" name="desc" size="40"></label>
+				<input type="submit" value="Submit">
+			</form>
+		</div>
+	</body>
+</html>

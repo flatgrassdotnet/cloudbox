@@ -48,6 +48,16 @@ func InsertLogin(version int, steamid int, vac string, ticket []byte) error {
 	return nil
 }
 
+func FetchSteamIDFromTicket(ticket []byte) (int64, error) {
+	var steamid int64
+	err := handle.QueryRow("SELECT steamid FROM logins WHERE ticket = ?", ticket).Scan(&steamid)
+	if err != nil {
+		return 0, nil
+	}
+
+	return steamid, nil
+}
+
 func InsertMapLoad(version int, steamid int, duration float64, mapName string, platform string) error {
 	_, err := handle.Exec("INSERT INTO maploads (version, steamid, duration, map, platform) VALUES (?, ?, ?, ?, ?)", version, steamid, duration, mapName, platform)
 	if err != nil {
@@ -64,6 +74,20 @@ func InsertError(version int, steamid int, error string, content string, realm s
 	}
 
 	return nil
+}
+
+func InsertPackage(packageType string, name string, dataname string, author int64, description string, data []byte) (int, error) {
+	r, err := handle.Exec("INSERT INTO packages (type, name, dataname, author, description, data) VALUES (?, ?, ?, ?, ?, ?)", packageType, name, dataname, author, description, data)
+	if err != nil {
+		return 0, err
+	}
+
+	i, err := r.LastInsertId()
+	if err != nil {
+		return 0, err
+	}
+
+	return int(i), nil
 }
 
 func FetchPackage(scriptid int, rev int) (utils.Package, error) {
@@ -146,4 +170,37 @@ func FetchPackageListByTypePaged(category string, offset int, count int) ([]util
 	}
 
 	return list, nil
+}
+
+func InsertUpload(steamid int, upload utils.Upload) (int, error) {
+	r, err := handle.Exec("INSERT INTO uploads (steamid, type, meta, inc, data) VALUES (?, ?, ?, ?, ?)", steamid, upload.Type, upload.Metadata, upload.Include, upload.Data)
+	if err != nil {
+		return 0, err
+	}
+
+	i, err := r.LastInsertId()
+	if err != nil {
+		return 0, err
+	}
+
+	return int(i), nil
+}
+
+func FetchUpload(id int) (utils.Upload, error) {
+	var upload utils.Upload
+	err := handle.QueryRow("SELECT type, meta, inc, data FROM uploads WHERE id = ?", id).Scan(&upload.Type, &upload.Metadata, &upload.Include, &upload.Data)
+	if err != nil {
+		return upload, err
+	}
+
+	return upload, nil
+}
+
+func DeleteUpload(id int) error {
+	_, err := handle.Exec("DELETE FROM uploads WHERE id = ?", id)
+	if err != nil {
+		return err
+	}
+
+	return nil
 }
