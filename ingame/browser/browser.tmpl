@@ -16,7 +16,7 @@
 				<a href="/browse/maps">Maps</a>
 			{{end}}
 		</div>
-		{{if .Category | eq "savemap"}}
+		{{if and (.InGame) (.Category | eq "savemap")}}
 			<div class="savetools">
 				<a href="garrysmod://action/save">Save Current Map</a>
 				<a href="garrysmod://action/clean">Clean Current Map</a>
