@@ -52,7 +52,7 @@ func FetchSteamIDFromTicket(ticket []byte) (int64, error) {
 	var steamid int64
 	err := handle.QueryRow("SELECT steamid FROM logins WHERE ticket = ?", ticket).Scan(&steamid)
 	if err != nil {
-		return 0, nil
+		return 0, err
 	}
 
 	return steamid, nil
