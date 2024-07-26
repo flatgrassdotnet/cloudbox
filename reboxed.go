@@ -46,10 +46,10 @@ func main() {
 
 	utils.WebAPIKey = *apikey
 
-	// static assets
-	http.Handle("GET /assets/", http.StripPrefix("/assets/", http.FileServer(http.Dir("data/assets"))))
-	http.Handle("GET cdn.reboxed.fun/", http.FileServer(http.Dir("data/cdn")))
-	http.Handle("GET img.reboxed.fun/", http.FileServer(http.Dir("data/img")))
+	// static assets - using nginx now
+	// http.Handle("GET /assets/", http.StripPrefix("/assets/", http.FileServer(http.Dir("data/assets"))))
+	//http.Handle("GET cdn.reboxed.fun/", http.FileServer(http.Dir("data/cdn")))
+	//http.Handle("GET img.reboxed.fun/", http.FileServer(http.Dir("data/img")))
 
 	// browser
 	http.HandleFunc("GET /browse/{category}/", browser.Handle)
@@ -88,7 +88,7 @@ func main() {
 		http.Redirect(w, r, "//toybox.garrysmod.com/browse/maps", http.StatusSeeOther)
 	})
 
-	err = http.ListenAndServe(":80", nil)
+	err = http.ListenAndServe(":8080", nil)
 	if err != nil {
 		log.Fatalf("error while serving: %s", err)
 	}
