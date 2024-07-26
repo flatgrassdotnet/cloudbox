@@ -6,7 +6,7 @@
 	<body>
 		<div class="nav">
 			<span id="logo">reboxed</span>
-			{{if or (not .InGame) (.Category | ne "map")}}
+			{{if or (not .InGame) (ne .Category "map")}}
 				<a href="/browse/entities">Entities</a>
 				<a href="/browse/weapons">Weapons</a>
 				<a href="/browse/props">Props</a>
@@ -24,8 +24,11 @@
 		{{end}}
 		<div class="items">
 			{{range .Packages}}
+				{{if and ($.InGame) (eq $.Category "savemap") (ne $.MapName .Dataname)}}
+					{{continue}}
+				{{end}}
 				<div class="item">
-					<a href="garrysmod://{{if (.Type | eq "map")}}install{{else}}spawn{{end}}/{{.Type}}/{{.ID}}/{{.Revision}}">
+					<a href="garrysmod://{{if (eq .Type "map")}}install{{else}}spawn{{end}}/{{.Type}}/{{.ID}}/{{.Revision}}">
 						<div class="thumb" style="background-image: url(//img.reboxed.fun/{{.ID}}_thumb_128.png), url(//img.reboxed.fun/no_thumb_128.png);">
 							<img src="//img.reboxed.fun/overlay_128.png">
 						</div>

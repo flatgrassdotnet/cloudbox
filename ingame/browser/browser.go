@@ -30,6 +30,7 @@ import (
 
 type Browser struct {
 	InGame   bool
+	MapName  string
 	Category string
 	PageNum  int
 	Packages []utils.Package
@@ -83,6 +84,7 @@ func Handle(w http.ResponseWriter, r *http.Request) {
 
 	err = t.Execute(w, Browser{
 		InGame:   r.Header.Get("GMOD_VERSION") != "",
+		MapName:  r.Header.Get("MAP"),
 		Category: category,
 		PageNum:  page,
 		Packages: list,
