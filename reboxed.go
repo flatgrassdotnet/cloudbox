@@ -47,7 +47,7 @@ func main() {
 	utils.WebAPIKey = *apikey
 
 	// static assets - using nginx now
-	// http.Handle("GET /assets/", http.StripPrefix("/assets/", http.FileServer(http.Dir("data/assets"))))
+	//http.Handle("GET /assets/", http.StripPrefix("/assets/", http.FileServer(http.Dir("data/assets"))))
 	//http.Handle("GET cdn.reboxed.fun/", http.FileServer(http.Dir("data/cdn")))
 	//http.Handle("GET img.reboxed.fun/", http.FileServer(http.Dir("data/img")))
 
