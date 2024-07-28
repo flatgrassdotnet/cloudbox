@@ -27,7 +27,7 @@ import (
 )
 
 func List(w http.ResponseWriter, r *http.Request) {
-	list, err := db.FetchPackageListByType(r.URL.Query().Get("type"))
+	list, err := db.FetchPackageList(r.URL.Query().Get("type"))
 	if err != nil {
 		utils.WriteError(w, r, fmt.Sprintf("failed to fetch package list: %s", err))
 		return

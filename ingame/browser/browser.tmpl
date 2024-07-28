@@ -1,11 +1,16 @@
 <html>
 	<head>
 		<title>reboxed</title>
-		<link rel="stylesheet" href="/assets/reboxed.css">
+		<link rel="stylesheet" href="/assets/reboxed.css" type="text/css">
 	</head>
 	<body>
 		<div class="nav">
-			<span id="logo">reboxed</span>
+			<div class="search">
+				<form>
+					<input type="search" name="search" onclick="window.location='gmod\://startspawnmenufocus/'" onmouseout="window.location='gmod\://endspawnmenufocus/'">
+					<input type="submit" value="Go!">
+				</form>
+			</div>
 			{{if or (not .InGame) (ne .Category "map")}}
 				<a href="/browse/entities">Entities</a>
 				<a href="/browse/weapons">Weapons</a>
@@ -16,13 +21,16 @@
 				<a href="/browse/maps">Maps</a>
 			{{end}}
 		</div>
-		{{if and (.InGame) (.Category | eq "savemap")}}
+		<div class="content">
+			{{if and (.InGame) (.Category | eq "savemap")}}
 			<div class="savetools">
 				<a href="garrysmod://action/save">Save Current Map</a>
 				<a href="garrysmod://action/clean">Clean Current Map</a>
 			</div>
-		{{end}}
-		<div class="items">
+			{{end}}
+			{{if ne .Search ""}}
+				<h1>Searched for {{.Search}}</h1>
+			{{end}}
 			{{range .Packages}}
 				{{if and ($.InGame) (eq $.Category "savemap") (ne $.MapName .Dataname)}}
 					{{continue}}

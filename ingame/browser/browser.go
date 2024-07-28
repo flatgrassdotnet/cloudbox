@@ -31,6 +31,7 @@ import (
 type Browser struct {
 	InGame   bool
 	MapName  string
+	Search   string
 	Category string
 	PageNum  int
 	Packages []utils.Package
@@ -66,7 +67,7 @@ func Handle(w http.ResponseWriter, r *http.Request) {
 		page = 1
 	}
 
-	list, err := db.FetchPackageListByTypePaged(category, (page-1)*itemsPerPage, itemsPerPage)
+	list, err := db.FetchPackageListPaged(category, (page-1)*itemsPerPage, itemsPerPage, r.URL.Query().Get("search"))
 	if err != nil {
 		utils.WriteError(w, r, fmt.Sprintf("failed to fetch package list: %s", err))
 		return
@@ -85,6 +86,7 @@ func Handle(w http.ResponseWriter, r *http.Request) {
 	err = t.Execute(w, Browser{
 		InGame:   r.Header.Get("GMOD_VERSION") != "",
 		MapName:  r.Header.Get("MAP"),
+		Search:   r.URL.Query().Get("search"),
 		Category: category,
 		PageNum:  page,
 		Packages: list,
