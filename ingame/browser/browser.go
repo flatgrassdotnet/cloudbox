@@ -20,6 +20,7 @@ package browser
 
 import (
 	_ "embed"
+	"encoding/base64"
 	"fmt"
 	"html/template"
 	"net/http"
@@ -53,6 +54,7 @@ var (
 		"props":    "prop",
 		"saves":    "savemap",
 		"maps":     "map",
+		"mine":		"mine",
 	}
 	t = template.Must(template.New("Browser").Funcs(template.FuncMap{"randborder": func() int {return rand.IntN(5)}}).Parse(tmpl))
 )
@@ -69,10 +71,32 @@ func Handle(w http.ResponseWriter, r *http.Request) {
 		page = 1
 	}
 
-	list, err := db.FetchPackageListPaged(category, (page-1)*itemsPerPage, itemsPerPage, r.URL.Query().Get("search"))
-	if err != nil {
-		utils.WriteError(w, r, fmt.Sprintf("failed to fetch package list: %s", err))
-		return
+	var list []utils.Package
+	var err error
+	if category != "mine" {
+		list, err = db.FetchPackageListPaged(category, r.URL.Query().Get("search"), (page-1)*itemsPerPage, itemsPerPage)
+		if err != nil {
+			utils.WriteError(w, r, fmt.Sprintf("failed to fetch package list: %s", err))
+			return
+		}
+	} else {
+		ticket, err := base64.StdEncoding.DecodeString(r.Header.Get("TICKET"))
+		if err != nil {
+			utils.WriteError(w, r, fmt.Sprintf("failed to decode ticket value: %s", err))
+			return
+		}
+	
+		steamid, err := db.FetchSteamIDFromTicket(ticket)
+		if err != nil {
+			utils.WriteError(w, r, fmt.Sprintf("failed to fetch steamid from ticket: %s", err))
+			return
+		}
+		
+		list, err = db.FetchAuthorPackageListPaged(steamid, r.URL.Query().Get("search"), (page-1)*itemsPerPage, itemsPerPage)
+		if err != nil {
+			utils.WriteError(w, r, fmt.Sprintf("failed to fetch package list: %s", err))
+			return
+		}
 	}
 
 	prev := fmt.Sprintf("?page=%d", page-1)

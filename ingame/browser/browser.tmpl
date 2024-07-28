@@ -12,6 +12,9 @@
 			</div>
 			{{if or (not .InGame) (ne .Category "map")}}
 				<ul>
+					{{if .InGame}}
+						<li><a href="/browse/mine"><img src="/assets/rustmb/mine.png"><br>Mine</a>
+					{{end}}
 					<li><a href="/browse/entities"><img src="/assets/rustmb/entity.png"><br>Entities</a>
 					<li><a href="/browse/weapons"><img src="/assets/rustmb/weapon.png"><br>Weapons</a>
 					<li><a href="/browse/props"><img src="/assets/rustmb/prop.png"><br>Props</a>
@@ -47,7 +50,7 @@
 			{{end}}
 		</div>
 		<div class="pagenav">
-			<span>reboxed</span>
+			<img class="logo" src="/assets/rustmb/logo.png">
 			<a href="{{.PrevLink}}"><img src="/assets/rustmb/leftarrow.png" alt="Previous"></a>
 			{{.PageNum}}
 			<a href="{{.NextLink}}"><img src="/assets/rustmb/rightarrow.png" alt="Next"></a>

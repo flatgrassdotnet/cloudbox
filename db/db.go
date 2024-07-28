@@ -151,10 +151,31 @@ func FetchPackageList(category string) ([]utils.Package, error) {
 	return list, nil
 }
 
-func FetchPackageListPaged(category string, offset int, count int, query string) ([]utils.Package, error) {
+func FetchPackageListPaged(category string, query string, offset int, count int) ([]utils.Package, error) {
 	var list []utils.Package
 
 	rows, err := handle.Query("SELECT p.id, p.rev, p.type, p.name, p.dataname FROM packages p WHERE p.type = ? AND p.rev = (SELECT MAX(p2.rev) FROM packages p2 WHERE p2.id = p.id) AND p.name LIKE CONCAT('%', ?, '%') LIMIT ?, ?", category, query, offset, count)
+	if err != nil {
+		return list, err
+	}
+
+	for rows.Next() {
+		var pkg utils.Package
+		err := rows.Scan(&pkg.ID, &pkg.Revision, &pkg.Type, &pkg.Name, &pkg.Dataname)
+		if err != nil {
+			return list, err
+		}
+
+		list = append(list, pkg)
+	}
+
+	return list, nil
+}
+
+func FetchAuthorPackageListPaged(author int64, query string, offset int, count int) ([]utils.Package, error) {
+	var list []utils.Package
+
+	rows, err := handle.Query("SELECT p.id, p.rev, p.type, p.name, p.dataname FROM packages p WHERE p.rev = (SELECT MAX(p2.rev) FROM packages p2 WHERE p2.id = p.id) AND p.author = ? AND p.name LIKE CONCAT('%', ?, '%') LIMIT ?, ?", author, query, offset, count)
 	if err != nil {
 		return list, err
 	}
