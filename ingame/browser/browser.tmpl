@@ -5,11 +5,6 @@
 	</head>
 	<body>
 		<div class="header">
-			<div class="search">
-				<form>
-					<input id="searchbox" name="search" placeholder="Search" onclick="window.location='gmod\://startspawnmenufocus/'" onmouseout="window.location='gmod\://endspawnmenufocus/'">
-				</form>
-			</div>
 			{{if or (not .InGame) (ne .Category "map")}}
 				<ul>
 					{{if .InGame}}
@@ -24,6 +19,14 @@
 					{{end}}
 				</ul>
 			{{end}}
+			<div class="logo">
+				<img src="/assets/rustmb/logo.png">
+			</div>
+			<div class="search">
+				<form>
+					<input id="searchbox" name="search" placeholder="Search" onclick="window.location='gmod\://startspawnmenufocus/'" onmouseout="window.location='gmod\://endspawnmenufocus/'">
+				</form>
+			</div>
 		</div>
 		<div class="underheader"></div>
 		<div class="content">
@@ -51,7 +54,6 @@
 			{{end}}
 		</div>
 		<div class="footer">
-			<img class="logo" src="/assets/rustmb/logo.png">
 			<a href="{{.PrevLink}}"><img src="/assets/rustmb/leftarrow.png" alt="Previous"></a>
 			{{.PageNum}}
 			<a href="{{.NextLink}}"><img src="/assets/rustmb/rightarrow.png" alt="Next"></a>
