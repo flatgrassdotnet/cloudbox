@@ -38,9 +38,9 @@ func (vdf VDF) encode(output *string) {
 	for k, v := range vdf {
 		switch data := v.(type) {
 		case int:
-			*output += fmt.Sprintf("\"%s\"\t\"%d\"\n", k, v)
+			*output += fmt.Sprintf("\"%s\"\t\"%d\"\n", k, data)
 		case string:
-			*output += fmt.Sprintf("\"%s\"\t\"%s\"\n", k, v)
+			*output += fmt.Sprintf("\"%s\"\t\"%s\"\n", k, data)
 		case VDF:
 			*output += fmt.Sprintf("\"%s\"\n{\n", k)
 			data.encode(output)
