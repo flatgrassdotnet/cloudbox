@@ -4,10 +4,10 @@
 		<link rel="stylesheet" href="/assets/reboxed.css" type="text/css">
 	</head>
 	<body>
-		<div class="nav">
+		<div class="header">
 			<div class="search">
 				<form>
-					<input id="searchbox" name="search" onclick="window.location='gmod\://startspawnmenufocus/'" onmouseout="window.location='gmod\://endspawnmenufocus/'">
+					<input id="searchbox" name="search" placeholder="Search" onclick="window.location='gmod\://startspawnmenufocus/'" onmouseout="window.location='gmod\://endspawnmenufocus/'">
 				</form>
 			</div>
 			{{if or (not .InGame) (ne .Category "map")}}
@@ -25,6 +25,7 @@
 				</ul>
 			{{end}}
 		</div>
+		<div class="underheader"></div>
 		<div class="content">
 			{{if and (.InGame) (.Category | eq "savemap")}}
 			<div class="savetools">
@@ -49,11 +50,12 @@
 				</div>
 			{{end}}
 		</div>
-		<div class="pagenav">
+		<div class="footer">
 			<img class="logo" src="/assets/rustmb/logo.png">
 			<a href="{{.PrevLink}}"><img src="/assets/rustmb/leftarrow.png" alt="Previous"></a>
 			{{.PageNum}}
 			<a href="{{.NextLink}}"><img src="/assets/rustmb/rightarrow.png" alt="Next"></a>
 		</div>
+		<div class="underfooter"></div>
 	</body>
 </html>

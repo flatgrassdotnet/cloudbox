@@ -3,32 +3,36 @@ a {color: #fff; text-decoration: none; }
 a:hover {color: #0af;}
 h1 {margin-left: 10px;}
 
-.nav {width: 100%; height: 55px; background-color: #4096EE; border-bottom: 1px solid #90c6fE; padding: 0px; box-shadow: 0px 16px 16px rgba( 0, 0, 0, 0.1 ); -moz-box-shadow: 0px 16px 16px rgba( 0, 0, 0, 0.1 ); -webkit-box-shadow: 0px 16px 16px rgba( 0, 0, 0, 0.1 );}
-.nav input {border-radius: 6px; -webkit-border-radius: 6px; border: 0px; padding: 5px;}
-.nav ul {padding: 0; margin: 0;}
-.nav li {float: left; width: 64px; height: 50px; overflow: hidden; font-size: 11px; text-align: center; margin-top: 5px; margin-left: 4px;}
-.nav li a {color: #333; font-weight: bolder; text-decoration: none;}
-.nav li a:hover {color: white;}
-.nav li img {width: 32px; height: 32px; margin-bottom: 2px;}
+.header {width: 100%; height: 55px; background-color: #4096EE; padding: 0px; box-shadow: 0px 16px 16px rgba( 0, 0, 0, 0.1 ); -moz-box-shadow: 0px 16px 16px rgba( 0, 0, 0, 0.1 ); -webkit-box-shadow: 0px 16px 16px rgba( 0, 0, 0, 0.1 );}
+.header input {border-radius: 6px; -webkit-border-radius: 6px; border: 0px; padding: 5px;}
+.header ul {padding: 0; margin: 0;}
+.header li {float: left; width: 64px; height: 50px; overflow: hidden; font-size: 11px; text-align: center; margin-top: 5px; margin-left: 4px;}
+.header li a {color: #333; font-weight: bolder; text-decoration: none;}
+.header li a:hover {color: white;}
+.header li img {width: 32px; height: 32px; margin-bottom: 2px;}
 
 .search {float: right; padding: 16px;}
 .search #searchbox {border-radius: 6px; -moz-border-radius: 6px; -webkit-border-radius: 6px; border: 0px; padding: 5px;}
 
+.underheader {height: 40px; background: url('/assets/rustmb/underheader.png'); background-repeat: repeat-x;}
+
 .savetools {padding: 16px 8px;}
 .savetools a {margin: 8px; font-weight: bolder;}
 
-.content {padding: 16px 8px; overflow-y: auto; -webkit-box-flex: 1;}
-
-.pagenav {padding: 16px 8px; text-align: right;}
-.pagenav a {margin: 8px; font-weight: bolder;}
-.pagenav img {height: 15px; width: 15px;}
-
-.pagenav .logo {float: left; padding-left: 8px; width: auto;}
+.content {padding: 16px 8px; overflow-y: auto; -webkit-box-flex: 1; text-align: center;}
 
 .item {margin-left: 2px; margin-right: 2px; display: inline-block; font-size: 11px; font-weight: bolder; width: 128px; height: 125px; text-align: center; text-shadow: 1px 1px 1px #000; text-overflow: ellipsis; overflow: hidden; white-space: nowrap; letter-spacing: -0.1px;}
 .item img {width: 128px; height: 100px;}
 
 .thumb {background-position: center;}
 
+.footer {padding: 8px 8px; text-align: right;}
+.footer a {margin: 8px; font-weight: bolder;}
+.footer img {height: 15px; width: 15px;}
+
+.footer .logo {float: left; padding-left: 8px; width: auto;}
+
 .saveform {padding: 16px 8px;}
 .saveform label {display: block;}
+
+.underfooter {height: 40px; background: url('/assets/rustmb/underfooter.png'); background-repeat: repeat-x;}
