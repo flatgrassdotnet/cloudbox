@@ -7,10 +7,23 @@ h1 {margin-left: 10px;}
 .header .logo {text-align: center; padding: 4px; width: 100%; -webkit-box-flex: 1;}
 .header input {border-radius: 6px; -webkit-border-radius: 6px; border: 0px; padding: 5px;}
 .header ul {padding: 0; margin: 0;}
-.header li {float: left; width: 64px; height: 50px; overflow: hidden; font-size: 11px; text-align: center; margin-top: 5px; margin-left: 4px;}
+.header li {float: left; width: 60px; height: 50px; overflow: hidden; font-size: 11px; text-align: center; margin-top: 5px; margin-left: 4px;}
 .header li a {color: #333; font-weight: bolder; text-decoration: none;}
 .header li a:hover {color: white;}
-.header li img {width: 32px; height: 32px; margin-bottom: 2px;}
+
+.header .navbutton {width: 32px; height: 32px; margin-bottom: 2px; display: inline-block; background-size: contain;}
+#mine {background-image: url('/assets/rustmb/mine.png');}
+#mine:hover {background-image: url('/assets/rustmb/mine_hover.png');}
+#entity {background-image: url('/assets/rustmb/entity.png');}
+#entity:hover {background-image: url('/assets/rustmb/entity_hover.png');}
+#weapon {background-image: url('/assets/rustmb/weapon.png');}
+#weapon:hover {background-image: url('/assets/rustmb/weapon_hover.png');}
+#prop {background-image: url('/assets/rustmb/prop.png');}
+#prop:hover {background-image: url('/assets/rustmb/prop_hover.png');}
+#savemap {background-image: url('/assets/rustmb/savemap.png');}
+#savemap:hover {background-image: url('/assets/rustmb/savemap_hover.png');}
+#map {background-image: url('/assets/rustmb/map.png');}
+#map:hover {background-image: url('/assets/rustmb/map_hover.png');}
 
 .search {text-align: right; padding: 16px;}
 .search #searchbox {border-radius: 6px; -moz-border-radius: 6px; -webkit-border-radius: 6px; border: 0px; padding: 5px;}

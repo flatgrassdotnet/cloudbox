@@ -8,14 +8,14 @@
 			{{if or (not .InGame) (ne .Category "map")}}
 				<ul>
 					{{if .InGame}}
-						<li><a href="/browse/mine"><img src="/assets/rustmb/mine.png"><br>Mine</a>
+						<li><a href="/browse/mine"><div class="navbutton" id="mine"></div><br>Mine</a>
 					{{end}}
-					<li><a href="/browse/entities"><img src="/assets/rustmb/entity.png"><br>Entities</a>
-					<li><a href="/browse/weapons"><img src="/assets/rustmb/weapon.png"><br>Weapons</a>
-					<li><a href="/browse/props"><img src="/assets/rustmb/prop.png"><br>Props</a>
-					<li><a href="/browse/saves"><img src="/assets/rustmb/savemap.png"><br>Saves</a>
+					<li><a href="/browse/entities"><div class="navbutton" id="entity"></div>Entities</a>
+					<li><a href="/browse/weapons"><div class="navbutton" id="weapon"></div>Weapons</a>
+					<li><a href="/browse/props"><div class="navbutton" id="prop"></div>Props</a>
+					<li><a href="/browse/saves"><div class="navbutton" id="savemap"></div>Saves</a>
 					{{if not .InGame}}
-						<li><a href="/browse/maps"><img src="/assets/rustmb/map.png"><br>Maps</a>
+						<li><a href="/browse/maps"><div class="navbutton" id="map"></div>Maps</a>
 					{{end}}
 				</ul>
 			{{end}}
