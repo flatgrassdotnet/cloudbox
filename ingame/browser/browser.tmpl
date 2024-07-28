@@ -8,7 +8,6 @@
 			<div class="search">
 				<form>
 					<input id="searchbox" name="search" onclick="window.location='gmod\://startspawnmenufocus/'" onmouseout="window.location='gmod\://endspawnmenufocus/'">
-					<input type="submit" value="Go!">
 				</form>
 			</div>
 			{{if or (not .InGame) (ne .Category "map")}}
@@ -40,7 +39,7 @@
 				<div class="item">
 					<a href="garrysmod://{{if (eq .Type "map")}}install{{else}}spawn{{end}}/{{.Type}}/{{.ID}}/{{.Revision}}">
 						<div class="thumb" style="background-image: url(//img.reboxed.fun/{{.ID}}_thumb_128.png), url(//img.reboxed.fun/no_thumb_128.png);">
-							<img src="//img.reboxed.fun/overlay_128.png">
+							<img src="/assets/rustmb/border{{randborder}}.png">
 						</div>
 						{{.Name}}
 					</a>
@@ -49,7 +48,9 @@
 		</div>
 		<div class="pagenav">
 			<span>reboxed</span>
-			<a href="{{.PrevLink}}">Previous</a>{{.PageNum}}<a href="{{.NextLink}}">Next</a>
+			<a href="{{.PrevLink}}"><img src="/assets/rustmb/leftarrow.png" alt="Previous"></a>
+			{{.PageNum}}
+			<a href="{{.NextLink}}"><img src="/assets/rustmb/rightarrow.png" alt="Next"></a>
 		</div>
 	</body>
 </html>

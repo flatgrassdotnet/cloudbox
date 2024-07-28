@@ -21,6 +21,7 @@ h1 {margin-left: 10px;}
 
 .pagenav {padding: 16px 8px; text-align: right;}
 .pagenav a {margin: 8px; font-weight: bolder;}
+.pagenav img {height: 15px; width: 15px;}
 
 .pagenav span {float: left; font-weight: bolder; font-style: italic; padding-left: 8px;}
 
