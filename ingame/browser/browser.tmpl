@@ -7,18 +7,20 @@
 		<div class="nav">
 			<div class="search">
 				<form>
-					<input type="search" name="search" onclick="window.location='gmod\://startspawnmenufocus/'" onmouseout="window.location='gmod\://endspawnmenufocus/'">
+					<input id="searchbox" name="search" onclick="window.location='gmod\://startspawnmenufocus/'" onmouseout="window.location='gmod\://endspawnmenufocus/'">
 					<input type="submit" value="Go!">
 				</form>
 			</div>
 			{{if or (not .InGame) (ne .Category "map")}}
-				<a href="/browse/entities">Entities</a>
-				<a href="/browse/weapons">Weapons</a>
-				<a href="/browse/props">Props</a>
-				<a href="/browse/saves">Saves</a>
-			{{end}}
-			{{if not .InGame}}
-				<a href="/browse/maps">Maps</a>
+				<ul>
+					<li><a href="/browse/entities"><img src="/assets/rustmb/entity.png"><br>Entities</a>
+					<li><a href="/browse/weapons"><img src="/assets/rustmb/weapon.png"><br>Weapons</a>
+					<li><a href="/browse/props"><img src="/assets/rustmb/prop.png"><br>Props</a>
+					<li><a href="/browse/saves"><img src="/assets/rustmb/savemap.png"><br>Saves</a>
+					{{if not .InGame}}
+						<li><a href="/browse/maps"><img src="/assets/rustmb/map.png"><br>Maps</a>
+					{{end}}
+				</ul>
 			{{end}}
 		</div>
 		<div class="content">
@@ -46,6 +48,7 @@
 			{{end}}
 		</div>
 		<div class="pagenav">
+			<span>reboxed</span>
 			<a href="{{.PrevLink}}">Previous</a>{{.PageNum}}<a href="{{.NextLink}}">Next</a>
 		</div>
 	</body>
