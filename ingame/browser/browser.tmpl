@@ -5,22 +5,24 @@
 	</head>
 	<body>
 		<div class="header">
-			{{if or (not .InGame) (ne .Category "map")}}
+			<div class="navbar" style="-webkit-box-flex: 1; width: 100%;">
 				<ul>
-					{{if .InGame}}
-						<li><a href="/browse/mine"><div class="navbutton" id="mine"></div>Mine</a></li>
+					{{if or (not .InGame) (ne .Category "map")}}
+						{{if .InGame}}
+							<li><a href="/browse/mine"><div class="navbutton" id="mine"></div><br>Mine<br></a></li>
+						{{end}}
+						<li><a href="/browse/entities"><div class="navbutton" id="entity"></div><br>Entities</a></li>
+						<li><a href="/browse/weapons"><div class="navbutton" id="weapon"></div><br>Weapons</a></li>
+						<li><a href="/browse/props"><div class="navbutton" id="prop"></div><br>Props</a></li>
+						<li><a href="/browse/saves"><div class="navbutton" id="savemap"></div><br>Saves</a></li>
+						{{if not .InGame}}
+							<li><a href="/browse/maps"><div class="navbutton" id="map"></div><br>Maps</a></li>
+						{{end}}
+						<li></li>
 					{{end}}
-					<li><a href="/browse/entities"><div class="navbutton" id="entity"></div>Entities</a></li>
-					<li><a href="/browse/weapons"><div class="navbutton" id="weapon"></div>Weapons</a></li>
-					<li><a href="/browse/props"><div class="navbutton" id="prop"></div>Props</a></li>
-					<li><a href="/browse/saves"><div class="navbutton" id="savemap"></div>Saves</a></li>
-					{{if not .InGame}}
-						<li><a href="/browse/maps"><div class="navbutton" id="map"></div>Maps</a></li>
-					{{end}}
+					<li><a href="{{.PrevLink}}"><div class="navbutton" id="prev"></div><br>Previous</a></li>
+					<li><a href="{{.NextLink}}"><div class="navbutton" id="next"></div><br>Next</a></li>
 				</ul>
-			{{end}}
-			<div class="logo">
-				<img src="/assets/rustmb/logo.png">
 			</div>
 			<div class="search">
 				<form>
@@ -53,11 +55,6 @@
 				</div>
 			{{end}}
 		</div>
-		<div class="footer">
-			<a href="{{.PrevLink}}"><div class="pagebutton" id="prev"></div></a>
-			{{.PageNum}}
-			<a href="{{.NextLink}}"><div class="pagebutton" id="next"></div></a>
-		</div>
-		<div class="underfooter"></div>
 	</body>
+	<div class="bottomclouds"></div>
 </html>
