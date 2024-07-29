@@ -101,7 +101,7 @@ func (pkg Package) Marshal() []byte {
 	root["script"] = script
 
 	if len(pkg.Data) != 0 {
-		return append([]byte(root.Marshal()+"\n"), pkg.Data...)
+		return append([]byte(root.Marshal()), pkg.Data...)
 	}
 
 	return []byte(root.Marshal())

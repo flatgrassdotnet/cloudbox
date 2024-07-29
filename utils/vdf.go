@@ -29,7 +29,7 @@ func (vdf VDF) Marshal() string {
 
 	vdf.encode(&output)
 
-	return output
+	return output + "\n"
 }
 
 // very crude VDF string encoder specifically targeting toybox's implementation
