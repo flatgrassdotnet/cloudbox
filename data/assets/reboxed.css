@@ -51,4 +51,4 @@ h1 {margin-left: 10px;}
 .saveform {padding: 16px 8px;}
 .saveform label {display: block;}
 
-.underfooter {height: 40px; background: url('/assets/rustmb/underfooter.png'); background-repeat: repeat-x;}
+.underfooter {height: 40px; background: url('/assets/rustmb/underfooter.png'); background-repeat: repeat-x; opacity: 25%;}
