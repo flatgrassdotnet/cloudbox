@@ -49,14 +49,14 @@ var tmpl string
 
 var (
 	categories = map[string]string{
+		"mine":     "mine",
 		"entities": "entity",
 		"weapons":  "weapon",
 		"props":    "prop",
 		"saves":    "savemap",
 		"maps":     "map",
-		"mine":		"mine",
 	}
-	t = template.Must(template.New("Browser").Funcs(template.FuncMap{"randborder": func() int {return rand.IntN(5)}}).Parse(tmpl))
+	t = template.Must(template.New("Browser").Funcs(template.FuncMap{"randborder": func() int { return rand.IntN(5) }}).Parse(tmpl))
 )
 
 func Handle(w http.ResponseWriter, r *http.Request) {
@@ -85,13 +85,13 @@ func Handle(w http.ResponseWriter, r *http.Request) {
 			utils.WriteError(w, r, fmt.Sprintf("failed to decode ticket value: %s", err))
 			return
 		}
-	
+
 		steamid, err := db.FetchSteamIDFromTicket(ticket)
 		if err != nil {
 			utils.WriteError(w, r, fmt.Sprintf("failed to fetch steamid from ticket: %s", err))
 			return
 		}
-		
+
 		list, err = db.FetchAuthorPackageListPaged(steamid, r.URL.Query().Get("search"), (page-1)*itemsPerPage, itemsPerPage)
 		if err != nil {
 			utils.WriteError(w, r, fmt.Sprintf("failed to fetch package list: %s", err))
