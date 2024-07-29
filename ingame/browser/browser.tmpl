@@ -8,14 +8,14 @@
 			{{if or (not .InGame) (ne .Category "map")}}
 				<ul>
 					{{if .InGame}}
-						<li><a href="/browse/mine"><div class="navbutton" id="mine"></div><br>Mine</a>
+						<li><a href="/browse/mine"><div class="navbutton" id="mine"></div><br>Mine</a></li>
 					{{end}}
-					<li><a href="/browse/entities"><div class="navbutton" id="entity"></div>Entities</a>
-					<li><a href="/browse/weapons"><div class="navbutton" id="weapon"></div>Weapons</a>
-					<li><a href="/browse/props"><div class="navbutton" id="prop"></div>Props</a>
-					<li><a href="/browse/saves"><div class="navbutton" id="savemap"></div>Saves</a>
+					<li><a href="/browse/entities"><div class="navbutton" id="entity"></div>Entities</a></li>
+					<li><a href="/browse/weapons"><div class="navbutton" id="weapon"></div>Weapons</a></li>
+					<li><a href="/browse/props"><div class="navbutton" id="prop"></div>Props</a></li>
+					<li><a href="/browse/saves"><div class="navbutton" id="savemap"></div>Saves</a></li>
 					{{if not .InGame}}
-						<li><a href="/browse/maps"><div class="navbutton" id="map"></div>Maps</a>
+						<li><a href="/browse/maps"><div class="navbutton" id="map"></div>Maps</a></li>
 					{{end}}
 				</ul>
 			{{end}}
