@@ -41,8 +41,12 @@ h1 {margin-left: 10px;}
 .thumb {background-position: center;}
 
 .footer {padding: 8px 8px; text-align: right;}
-.footer a {margin: 8px; font-weight: bolder;}
-.footer img {height: 15px; width: 15px;}
+.footer a {margin: 8px;}
+.pagebutton {height: 15px; width: 15px; background-size: contain; display: inline-block;}
+#prev {background-image: url('/assets/rustmb/leftarrow.png')}
+#prev:hover {background-image: url('/assets/rustmb/leftarrow_hover.png')}
+#next {background-image: url('/assets/rustmb/rightarrow.png')}
+#next:hover {background-image: url('/assets/rustmb/rightarrow_hover.png')}
 
 .saveform {padding: 16px 8px;}
 .saveform label {display: block;}
