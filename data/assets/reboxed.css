@@ -1,9 +1,9 @@
 body {margin: 0px; font-family: Helvetica; background-color: #36393d; color: #eee; height: 100%; display: -webkit-box; -webkit-box-orient: vertical;}
-a {color: #fff; text-decoration: none; }
+a {color: #fff; text-decoration: none;}
 a:hover {color: #0af;}
 h1 {margin-left: 10px;}
 
-.header {width: 100%; background-color: #4096EE; box-shadow: 0px 16px 16px rgba( 0, 0, 0, 0.1 ); -moz-box-shadow: 0px 16px 16px rgba( 0, 0, 0, 0.1 ); -webkit-box-shadow: 0px 16px 16px rgba( 0, 0, 0, 0.1 ); display: -webkit-box; overflow: hidden;}
+.header {width: 100%; background-color: #4096EE; display: -webkit-box; overflow: hidden;}
 .navbar {margin: 0;}
 .navbar a {float: left; width: 64px; height: 50px; overflow: hidden; font-size: 11px; text-align: center; margin-top: 10px; margin-left: 4px; color: #333; font-weight: bolder; text-decoration: none;}
 .navbar a:hover {color: white;}
@@ -30,7 +30,7 @@ h1 {margin-left: 10px;}
 .search {text-align: right; padding: 16px;}
 .search #searchbox {padding: 5px; border: 2px solid; border-color: #595959; border-radius: 4px; float: right;}
 
-.underheader {height: 40px; background: url('/assets/rustmb/underheader.png'); background-repeat: repeat-x;}
+.underheader {height: 40px; background: url('/assets/rustmb/clouds.svg'); background-repeat: repeat-x; background-color: #4096EE;}
 
 .savetools {padding: 16px 8px;}
 .savetools a {margin: 8px; font-weight: bolder;}
@@ -44,5 +44,3 @@ h1 {margin-left: 10px;}
 
 .saveform {padding: 16px 8px;}
 .saveform label {display: block;}
-
-.bottomclouds {height: 40px; background: url('/assets/rustmb/underfooter.png'); background-repeat: repeat-x; opacity: 0.25; position: fixed; bottom: 0px; width: 100%;}
