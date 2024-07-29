@@ -6,23 +6,21 @@
 	<body>
 		<div class="header">
 			<div class="navbar" style="-webkit-box-flex: 1; width: 100%;">
-				<ul>
-					{{if or (not .InGame) (ne .Category "map")}}
-						{{if .InGame}}
-							<li><a href="/browse/mine"><div class="navbutton" id="mine"></div><br>Mine<br></a></li>
-						{{end}}
-						<li><a href="/browse/entities"><div class="navbutton" id="entity"></div><br>Entities</a></li>
-						<li><a href="/browse/weapons"><div class="navbutton" id="weapon"></div><br>Weapons</a></li>
-						<li><a href="/browse/props"><div class="navbutton" id="prop"></div><br>Props</a></li>
-						<li><a href="/browse/saves"><div class="navbutton" id="savemap"></div><br>Saves</a></li>
-						{{if not .InGame}}
-							<li><a href="/browse/maps"><div class="navbutton" id="map"></div><br>Maps</a></li>
-						{{end}}
-						<li></li>
+				{{if or (not .InGame) (ne .Category "map")}}
+					{{if .InGame}}
+						<a href="/browse/mine"><div class="navbutton" id="mine"></div><br>Mine<br></a>
 					{{end}}
-					<li><a href="{{.PrevLink}}"><div class="navbutton" id="prev"></div><br>Previous</a></li>
-					<li><a href="{{.NextLink}}"><div class="navbutton" id="next"></div><br>Next</a></li>
-				</ul>
+					<a href="/browse/entities"><div class="navbutton" id="entity"></div><br>Entities</a>
+					<a href="/browse/weapons"><div class="navbutton" id="weapon"></div><br>Weapons</a>
+					<a href="/browse/props"><div class="navbutton" id="prop"></div><br>Props</a>
+					<a href="/browse/saves"><div class="navbutton" id="savemap"></div><br>Saves</a>
+					{{if not .InGame}}
+						<a href="/browse/maps"><div class="navbutton" id="map"></div><br>Maps</a>
+					{{end}}
+					<a></a>
+				{{end}}
+				<a href="{{.PrevLink}}"><div class="navbutton" id="prev"></div><br>Previous</a>
+				<a href="{{.NextLink}}"><div class="navbutton" id="next"></div><br>Next</a>
 			</div>
 			<div class="search">
 				<form>
