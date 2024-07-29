@@ -19,8 +19,8 @@
 					{{end}}
 					<a></a>
 				{{end}}
-				<a href="{{.PrevLink}}" id="prev"><div class="navbutton"></div><br>Previous</a>
-				<a href="{{.NextLink}}" id="next"><div class="navbutton"></div><br>Next</a>
+				<a href="{{.PrevLink}}" id="prev"{{if eq .PrevLink "#"}} class="disabled"{{end}}><div class="navbutton"></div><br>Previous</a>
+				<a href="{{.NextLink}}" id="next"{{if eq .NextLink "#"}} class="disabled"{{end}}><div class="navbutton"></div><br>Next</a>
 			</div>
 			<div class="search">
 				<form>
