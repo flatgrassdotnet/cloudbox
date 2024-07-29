@@ -5,9 +5,9 @@ h1 {margin-left: 10px;}
 
 .header {width: 100%; background-color: #4096EE; display: -webkit-box; overflow: hidden;}
 .navbar {margin: 0;}
-.navbar a {float: left; width: 64px; height: 50px; overflow: hidden; font-size: 11px; text-align: center; margin-top: 10px; margin-left: 4px; color: #333; font-weight: bolder; text-decoration: none;}
+.navbar a {float: left; width: 64px; height: 50px; overflow: hidden; font-size: 11px; text-align: center; margin-top: 10px; margin-left: 4px; color: #333; font-weight: bolder; text-decoration: none; background-size: contain; background-size: 32px 32px; background-repeat: no-repeat; background-position: center 0px;}
 .navbar a:hover {color: white;}
-.navbar .navbutton {width: 32px; height: 32px; margin-bottom: 2px; display: inline-block; background-size: contain;}
+.navbar .navbutton {width: 32px; height: 32px; margin-bottom: 2px; display: inline-block;}
 
 #mine {background-image: url('/assets/rustmb/mine.png');}
 #mine:hover {background-image: url('/assets/rustmb/mine_hover.png');}
