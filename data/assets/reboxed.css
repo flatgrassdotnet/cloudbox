@@ -40,7 +40,7 @@ h1 {margin-left: 10px;}
 
 .thumb {background-position: center;}
 
-.footer {padding: 8px 8px; text-align: right;}
+.footer {padding: 8px 8px; font-size: 20px; text-align: right;}
 .footer a {margin: 8px;}
 .pagebutton {height: 15px; width: 15px; background-size: contain; display: inline-block;}
 #prev {background-image: url('/assets/rustmb/leftarrow.png')}
