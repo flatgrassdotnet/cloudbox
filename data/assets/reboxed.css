@@ -45,4 +45,4 @@ h1 {margin-left: 10px;}
 .saveform {padding: 16px 8px;}
 .saveform label {display: block;}
 
-.bottomclouds {height: 40px; width: 100%; position: fixed; bottom: 0px; background-image: url('/assets/rustmb/cloudswhite.svg'); opacity: 0.25;}
+.bottomclouds {height: 40px; width: 100%; position: fixed; bottom: 0px; background-image: url('/assets/rustmb/cloudswhite.svg'); opacity: 0.25; pointer-events: none;}
