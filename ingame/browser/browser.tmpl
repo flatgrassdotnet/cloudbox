@@ -21,7 +21,7 @@
 			</div>
 			<div class="search" style="-webkit-box-flex: 1; width: 100%;">
 				<form>
-					<input id="searchbox" name="search" placeholder="Search" value="{{.Search}}" onclick="window.location='gmod\://startspawnmenufocus/'" onmouseout="window.location='gmod\://endspawnmenufocus/'">
+					<input id="searchbox" name="search" placeholder="Search" value="{{.Search}}" {{if .InGame}}onclick="window.location='gmod\://startspawnmenufocus/'" onmouseout="window.location='gmod\://endspawnmenufocus/'"{{end}}>
 				</form>
 			</div>
 			<div class="navbar">
