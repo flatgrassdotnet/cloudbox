@@ -1,9 +1,9 @@
-body {margin: 0px; font-family: Helvetica; background-color: #A1DAFF; color: #333; height: 100%; display: -webkit-box; -webkit-box-orient: vertical;}
+body {margin: 0px; font-family: Helvetica; background-color: #A1DAff; color: #333; height: 100%; display: -webkit-box; -webkit-box-orient: vertical;}
 a {color: #333; text-decoration: none;}
 a:hover {color: #fff;}
 h1 {margin-left: 10px;}
 
-.header {width: 100%; background-color: #4096EE; display: -webkit-box; overflow: hidden;}
+.header {width: 100%; background-color: #4096ee; display: -webkit-box; overflow: hidden;}
 .navbar {margin: 0;}
 .navbar a {float: left; width: 64px; height: 50px; overflow: hidden; font-size: 11px; text-align: center; margin-top: 10px; margin-left: 4px; font-weight: bolder; text-decoration: none; background-size: contain; background-size: 32px 32px; background-repeat: no-repeat; background-position: center 0px;}
 .navbar .navbutton {width: 32px; height: 32px; margin-bottom: 2px; display: inline-block;}
@@ -30,7 +30,7 @@ h1 {margin-left: 10px;}
 .search {text-align: right; padding: 16px;}
 .search #searchbox {width: 100%; padding: 5px; border: 2px solid; border-color: #595959; border-radius: 4px;}
 
-.underheader {height: 40px; background-image: url('/assets/rustmb/clouds.svg'); background-color: #4096EE;}
+.underheader {height: 40px; background-image: url('/assets/rustmb/clouds.svg'); background-color: #4096ee;}
 
 .savetools {padding: 16px 8px;}
 .savetools a {margin: 8px; font-weight: bolder;}
@@ -39,6 +39,7 @@ h1 {margin-left: 10px;}
 
 .item {margin-left: 2px; margin-right: 2px; display: inline-block; width: 128px; height: 125px;}
 .item .thumb {width: 128px; height: 100px; border: 2px solid; border-color: #595959; border-radius: 4px; margin-bottom: 1px; background-position: center;}
+.item .thumb:hover {border-color: #fff}
 .item .name {font-size: 11px; font-weight: bolder; text-align: center; white-space: nowrap; letter-spacing: -0.1px; text-overflow: ellipsis; overflow: hidden;}
 
 .saveform {padding: 16px 8px;}
