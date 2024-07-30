@@ -1,4 +1,4 @@
-body {margin: 0px; font-family: Helvetica; background-color: #36393d; color: #eee; height: 100%; display: -webkit-box; -webkit-box-orient: vertical;}
+body {margin: 0px; font-family: Helvetica; background-color: #A1DAFF; color: #eee; height: 100%; display: -webkit-box; -webkit-box-orient: vertical;}
 a {color: #fff; text-decoration: none;}
 a:hover {color: #0af;}
 h1 {margin-left: 10px;}
@@ -46,3 +46,5 @@ h1 {margin-left: 10px;}
 
 .saveform {padding: 16px 8px;}
 .saveform label {display: block;}
+
+.underfooter {height: 40px; background: url('/assets/rustmb/cloudswhite.svg'); background-repeat: repeat-x; background-color: #A1DAFF;}

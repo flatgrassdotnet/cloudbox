@@ -56,7 +56,7 @@ var (
 		"saves":    "savemap",
 		"maps":     "map",
 	}
-	t = template.Must(template.New("Browser").Funcs(template.FuncMap{"randborder": func() int { return rand.IntN(5) }}).Parse(tmpl))
+	t = template.Must(template.New("Browser").Funcs(template.FuncMap{"randborder": func() int { return rand.IntN(10) }}).Parse(tmpl))
 )
 
 func Handle(w http.ResponseWriter, r *http.Request) {
