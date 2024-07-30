@@ -1,12 +1,11 @@
-body {margin: 0px; font-family: Helvetica; background-color: #A1DAFF; color: #eee; height: 100%; display: -webkit-box; -webkit-box-orient: vertical;}
-a {color: #fff; text-decoration: none;}
-a:hover {color: #0af;}
+body {margin: 0px; font-family: Helvetica; background-color: #A1DAFF; color: #333; height: 100%; display: -webkit-box; -webkit-box-orient: vertical;}
+a {color: #333; text-decoration: none;}
+a:hover {color: #fff;}
 h1 {margin-left: 10px;}
 
 .header {width: 100%; background-color: #4096EE; display: -webkit-box; overflow: hidden;}
 .navbar {margin: 0;}
-.navbar a {float: left; width: 64px; height: 50px; overflow: hidden; font-size: 11px; text-align: center; margin-top: 10px; margin-left: 4px; color: #333; font-weight: bolder; text-decoration: none; background-size: contain; background-size: 32px 32px; background-repeat: no-repeat; background-position: center 0px;}
-.navbar a:hover {color: white;}
+.navbar a {float: left; width: 64px; height: 50px; overflow: hidden; font-size: 11px; text-align: center; margin-top: 10px; margin-left: 4px; font-weight: bolder; text-decoration: none; background-size: contain; background-size: 32px 32px; background-repeat: no-repeat; background-position: center 0px;}
 .navbar .navbutton {width: 32px; height: 32px; margin-bottom: 2px; display: inline-block;}
 .navbar .disabled {opacity: 0.25; pointer-events: none;}
 
@@ -40,7 +39,7 @@ h1 {margin-left: 10px;}
 
 .item {margin-left: 2px; margin-right: 2px; display: inline-block; width: 128px; height: 125px;}
 .item img {width: 128px; height: 100px;}
-.item .name {font-size: 11px; font-weight: bolder; text-align: center; text-shadow: 1px 1px 1px #000; white-space: nowrap; letter-spacing: -0.1px; text-overflow: ellipsis; overflow: hidden;}
+.item .name {font-size: 11px; font-weight: bolder; text-align: center; white-space: nowrap; letter-spacing: -0.1px; text-overflow: ellipsis; overflow: hidden;}
 
 .thumb {background-position: center;}
 
