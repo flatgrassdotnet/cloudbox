@@ -45,9 +45,7 @@
 				{{end}}
 				<div class="item">
 					<a href="garrysmod://{{if (eq .Type "map")}}install{{else}}spawn{{end}}/{{.Type}}/{{.ID}}/{{.Revision}}">
-						<div class="thumb" style="background-image: url('//img.reboxed.fun/{{.ID}}_thumb_128.png'), url('/assets/rustmb/missing.png');">
-							<img src="/assets/rustmb/border{{randborder}}.png">
-						</div>
+						<div class="thumb" style="background-image: url('//img.reboxed.fun/{{.ID}}_thumb_128.png'), url('/assets/rustmb/missing.png');"></div>
 						<div class="name">
 							{{.Name}}
 						</div>
