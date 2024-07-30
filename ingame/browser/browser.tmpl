@@ -5,7 +5,7 @@
 	</head>
 	<body>
 		<div class="header">
-			<div class="navbar" style="-webkit-box-flex: 1; width: 100%;">
+			<div class="navbar">
 				{{if or (not .InGame) (ne .Category "map")}}
 					{{if .InGame}}
 						<a href="/browse/mine" id="mine"><div class="navbutton"></div><br>Mine<br></a>
@@ -17,15 +17,16 @@
 					{{if not .InGame}}
 						<a href="/browse/maps" id="map"><div class="navbutton"></div><br>Maps</a>
 					{{end}}
-					<a></a>
 				{{end}}
-				<a href="{{.PrevLink}}" id="prev"{{if eq .PrevLink "#"}} class="disabled"{{end}}><div class="navbutton"></div><br>Previous</a>
-				<a href="{{.NextLink}}" id="next"{{if eq .NextLink "#"}} class="disabled"{{end}}><div class="navbutton"></div><br>Next</a>
 			</div>
-			<div class="search">
+			<div class="search" style="-webkit-box-flex: 1; width: 100%;">
 				<form>
 					<input id="searchbox" name="search" placeholder="Search" value="{{.Search}}" onclick="window.location='gmod\://startspawnmenufocus/'" onmouseout="window.location='gmod\://endspawnmenufocus/'">
 				</form>
+			</div>
+			<div class="navbar">
+				<a href="{{.PrevLink}}" id="prev"{{if eq .PrevLink "#"}} class="disabled"{{end}}><div class="navbutton"></div><br>Previous</a>
+				<a href="{{.NextLink}}" id="next"{{if eq .NextLink "#"}} class="disabled"{{end}}><div class="navbutton"></div><br>Next</a>
 			</div>
 		</div>
 		<div class="underheader"></div>
@@ -53,6 +54,6 @@
 				</div>
 			{{end}}
 		</div>
-		<div class="underfooter"></div>
 	</body>
+	<div class="bottomclouds"></div>
 </html>

@@ -28,9 +28,9 @@ h1 {margin-left: 10px;}
 #next:hover {background-image: url('/assets/rustmb/rightarrow_hover.png')}
 
 .search {text-align: right; padding: 16px;}
-.search #searchbox {padding: 5px; border: 2px solid; border-color: #595959; border-radius: 4px; float: right;}
+.search #searchbox {width: 100%; padding: 5px; border: 2px solid; border-color: #595959; border-radius: 4px;}
 
-.underheader {height: 40px; background: url('/assets/rustmb/clouds.svg'); background-repeat: repeat-x; background-color: #4096EE;}
+.underheader {height: 40px; background-image: url('/assets/rustmb/clouds.svg'); background-color: #4096EE;}
 
 .savetools {padding: 16px 8px;}
 .savetools a {margin: 8px; font-weight: bolder;}
@@ -44,4 +44,4 @@ h1 {margin-left: 10px;}
 .saveform {padding: 16px 8px;}
 .saveform label {display: block;}
 
-.underfooter {height: 40px; background: url('/assets/rustmb/cloudswhite.svg'); background-repeat: repeat-x; background-color: #A1DAFF; opacity: 0.5;}
+.bottomclouds {height: 40px; width: 100%; position: fixed; bottom: 0px; background-image: url('/assets/rustmb/cloudswhite.svg'); opacity: 0.25;}
