@@ -34,7 +34,6 @@ type Browser struct {
 	MapName  string
 	Search   string
 	Category string
-	PageNum  int
 	Packages []utils.Package
 	PrevLink string
 	NextLink string
@@ -112,7 +111,6 @@ func Handle(w http.ResponseWriter, r *http.Request) {
 		MapName:  r.Header.Get("MAP"),
 		Search:   r.URL.Query().Get("search"),
 		Category: category,
-		PageNum:  page,
 		Packages: list,
 		PrevLink: prev,
 		NextLink: next,
