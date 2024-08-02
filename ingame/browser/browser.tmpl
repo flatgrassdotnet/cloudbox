@@ -32,10 +32,10 @@
 		<div class="underheader"></div>
 		<div class="content">
 			{{if and (.InGame) (.Category | eq "savemap")}}
-			<div class="savetools">
-				<a href="garrysmod://action/save">Save Current Map</a>
-				<a href="garrysmod://action/clean">Clean Current Map</a>
-			</div>
+				<div class="savetools">
+					<a href="garrysmod://action/save">Save Current Map</a>
+					<a href="garrysmod://action/clean">Clean Current Map</a>
+				</div>
 			{{end}}
 			{{if ne .Search ""}}
 				<h1>Searched for {{.Search}}</h1>
