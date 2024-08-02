@@ -1,6 +1,6 @@
-body {height: 100%; margin: 0px; font-family: Helvetica; background-color: #A1DAff; color: #333; display: -webkit-box; -webkit-box-orient: vertical;}
+body {height: 100%; margin: 0px; font-family: Helvetica; background-color: #A1DAFF; color: #333; display: -webkit-box; -webkit-box-orient: vertical;}
 a {color: #333; text-decoration: none;}
-a:hover {color: #fff;}
+a:hover {color: #FFF;}
 h1 {margin-left: 10px;}
 
 .header {width: 100%; background-color: #4096ee; display: -webkit-box; overflow: hidden;}
@@ -27,10 +27,10 @@ h1 {margin-left: 10px;}
 #next {background-image: url('/assets/rustmb/rightarrow.png')}
 #next:hover {background-image: url('/assets/rustmb/rightarrow_hover.png')}
 
-.search {text-align: right; padding: 16px;}
+.search {padding: 16px;}
 .search #searchbox {width: 100%; padding: 5px; border: 2px solid; border-color: #595959; border-radius: 4px;}
 
-.underheader {height: 40px; background-image: url('/assets/rustmb/clouds.svg'); background-color: #4096ee;}
+.underheader {height: 40px; background-image: url('/assets/rustmb/clouds.svg'); background-color: #4096EE;}
 
 .savetools {padding: 16px 8px;}
 .savetools a {margin: 8px; font-weight: bolder;}
@@ -39,12 +39,12 @@ h1 {margin-left: 10px;}
 
 .item {width: 128px; height: 125px; margin-left: 2px; margin-right: 2px; display: inline-block;}
 .item .thumb {width: 128px; height: 100px; border: 2px solid; border-color: #595959; border-radius: 4px; margin-bottom: 1px; background-position: center;}
-.item:hover .thumb {border-color: #4096ee}
+.item:hover .thumb {border-color: #4096EE}
 .item .overlay {background-color: rgba(0, 0, 0, 0.5); opacity: 0;}
 .item:hover .overlay {opacity: 1;}
 .item .overlay span {width: 128px; height: 100px; box-sizing: border-box; padding: 4px; font-size: 11px; overflow-wrap: break-word; overflow: hidden; display: block;}
 .item .name {font-size: 11px; font-weight: bolder; text-align: center; white-space: nowrap; letter-spacing: -0.1px; text-overflow: ellipsis; overflow: hidden;}
-.item:hover .name {color: #4096ee;}
+.item:hover .name {color: #4096EE;}
 .saveform {padding: 16px 8px;}
 .saveform label {display: block;}
 
