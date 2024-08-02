@@ -1,11 +1,11 @@
-body {margin: 0px; font-family: Helvetica; background-color: #A1DAff; color: #333; height: 100%; display: -webkit-box; -webkit-box-orient: vertical;}
+body {height: 100%; margin: 0px; font-family: Helvetica; background-color: #A1DAff; color: #333; display: -webkit-box; -webkit-box-orient: vertical;}
 a {color: #333; text-decoration: none;}
 a:hover {color: #fff;}
 h1 {margin-left: 10px;}
 
 .header {width: 100%; background-color: #4096ee; display: -webkit-box; overflow: hidden;}
 .navbar {margin: 0;}
-.navbar a {float: left; width: 64px; height: 50px; overflow: hidden; font-size: 11px; text-align: center; margin-top: 10px; margin-left: 4px; font-weight: bolder; text-decoration: none; background-size: contain; background-size: 32px 32px; background-repeat: no-repeat; background-position: center 0px;}
+.navbar a {width: 64px; height: 50px; float: left; overflow: hidden; font-size: 11px; text-align: center; margin-top: 10px; margin-left: 4px; font-weight: bolder; text-decoration: none; background-size: contain; background-size: 32px 32px; background-repeat: no-repeat; background-position: center 0px;}
 .navbar .navbutton {width: 32px; height: 32px; margin-bottom: 2px; display: inline-block;}
 .navbar .disabled {opacity: 0.25; pointer-events: none;}
 
@@ -37,7 +37,7 @@ h1 {margin-left: 10px;}
 
 .content {padding: 16px 8px; overflow-y: auto; -webkit-box-flex: 1; text-align: center;}
 
-.item {margin-left: 2px; margin-right: 2px; display: inline-block; width: 128px; height: 125px;}
+.item {width: 128px; height: 125px; margin-left: 2px; margin-right: 2px; display: inline-block;}
 .item .thumb {width: 128px; height: 100px; border: 2px solid; border-color: #595959; border-radius: 4px; margin-bottom: 1px; background-position: center;}
 .item:hover .thumb {border-color: #4096ee}
 .item .overlay {background-color: rgba(0, 0, 0, 0.5); opacity: 0;}
@@ -48,4 +48,4 @@ h1 {margin-left: 10px;}
 .saveform {padding: 16px 8px;}
 .saveform label {display: block;}
 
-.bottomclouds {height: 40px; width: 100%; position: fixed; bottom: 0px; background-image: url('/assets/rustmb/cloudswhite.svg'); opacity: 0.25; pointer-events: none;}
+.bottomclouds {width: 100%; height: 40px; position: fixed; bottom: 0px; background-image: url('/assets/rustmb/cloudswhite.svg'); opacity: 0.25; pointer-events: none;}
