@@ -133,14 +133,14 @@ func FetchPackage(scriptid int, rev int) (utils.Package, error) {
 func FetchPackageList(category string) ([]utils.Package, error) {
 	var list []utils.Package
 
-	rows, err := handle.Query("SELECT p.id, p.rev, p.type, p.name, p.dataname FROM packages p WHERE p.type = ? AND p.rev = (SELECT MAX(p2.rev) FROM packages p2 WHERE p2.id = p.id)", category)
+	rows, err := handle.Query("SELECT p.id, p.rev, p.type, p.name, p.dataname, p.author, p.description FROM packages p WHERE p.type = ? AND p.rev = (SELECT MAX(p2.rev) FROM packages p2 WHERE p2.id = p.id)", category)
 	if err != nil {
 		return list, err
 	}
 
 	for rows.Next() {
 		var pkg utils.Package
-		err := rows.Scan(&pkg.ID, &pkg.Revision, &pkg.Type, &pkg.Name, &pkg.Dataname)
+		err := rows.Scan(&pkg.ID, &pkg.Revision, &pkg.Type, &pkg.Name, &pkg.Dataname, &pkg.Author, &pkg.Description)
 		if err != nil {
 			return list, err
 		}
