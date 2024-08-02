@@ -92,7 +92,7 @@ func InsertPackage(packageType string, name string, dataname string, author int6
 
 func FetchPackage(scriptid int, rev int) (utils.Package, error) {
 	var pkg utils.Package
-	err := handle.QueryRow("SELECT id, rev, type, name, dataname, data FROM packages WHERE id = ? AND rev = ?", scriptid, rev).Scan(&pkg.ID, &pkg.Revision, &pkg.Type, &pkg.Name, &pkg.Dataname, &pkg.Data)
+	err := handle.QueryRow("SELECT id, rev, type, name, dataname, author, description, data FROM packages WHERE id = ? AND rev = ?", scriptid, rev).Scan(&pkg.ID, &pkg.Revision, &pkg.Type, &pkg.Name, &pkg.Dataname, &pkg.Author, &pkg.Description, &pkg.Data)
 	if err != nil {
 		return pkg, err
 	}
@@ -154,14 +154,14 @@ func FetchPackageList(category string) ([]utils.Package, error) {
 func FetchPackageListPaged(category string, query string, offset int, count int) ([]utils.Package, error) {
 	var list []utils.Package
 
-	rows, err := handle.Query("SELECT p.id, p.rev, p.type, p.name, p.dataname FROM packages p WHERE p.type = ? AND p.rev = (SELECT MAX(p2.rev) FROM packages p2 WHERE p2.id = p.id) AND p.name LIKE CONCAT('%', ?, '%') LIMIT ?, ?", category, query, offset, count)
+	rows, err := handle.Query("SELECT p.id, p.rev, p.type, p.name, p.dataname, p.author, p.description FROM packages p WHERE p.type = ? AND p.rev = (SELECT MAX(p2.rev) FROM packages p2 WHERE p2.id = p.id) AND p.name LIKE CONCAT('%', ?, '%') LIMIT ?, ?", category, query, offset, count)
 	if err != nil {
 		return list, err
 	}
 
 	for rows.Next() {
 		var pkg utils.Package
-		err := rows.Scan(&pkg.ID, &pkg.Revision, &pkg.Type, &pkg.Name, &pkg.Dataname)
+		err := rows.Scan(&pkg.ID, &pkg.Revision, &pkg.Type, &pkg.Name, &pkg.Dataname, &pkg.Author, &pkg.Description)
 		if err != nil {
 			return list, err
 		}
@@ -175,14 +175,14 @@ func FetchPackageListPaged(category string, query string, offset int, count int)
 func FetchAuthorPackageListPaged(author int64, query string, offset int, count int) ([]utils.Package, error) {
 	var list []utils.Package
 
-	rows, err := handle.Query("SELECT p.id, p.rev, p.type, p.name, p.dataname FROM packages p WHERE p.rev = (SELECT MAX(p2.rev) FROM packages p2 WHERE p2.id = p.id) AND p.author = ? AND p.name LIKE CONCAT('%', ?, '%') LIMIT ?, ?", author, query, offset, count)
+	rows, err := handle.Query("SELECT p.id, p.rev, p.type, p.name, p.dataname, p.author, p.description FROM packages p WHERE p.rev = (SELECT MAX(p2.rev) FROM packages p2 WHERE p2.id = p.id) AND p.author = ? AND p.name LIKE CONCAT('%', ?, '%') LIMIT ?, ?", author, query, offset, count)
 	if err != nil {
 		return list, err
 	}
 
 	for rows.Next() {
 		var pkg utils.Package
-		err := rows.Scan(&pkg.ID, &pkg.Revision, &pkg.Type, &pkg.Name, &pkg.Dataname)
+		err := rows.Scan(&pkg.ID, &pkg.Revision, &pkg.Type, &pkg.Name, &pkg.Dataname, &pkg.Author, &pkg.Description)
 		if err != nil {
 			return list, err
 		}

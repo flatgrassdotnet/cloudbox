@@ -23,14 +23,16 @@ import (
 )
 
 type Package struct {
-	ID       int       `json:"id"`
-	Revision int       `json:"rev"`
-	Type     string    `json:"type"`
-	Name     string    `json:"name"`
-	Dataname string    `json:"dataname,omitempty"`
-	Data     []byte    `json:"data,omitempty"`
-	Content  []Content `json:"content,omitempty"`
-	Includes []Include `json:"includes,omitempty"`
+	ID          int       `json:"id"`
+	Revision    int       `json:"rev"`
+	Type        string    `json:"type"`
+	Name        string    `json:"name"`
+	Dataname    string    `json:"dataname,omitempty"`
+	Author      int       `json:"author,omitempty"`
+	Description string    `json:"description,omitempty"`
+	Data        []byte    `json:"data,omitempty"`
+	Content     []Content `json:"content,omitempty"`
+	Includes    []Include `json:"includes,omitempty"`
 }
 
 type Content struct {
