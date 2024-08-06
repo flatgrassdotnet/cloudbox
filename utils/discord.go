@@ -30,7 +30,7 @@ var (
 )
 
 type DiscordWebhookRequest struct {
-	Embeds []DiscordWebhookEmbed `json:"embeds"`
+	Embeds          []DiscordWebhookEmbed `json:"embeds"`
 	AllowedMentions struct {
 		Parse []string `json:"parse"`
 	} `json:"allowed_mentions"`
