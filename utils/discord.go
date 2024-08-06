@@ -27,29 +27,32 @@ import (
 var DiscordWebhookURL string
 
 type DiscordWebhookRequest struct {
-	Username        string `json:"username"`
-	AvatarURL       string `json:"avatar_url"`
-	Content         string `json:"content"`
-	AllowedMentions struct {
-		Parse []string `json:"parse"`
-	} `json:"allowed_mentions"`
+	Embeds []DiscordWebhookEmbed `json:"embeds"`
 }
 
-func SendDiscordMessage(url string, steamid int64, content string) error {
+type DiscordWebhookEmbed struct {
+	Title       string                    `json:"title"`
+	Description string                    `json:"description"`
+	Color       int                       `json:"color"`
+	Author      DiscordWebhookEmbedAuthor `json:"author"`
+	Image       DiscordWebhookEmbedImage  `json:"image"`
+}
+
+type DiscordWebhookEmbedAuthor struct {
+	Name    string `json:"name"`
+	IconURL string `json:"icon_url"`
+}
+
+type DiscordWebhookEmbedImage struct {
+	URL string `json:"url"`
+}
+
+func SendDiscordMessage(url string, data DiscordWebhookRequest) error {
 	if url == "" {
 		return nil
 	}
 
-	u, err := GetPlayerSummary(steamid)
-	if err != nil {
-		return err
-	}
-
-	body, err := json.Marshal(DiscordWebhookRequest{
-		Username:  u.PersonaName,
-		AvatarURL: u.Avatar,
-		Content:   content,
-	})
+	body, err := json.Marshal(data)
 	if err != nil {
 		return err
 	}

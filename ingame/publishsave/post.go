@@ -134,7 +134,27 @@ func Post(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	err = utils.SendDiscordMessage(utils.DiscordWebhookURL, steamid, fmt.Sprintf("\"%s\"\n%s\n\n%s", name, desc, fmt.Sprintf("https://img.reboxed.fun/%d_thumb_128.png", pkgID)))
+	u, err := utils.GetPlayerSummary(steamid)
+	if err != nil {
+		utils.WriteError(w, r, fmt.Sprintf("failed to get player summary: %s", err))
+		return
+	}
+
+	err = utils.SendDiscordMessage(utils.DiscordWebhookURL, utils.DiscordWebhookRequest{
+		Embeds: []utils.DiscordWebhookEmbed{{
+			Title: name,
+			Description: desc,
+			Color: 10607359, // #A1DAFF
+			Author: utils.DiscordWebhookEmbedAuthor{
+				Name:    u.PersonaName,
+				IconURL: u.Avatar,
+			},
+			Image: utils.DiscordWebhookEmbedImage{
+				URL: fmt.Sprintf("https://img.reboxed.fun/%d_thumb_128.png", pkgID),
+			},
+		},
+		},
+	})
 	if err != nil {
 		utils.WriteError(w, r, fmt.Sprintf("failed to send discord webhook message: %s", err))
 		return
