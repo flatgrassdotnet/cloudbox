@@ -32,7 +32,7 @@ func WriteError(w http.ResponseWriter, r *http.Request, message string) {
 	// webhook related
 	var s PlayerSummaryInfo
 	steamid, err := strconv.Atoi(UnBinHexString(r.FormValue("u")))
-	if err != nil {
+	if err == nil {
 		s, _ = GetPlayerSummary(int64(steamid))
 	}
 
