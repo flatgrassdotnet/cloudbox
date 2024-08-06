@@ -81,7 +81,7 @@ type GetPlayerSummariesResponse struct {
 }
 
 type PlayerSummaryInfo struct {
-	SteamID                  int    `json:"steamid"`
+	SteamID                  string `json:"steamid"`
 	CommunityVisibilityState int    `json:"communityvisibilitystate"`
 	ProfileState             int    `json:"profilestate"`
 	PersonaName              string `json:"personaname"`
