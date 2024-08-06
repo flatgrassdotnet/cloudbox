@@ -4,13 +4,16 @@
 		<link rel="stylesheet" href="/assets/reboxed.css">
 	</head>
 	<body>
+		<div class="header" style="height: 50px;"></div>
+		<div class="underheader"></div>
 		<div class="saveform">
 			<h1>Publish Saved Game</h1>
 			<form action="/API/publishsave_002/?id={{.ID}}&sid={{.SID}}" method="post">
-				<label>Name: <input type="text" id="name" name="name" size="40"></label>
-				<label>Description: <input type="text" id="desc" name="desc" size="40"></label>
+				<label>Name: <input name="name" size="40"></label>
+				<label>Description: <input name="desc" size="40"></label>
 				<input type="submit" value="Submit">
 			</form>
 		</div>
 	</body>
+	<div class="bottomclouds"></div>
 </html>
