@@ -145,7 +145,7 @@ func Post(w http.ResponseWriter, r *http.Request) {
 		Embeds: []utils.DiscordWebhookEmbed{{
 			Title:       name,
 			Description: desc,
-			Color:       10607359, // #A1DAFF
+			Color:       12116991, // #B8E3FF
 			Author: utils.DiscordWebhookEmbedAuthor{
 				Name:    s.PersonaName,
 				IconURL: s.Avatar,
