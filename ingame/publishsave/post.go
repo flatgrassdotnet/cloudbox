@@ -113,4 +113,10 @@ func Post(w http.ResponseWriter, r *http.Request) {
 		utils.WriteError(w, r, fmt.Sprintf("failed to execute template: %s", err))
 		return
 	}
+
+	err = utils.SendDiscordMessage(utils.DiscordWebhookURL, steamid, fmt.Sprintf("Uploaded a new save! \"%s\" %s", name, fmt.Sprintf("https://img.reboxed.fun/%d_thumb_128.png", pkgID)))
+	if err != nil {
+		utils.WriteError(w, r, fmt.Sprintf("failed to send discord webhook message: %s", err))
+		return
+	}
 }

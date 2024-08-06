@@ -37,6 +37,7 @@ func main() {
 	dbaddr := flag.String("dbaddr", "localhost", "database server address")
 	dbname := flag.String("dbname", "reboxed", "database name")
 	apikey := flag.String("apikey", "", "steam web api key")
+	webhookurl := flag.String("webhookurl", "", "discord webhook url")
 	flag.Parse()
 
 	err := db.Init(*dbuser, *dbpass, *dbaddr, *dbname)
@@ -44,7 +45,8 @@ func main() {
 		log.Fatalf("failed to init database: %s", err)
 	}
 
-	utils.WebAPIKey = *apikey
+	utils.SteamAPIKey = *apikey
+	utils.DiscordWebhookURL = *webhookurl
 
 	// static assets - using nginx now
 	//http.Handle("GET /assets/", http.StripPrefix("/assets/", http.FileServer(http.Dir("data/assets"))))

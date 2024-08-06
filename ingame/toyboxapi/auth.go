@@ -57,7 +57,7 @@ func Auth(w http.ResponseWriter, r *http.Request) {
 	// "u" value (steamid64) is ignored - we get it from steam
 	// "vac" value is ignored - we get it from steam
 
-	user, err := utils.GetSteamUserInfo(utils.UnBinHexString(r.FormValue("token")))
+	user, err := utils.AuthenticateUserTicket(utils.UnBinHexString(r.FormValue("token")))
 	if err != nil {
 		// net/http errors shouldn't cause the game to exit
 		if !strings.Contains(err.Error(), "net/http:") {
