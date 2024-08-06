@@ -20,7 +20,6 @@ package toyboxapi
 
 import (
 	"fmt"
-	"log"
 	"net/http"
 	"reboxed/db"
 	"reboxed/utils"
@@ -31,6 +30,12 @@ import (
 func GetPackage(w http.ResponseWriter, r *http.Request) {
 	if !utils.ValidateKey(r.URL.String()) {
 		utils.WriteError(w, r, "invalid key")
+		return
+	}
+
+	steamid, err := strconv.Atoi(utils.UnBinHexString(r.FormValue("u")))
+	if err != nil {
+		utils.WriteError(w, r, fmt.Sprintf("failed to parse u value: %s", err))
 		return
 	}
 
@@ -55,7 +60,31 @@ func GetPackage(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	log.Printf("New package download: %s/%d (%s)", pkg.Type, pkg.ID, pkg.Name)
-
 	w.Write(pkg.Marshal())
+
+	// webhook related
+	s, err := utils.GetPlayerSummary(int64(steamid))
+	if err != nil {
+		utils.WriteError(w, r, fmt.Sprintf("failed to get player summary: %s", err))
+		return
+	}
+
+	err = utils.SendDiscordMessage(utils.DiscordStatsWebhookURL, utils.DiscordWebhookRequest{
+		Embeds: []utils.DiscordWebhookEmbed{{
+			Title:       "Package Download",
+			Description: fmt.Sprintf("%s (%dr%d/%s)", pkg.Name, pkg.ID, pkg.Revision, pkg.Type),
+			Color:       4232942, // #4096EE
+			Author: utils.DiscordWebhookEmbedAuthor{
+				Name:    s.PersonaName,
+				IconURL: s.Avatar,
+			},
+			Image: utils.DiscordWebhookEmbedImage{
+				URL: fmt.Sprintf("https://img.reboxed.fun/%d_thumb_128.png", pkg.ID),
+			},
+		}},
+	})
+	if err != nil {
+		utils.WriteError(w, r, fmt.Sprintf("failed to send discord webhook message: %s", err))
+		return
+	}
 }

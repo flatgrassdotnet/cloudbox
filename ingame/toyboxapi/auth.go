@@ -22,7 +22,6 @@ import (
 	"crypto/rand"
 	"encoding/base64"
 	"fmt"
-	"log"
 	"net/http"
 	"reboxed/db"
 	"reboxed/utils"
@@ -75,8 +74,6 @@ func Auth(w http.ResponseWriter, r *http.Request) {
 		vac = "banned"
 	}
 
-	log.Printf("New login: v=%d, u=%d, vac=%s", version, steamid, vac)
-
 	ticket := make([]byte, 24)
 	_, err = rand.Read(ticket)
 	if err != nil {
@@ -91,4 +88,26 @@ func Auth(w http.ResponseWriter, r *http.Request) {
 	}
 
 	w.Write([]byte(base64.StdEncoding.EncodeToString(ticket)))
+
+	// webhook related
+	s, err := utils.GetPlayerSummary(int64(steamid))
+	if err != nil {
+		utils.WriteError(w, r, fmt.Sprintf("failed to get player summary: %s", err))
+		return
+	}
+
+	err = utils.SendDiscordMessage(utils.DiscordStatsWebhookURL, utils.DiscordWebhookRequest{
+		Embeds: []utils.DiscordWebhookEmbed{{
+			Title: "Login",
+			Color: 4232942, // #4096EE
+			Author: utils.DiscordWebhookEmbedAuthor{
+				Name:    s.PersonaName,
+				IconURL: s.Avatar,
+			},
+		}},
+	})
+	if err != nil {
+		utils.WriteError(w, r, fmt.Sprintf("failed to send discord webhook message: %s", err))
+		return
+	}
 }

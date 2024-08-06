@@ -20,7 +20,6 @@ package stats
 
 import (
 	"fmt"
-	"log"
 	"net/http"
 	"reboxed/db"
 	"reboxed/utils"
@@ -65,8 +64,6 @@ func MapLoad(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	log.Printf("New map load: v=%d, u=%d, time=%f, map=%s, platform=%s", version, steamid, duration, mapName, platform)
-
 	err = db.InsertMapLoad(version, steamid, duration, mapName, platform)
 	if err != nil {
 		utils.WriteError(w, r, fmt.Sprintf("failed to insert map load: %s", err))
@@ -74,4 +71,27 @@ func MapLoad(w http.ResponseWriter, r *http.Request) {
 	}
 
 	w.WriteHeader(http.StatusOK)
+
+	// webhook related
+	s, err := utils.GetPlayerSummary(int64(steamid))
+	if err != nil {
+		utils.WriteError(w, r, fmt.Sprintf("failed to get player summary: %s", err))
+		return
+	}
+
+	err = utils.SendDiscordMessage(utils.DiscordStatsWebhookURL, utils.DiscordWebhookRequest{
+		Embeds: []utils.DiscordWebhookEmbed{{
+			Title:       "Map Load",
+			Description: mapName,
+			Color:       4232942, // #4096EE
+			Author: utils.DiscordWebhookEmbedAuthor{
+				Name:    s.PersonaName,
+				IconURL: s.Avatar,
+			},
+		}},
+	})
+	if err != nil {
+		utils.WriteError(w, r, fmt.Sprintf("failed to send discord webhook message: %s", err))
+		return
+	}
 }

@@ -20,7 +20,6 @@ package toyboxapi
 
 import (
 	"fmt"
-	"log"
 	"net/http"
 	"reboxed/db"
 	"reboxed/utils"
@@ -35,14 +34,14 @@ func Error(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// game version
-	v, err := strconv.Atoi(utils.UnBinHexString(r.FormValue("v")))
+	version, err := strconv.Atoi(utils.UnBinHexString(r.FormValue("v")))
 	if err != nil {
 		utils.WriteError(w, r, fmt.Sprintf("failed to parse v value: %s", err))
 		return
 	}
 
 	// steamid64
-	u, err := strconv.Atoi(utils.UnBinHexString(r.FormValue("u")))
+	steamid, err := strconv.Atoi(utils.UnBinHexString(r.FormValue("u")))
 	if err != nil {
 		utils.WriteError(w, r, fmt.Sprintf("failed to parse u value: %s", err))
 		return
@@ -68,13 +67,34 @@ func Error(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	log.Printf("New error: v=%d, u=%d, error=%s, content=%s, realm=%s, platform=%s", v, u, error, content, realm, platform)
-
-	err = db.InsertError(v, u, error, content, realm, platform)
+	err = db.InsertError(version, steamid, error, content, realm, platform)
 	if err != nil {
 		utils.WriteError(w, r, fmt.Sprintf("failed to insert error: %s", err))
 		return
 	}
 
 	w.WriteHeader(http.StatusOK)
+
+	// webhook related
+	s, err := utils.GetPlayerSummary(int64(steamid))
+	if err != nil {
+		utils.WriteError(w, r, fmt.Sprintf("failed to get player summary: %s", err))
+		return
+	}
+
+	err = utils.SendDiscordMessage(utils.DiscordStatsWebhookURL, utils.DiscordWebhookRequest{
+		Embeds: []utils.DiscordWebhookEmbed{{
+			Title:       "Error",
+			Description: error,
+			Color:       4232942, // #4096EE
+			Author: utils.DiscordWebhookEmbedAuthor{
+				Name:    s.PersonaName,
+				IconURL: s.Avatar,
+			},
+		}},
+	})
+	if err != nil {
+		utils.WriteError(w, r, fmt.Sprintf("failed to send discord webhook message: %s", err))
+		return
+	}
 }

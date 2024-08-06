@@ -24,7 +24,10 @@ import (
 	"net/http"
 )
 
-var DiscordWebhookURL string
+var (
+	DiscordSaveWebhookURL  string
+	DiscordStatsWebhookURL string
+)
 
 type DiscordWebhookRequest struct {
 	Embeds []DiscordWebhookEmbed `json:"embeds"`
