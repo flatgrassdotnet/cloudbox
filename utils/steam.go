@@ -92,7 +92,7 @@ type PlayerSummaryInfo struct {
 	AvatarFull               string `json:"avatarfull"`
 }
 
-func GetPlayerSummary(steamid int64) (PlayerSummaryInfo, error) {
+func GetPlayerSummary(steamid uint64) (PlayerSummaryInfo, error) {
 	v := make(url.Values)
 
 	v.Set("key", SteamAPIKey)

@@ -90,7 +90,7 @@ func Auth(w http.ResponseWriter, r *http.Request) {
 	w.Write([]byte(base64.StdEncoding.EncodeToString(ticket)))
 
 	// webhook related
-	s, err := utils.GetPlayerSummary(int64(steamid))
+	s, err := utils.GetPlayerSummary(uint64(steamid))
 	if err != nil {
 		utils.WriteError(w, r, fmt.Sprintf("failed to get player summary: %s", err))
 		return

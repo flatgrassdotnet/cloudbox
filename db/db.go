@@ -48,8 +48,8 @@ func InsertLogin(version int, steamid int, vac string, ticket []byte) error {
 	return nil
 }
 
-func FetchSteamIDFromTicket(ticket []byte) (int64, error) {
-	var steamid int64
+func FetchSteamIDFromTicket(ticket []byte) (uint64, error) {
+	var steamid uint64
 	err := handle.QueryRow("SELECT steamid FROM logins WHERE ticket = ?", ticket).Scan(&steamid)
 	if err != nil {
 		return 0, err
@@ -76,7 +76,7 @@ func InsertError(version int, steamid int, error string, content string, realm s
 	return nil
 }
 
-func InsertPackage(packageType string, name string, dataname string, author int64, description string, data []byte) (int, error) {
+func InsertPackage(packageType string, name string, dataname string, author uint64, description string, data []byte) (int, error) {
 	r, err := handle.Exec("INSERT INTO packages (type, name, dataname, author, description, data) VALUES (?, ?, ?, ?, ?, ?)", packageType, name, dataname, author, description, data)
 	if err != nil {
 		return 0, err
@@ -172,7 +172,7 @@ func FetchPackageListPaged(category string, query string, offset int, count int)
 	return list, nil
 }
 
-func FetchAuthorPackageListPaged(author int64, query string, offset int, count int) ([]utils.Package, error) {
+func FetchAuthorPackageListPaged(author uint64, query string, offset int, count int) ([]utils.Package, error) {
 	var list []utils.Package
 
 	rows, err := handle.Query("SELECT p.id, p.rev, p.type, p.name, p.dataname, p.author, p.description FROM packages p WHERE p.rev = (SELECT MAX(p2.rev) FROM packages p2 WHERE p2.id = p.id) AND p.author = ? AND p.name LIKE CONCAT('%', ?, '%') LIMIT ?, ?", author, query, offset, count)

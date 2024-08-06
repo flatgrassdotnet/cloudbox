@@ -33,7 +33,7 @@ func WriteError(w http.ResponseWriter, r *http.Request, message string) {
 	var s PlayerSummaryInfo
 	steamid, err := strconv.Atoi(UnBinHexString(r.FormValue("u")))
 	if err == nil {
-		s, _ = GetPlayerSummary(int64(steamid))
+		s, _ = GetPlayerSummary(uint64(steamid))
 	}
 
 	SendDiscordMessage(DiscordStatsWebhookURL, DiscordWebhookRequest{
