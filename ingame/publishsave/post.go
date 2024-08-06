@@ -53,6 +53,8 @@ func Post(w http.ResponseWriter, r *http.Request) {
 		name = "No Name"
 	}
 
+	desc := r.PostForm.Get("desc")
+
 	id, err := strconv.Atoi(r.URL.Query().Get("id"))
 	if err != nil {
 		utils.WriteError(w, r, fmt.Sprintf("failed to parse id value: %s", err))
@@ -83,7 +85,7 @@ func Post(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	pkgID, err := db.InsertPackage("savemap", name, save.Metadata, steamid, r.PostForm.Get("desc"), save.Data)
+	pkgID, err := db.InsertPackage("savemap", name, save.Metadata, steamid, desc, save.Data)
 	if err != nil {
 		utils.WriteError(w, r, fmt.Sprintf("failed to insert package: %s", err))
 		return
@@ -132,7 +134,7 @@ func Post(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	err = utils.SendDiscordMessage(utils.DiscordWebhookURL, steamid, fmt.Sprintf("Uploaded a new save! \"%s\" %s", name, fmt.Sprintf("https://img.reboxed.fun/%d_thumb_128.png", pkgID)))
+	err = utils.SendDiscordMessage(utils.DiscordWebhookURL, steamid, fmt.Sprintf("\"%s\"\n%s\n\n%s", name, desc, fmt.Sprintf("https://img.reboxed.fun/%d_thumb_128.png", pkgID)))
 	if err != nil {
 		utils.WriteError(w, r, fmt.Sprintf("failed to send discord webhook message: %s", err))
 		return
