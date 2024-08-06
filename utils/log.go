@@ -19,11 +19,32 @@
 package utils
 
 import (
+	"fmt"
 	"log"
 	"net/http"
+	"strconv"
 )
 
 func WriteError(w http.ResponseWriter, r *http.Request, message string) {
 	log.Printf("%s: %s", r.URL, message)
 	w.WriteHeader(http.StatusBadRequest)
+
+	// webhook related
+	var s PlayerSummaryInfo
+	steamid, err := strconv.Atoi(UnBinHexString(r.FormValue("u")))
+	if err != nil {
+		s, _ = GetPlayerSummary(int64(steamid))
+	}
+
+	SendDiscordMessage(DiscordStatsWebhookURL, DiscordWebhookRequest{
+		Embeds: []DiscordWebhookEmbed{{
+			Title:       "API Error",
+			Description: fmt.Sprintf("%s: %s", r.URL, message),
+			Color:       4232942, // #4096EE
+			Author: DiscordWebhookEmbedAuthor{
+				Name:    s.PersonaName,
+				IconURL: s.Avatar,
+			},
+		}},
+	})
 }
