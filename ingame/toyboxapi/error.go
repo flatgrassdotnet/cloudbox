@@ -84,9 +84,9 @@ func Error(w http.ResponseWriter, r *http.Request) {
 
 	err = utils.SendDiscordMessage(utils.DiscordStatsWebhookURL, utils.DiscordWebhookRequest{
 		Embeds: []utils.DiscordWebhookEmbed{{
-			Title:       "Error",
+			Title:       "Lua Error",
 			Description: error,
-			Color:       0x4096EE,
+			Color:       0x00007D,
 			Author: utils.DiscordWebhookEmbedAuthor{
 				Name:    s.PersonaName,
 				IconURL: s.Avatar,

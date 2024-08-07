@@ -40,7 +40,7 @@ func WriteError(w http.ResponseWriter, r *http.Request, message string) {
 		Embeds: []DiscordWebhookEmbed{{
 			Title:       "API Error",
 			Description: fmt.Sprintf("%s: %s", r.URL, message),
-			Color:       0x4096EE,
+			Color:       0x7D0000,
 			Author: DiscordWebhookEmbedAuthor{
 				Name:    s.PersonaName,
 				IconURL: s.Avatar,
