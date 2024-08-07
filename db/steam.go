@@ -34,7 +34,7 @@ func InsertPlayerSummary(s common.PlayerSummaryInfo) error {
 
 func FetchPlayerSummary(steamid uint64) (common.PlayerSummaryInfo, error) {
 	var s common.PlayerSummaryInfo
-	err := handle.QueryRow("SELECT communityvisibilitystate, profilestate, personaname, lastlogoff, profileurl, avatar, avatarmedium, avatarfull FROM profiles WHERE date > DATE_SUB(UTC_TIMESTAMP(), INTERVAL 1 WEEK) AND steamid = ?", steamid).Scan(&s.CommunityVisibilityState, &s.ProfileState, &s.PersonaName, &s.LastLogoff, &s.ProfileURL, &s.Avatar, &s.AvatarMedium, &s.AvatarFull)
+	err := handle.QueryRow("SELECT communityvisibilitystate, profilestate, personaname, lastlogoff, profileurl, avatar, avatarmedium, avatarfull FROM profiles WHERE time > DATE_SUB(UTC_TIMESTAMP(), INTERVAL 1 WEEK) AND steamid = ?", steamid).Scan(&s.CommunityVisibilityState, &s.ProfileState, &s.PersonaName, &s.LastLogoff, &s.ProfileURL, &s.Avatar, &s.AvatarMedium, &s.AvatarFull)
 	if err != nil {
 		return s, err
 	}
