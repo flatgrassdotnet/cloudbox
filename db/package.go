@@ -34,6 +34,25 @@ func InsertPackage(packageType string, name string, dataname string, author uint
 	return int(i), nil
 }
 
+func InsertPackageInclude(id int, rev int, iid int, irev int) error {
+	_, err := handle.Exec("INSERT INTO includes (id, rev, includeid, includerev) VALUES (?, ?, ?, ?)", id, rev, iid, irev)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func FetchPackageLatestRevision(id int) (int, error) {
+	var rev int
+	err := handle.QueryRow("SELECT MAX(rev) FROM packages WHERE id = ?", id).Scan(&rev)
+	if err != nil {
+		return 0, err
+	}
+
+	return rev, nil
+}
+
 func FetchPackage(scriptid int, rev int) (common.Package, error) {
 	var pkg common.Package
 	err := handle.QueryRow("SELECT id, rev, type, name, dataname, author, description, data FROM packages WHERE id = ? AND rev = ?", scriptid, rev).Scan(&pkg.ID, &pkg.Revision, &pkg.Type, &pkg.Name, &pkg.Dataname, &pkg.Author, &pkg.Description, &pkg.Data)
