@@ -20,11 +20,10 @@ package db
 
 import (
 	"reboxed/common"
-	"time"
 )
 
 func InsertPlayerSummary(s common.PlayerSummaryInfo) error {
-	_, err := handle.Exec("REPLACE INTO profiles (steamid, communityvisibilitystate, profilestate, personaname, lastlogoff, profileurl, avatar, avatarmedium, avatarfull) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)", s.SteamID, s.CommunityVisibilityState, s.ProfileState, s.PersonaName, time.Unix(int64(s.LastLogoff), 0), s.ProfileURL, s.Avatar, s.AvatarMedium, s.AvatarFull)
+	_, err := handle.Exec("REPLACE INTO profiles (steamid, communityvisibilitystate, profilestate, personaname, lastlogoff, profileurl, avatar, avatarmedium, avatarfull) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)", s.SteamID, s.CommunityVisibilityState, s.ProfileState, s.PersonaName, s.LastLogoff, s.ProfileURL, s.Avatar, s.AvatarMedium, s.AvatarFull)
 	if err != nil {
 		return err
 	}
@@ -33,17 +32,11 @@ func InsertPlayerSummary(s common.PlayerSummaryInfo) error {
 }
 
 func FetchPlayerSummary(steamid uint64) (common.PlayerSummaryInfo, error) {
-	// workaround
-	var lastlogoff time.Time
-
 	var s common.PlayerSummaryInfo
-	err := handle.QueryRow("SELECT communityvisibilitystate, profilestate, personaname, lastlogoff, profileurl, avatar, avatarmedium, avatarfull FROM profiles WHERE time > DATE_SUB(UTC_TIMESTAMP(), INTERVAL 1 WEEK) AND steamid = ?", steamid).Scan(&s.CommunityVisibilityState, &s.ProfileState, &s.PersonaName, &lastlogoff, &s.ProfileURL, &s.Avatar, &s.AvatarMedium, &s.AvatarFull)
+	err := handle.QueryRow("SELECT communityvisibilitystate, profilestate, personaname, lastlogoff, profileurl, avatar, avatarmedium, avatarfull FROM profiles WHERE time > DATE_SUB(UTC_TIMESTAMP(), INTERVAL 1 WEEK) AND steamid = ?", steamid).Scan(&s.CommunityVisibilityState, &s.ProfileState, &s.PersonaName, &s.LastLogoff, &s.ProfileURL, &s.Avatar, &s.AvatarMedium, &s.AvatarFull)
 	if err != nil {
 		return s, err
 	}
-
-	// workaround
-	s.LastLogoff = int(lastlogoff.Unix())
 
 	return s, nil
 }
