@@ -27,7 +27,7 @@ h1 {margin-left: 10px;}
 #next {background-image: url('/assets/rustmb/rightarrow.png')}
 #next:hover {background-image: url('/assets/rustmb/rightarrow_hover.png')}
 
-.search {padding: 16px;}
+.search {padding: 16px; padding-bottom: 0px;}
 .search #searchbox {width: 100%; padding: 5px; border: 2px solid; border-color: #595959; border-radius: 4px;}
 
 .underheader {height: 40px; background-image: url('/assets/rustmb/clouds.svg'); background-color: #4096EE;}
