@@ -99,7 +99,7 @@ func Auth(w http.ResponseWriter, r *http.Request) {
 	err = utils.SendDiscordMessage(utils.DiscordStatsWebhookURL, utils.DiscordWebhookRequest{
 		Embeds: []utils.DiscordWebhookEmbed{{
 			Title: "Login",
-			Color: 4232942, // #4096EE
+			Color: 0x4096EE,
 			Author: utils.DiscordWebhookEmbedAuthor{
 				Name:    s.PersonaName,
 				IconURL: s.Avatar,

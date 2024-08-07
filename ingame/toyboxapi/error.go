@@ -86,7 +86,7 @@ func Error(w http.ResponseWriter, r *http.Request) {
 		Embeds: []utils.DiscordWebhookEmbed{{
 			Title:       "Error",
 			Description: error,
-			Color:       4232942, // #4096EE
+			Color:       0x4096EE,
 			Author: utils.DiscordWebhookEmbedAuthor{
 				Name:    s.PersonaName,
 				IconURL: s.Avatar,
