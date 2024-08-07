@@ -23,7 +23,7 @@ import (
 )
 
 func InsertPlayerSummary(s common.PlayerSummaryInfo) error {
-	_, err := handle.Exec("REPLACE INTO profiles (steamid, communityvisibilitystate, profilestate, personaname, lastlogoff, profileurl, avatar, avatarmedium, avatarfull) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)", s.SteamID, s.CommunityVisibilityState, s.ProfileState, s.PersonaName, s.LastLogoff, s.ProfileURL, s.Avatar, s.AvatarMedium, s.AvatarFull)
+	_, err := handle.Exec("REPLACE INTO profiles (steamid, personaname, avatar, avatarmedium, avatarfull) VALUES (?, ?, ?, ?, ?)", s.SteamID, s.PersonaName, s.Avatar, s.AvatarMedium, s.AvatarFull)
 	if err != nil {
 		return err
 	}
@@ -33,7 +33,7 @@ func InsertPlayerSummary(s common.PlayerSummaryInfo) error {
 
 func FetchPlayerSummary(steamid uint64) (common.PlayerSummaryInfo, error) {
 	var s common.PlayerSummaryInfo
-	err := handle.QueryRow("SELECT communityvisibilitystate, profilestate, personaname, lastlogoff, profileurl, avatar, avatarmedium, avatarfull FROM profiles WHERE time > DATE_SUB(UTC_TIMESTAMP(), INTERVAL 1 WEEK) AND steamid = ?", steamid).Scan(&s.CommunityVisibilityState, &s.ProfileState, &s.PersonaName, &s.LastLogoff, &s.ProfileURL, &s.Avatar, &s.AvatarMedium, &s.AvatarFull)
+	err := handle.QueryRow("SELECT personaname, avatar, avatarmedium, avatarfull FROM profiles WHERE time > DATE_SUB(UTC_TIMESTAMP(), INTERVAL 1 WEEK) AND steamid = ?", steamid).Scan(&s.PersonaName, &s.Avatar, &s.AvatarMedium, &s.AvatarFull)
 	if err != nil {
 		return s, err
 	}
