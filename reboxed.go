@@ -22,6 +22,7 @@ import (
 	"flag"
 	"log"
 	"net/http"
+	"reboxed/api/content"
 	"reboxed/api/packages"
 	"reboxed/db"
 	"reboxed/ingame/browser"
@@ -61,6 +62,7 @@ func main() {
 	// reboxed api
 	http.HandleFunc("GET api.reboxed.fun/packages/list", packages.List)
 	http.HandleFunc("GET api.reboxed.fun/packages/get", packages.Get)
+	http.HandleFunc("GET api.reboxed.fun/content/get", content.Get)
 
 	// stats.garrysmod.com
 	http.HandleFunc("GET stats.garrysmod.com/API/mapload_001/", stats.MapLoad)
