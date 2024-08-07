@@ -36,8 +36,7 @@ func Get(w http.ResponseWriter, r *http.Request) {
 
 	rev, err := strconv.Atoi(r.URL.Query().Get("rev"))
 	if err != nil {
-		utils.WriteError(w, r, fmt.Sprintf("failed to parse rev value: %s", err))
-		return
+		rev = 1
 	}
 
 	pkg, err := db.FetchPackage(id, rev)
