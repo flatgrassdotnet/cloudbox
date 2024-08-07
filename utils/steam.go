@@ -19,10 +19,14 @@
 package utils
 
 import (
+	"database/sql"
 	"encoding/json"
+	"errors"
 	"fmt"
 	"net/http"
 	"net/url"
+	"reboxed/common"
+	"reboxed/db"
 	"strconv"
 )
 
@@ -30,7 +34,7 @@ var SteamAPIKey string
 
 type AuthenticateUserTicketResponse struct {
 	Response struct {
-		Params UserTicketInfo `json:"params"`
+		Params common.UserTicketInfo `json:"params"`
 		Error  struct {
 			ErrorCode int    `json:"errorcode"`
 			ErrorDesc string `json:"errordesc"`
@@ -38,15 +42,7 @@ type AuthenticateUserTicketResponse struct {
 	} `json:"response"`
 }
 
-type UserTicketInfo struct {
-	Result          string `json:"result"`
-	SteamID         string `json:"steamid"`
-	OwnerSteamID    string `json:"ownersteamid"`
-	VACBanned       bool   `json:"vacbanned"`
-	PublisherBanned bool   `json:"publisherbanned"`
-}
-
-func AuthenticateUserTicket(ticket string) (UserTicketInfo, error) {
+func AuthenticateUserTicket(ticket string) (common.UserTicketInfo, error) {
 	v := make(url.Values)
 
 	v.Set("key", SteamAPIKey)
@@ -55,7 +51,7 @@ func AuthenticateUserTicket(ticket string) (UserTicketInfo, error) {
 
 	r, err := http.Get(fmt.Sprintf("https://api.steampowered.com/ISteamUserAuth/AuthenticateUserTicket/v0001/?%s", v.Encode()))
 	if err != nil {
-		return UserTicketInfo{}, err
+		return common.UserTicketInfo{}, err
 	}
 
 	defer r.Body.Close()
@@ -63,12 +59,12 @@ func AuthenticateUserTicket(ticket string) (UserTicketInfo, error) {
 	var rd AuthenticateUserTicketResponse
 	err = json.NewDecoder(r.Body).Decode(&rd)
 	if err != nil {
-		return UserTicketInfo{}, err
+		return common.UserTicketInfo{}, err
 	}
 
 	// no steamid, something is wrong
 	if rd.Response.Params.SteamID == "" {
-		return UserTicketInfo{}, fmt.Errorf(rd.Response.Error.ErrorDesc)
+		return common.UserTicketInfo{}, fmt.Errorf(rd.Response.Error.ErrorDesc)
 	}
 
 	return rd.Response.Params, nil
@@ -76,23 +72,22 @@ func AuthenticateUserTicket(ticket string) (UserTicketInfo, error) {
 
 type GetPlayerSummariesResponse struct {
 	Response struct {
-		Players []PlayerSummaryInfo `json:"players"`
+		Players []common.PlayerSummaryInfo `json:"players"`
 	} `json:"response"`
 }
 
-type PlayerSummaryInfo struct {
-	SteamID                  string `json:"steamid"`
-	CommunityVisibilityState int    `json:"communityvisibilitystate"`
-	ProfileState             int    `json:"profilestate"`
-	PersonaName              string `json:"personaname"`
-	LastLogoff               int    `json:"lastlogoff"`
-	ProfileURL               string `json:"profileurl"`
-	Avatar                   string `json:"avatar"`
-	AvatarMedium             string `json:"avatarmedium"`
-	AvatarFull               string `json:"avatarfull"`
-}
+func GetPlayerSummary(steamid uint64) (common.PlayerSummaryInfo, error) {
+	// fetch from cache
+	s, err := db.FetchPlayerSummary(steamid)
+	if err != nil {
+		if !errors.Is(err, sql.ErrNoRows) {
+			return s, fmt.Errorf("failed to fetch player summary: %s", err)
+		}
+	} else {
+		return s, nil
+	}
 
-func GetPlayerSummary(steamid uint64) (PlayerSummaryInfo, error) {
+	// otherwise get new data
 	v := make(url.Values)
 
 	v.Set("key", SteamAPIKey)
@@ -100,7 +95,7 @@ func GetPlayerSummary(steamid uint64) (PlayerSummaryInfo, error) {
 
 	r, err := http.Get(fmt.Sprintf("https://api.steampowered.com/ISteamUser/GetPlayerSummaries/v2/?%s", v.Encode()))
 	if err != nil {
-		return PlayerSummaryInfo{}, err
+		return s, err
 	}
 
 	defer r.Body.Close()
@@ -108,11 +103,17 @@ func GetPlayerSummary(steamid uint64) (PlayerSummaryInfo, error) {
 	var rd GetPlayerSummariesResponse
 	err = json.NewDecoder(r.Body).Decode(&rd)
 	if err != nil {
-		return PlayerSummaryInfo{}, err
+		return s, err
 	}
 
 	if len(rd.Response.Players) == 0 {
-		return PlayerSummaryInfo{}, fmt.Errorf("no players returned")
+		return s, fmt.Errorf("no players returned")
+	}
+
+	// insert into cache
+	err = db.InsertPlayerSummary(rd.Response.Players[0])
+	if err != nil {
+		return s, fmt.Errorf("failed to insert player summary: %s", err)
 	}
 
 	return rd.Response.Players[0], nil

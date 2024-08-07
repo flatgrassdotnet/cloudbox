@@ -16,35 +16,11 @@
 	along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-package utils
+package common
 
-import (
-	"fmt"
-)
-
-type VDF map[string]any
-
-func (vdf VDF) Marshal() string {
-	var output string
-
-	vdf.encode(&output)
-
-	return output + "\n"
-}
-
-// very crude VDF string encoder specifically targeting toybox's implementation
-// all values become strings, even though VDF supports non-string values
-func (vdf VDF) encode(output *string) {
-	for k, v := range vdf {
-		switch data := v.(type) {
-		case int:
-			*output += fmt.Sprintf("\"%s\"\t\"%d\"\n", k, data)
-		case string:
-			*output += fmt.Sprintf("\"%s\"\t\"%s\"\n", k, data)
-		case VDF:
-			*output += fmt.Sprintf("\"%s\"\n{\n", k)
-			data.encode(output)
-			*output += "}\n"
-		}
-	}
+type Upload struct {
+	Type     string
+	Metadata string
+	Include  string
+	Data     []byte
 }

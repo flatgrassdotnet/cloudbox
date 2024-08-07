@@ -24,6 +24,7 @@ import (
 	"fmt"
 	"html/template"
 	"net/http"
+	"reboxed/common"
 	"reboxed/db"
 	"reboxed/utils"
 	"strconv"
@@ -34,7 +35,7 @@ type Browser struct {
 	MapName  string
 	Search   string
 	Category string
-	Packages []utils.Package
+	Packages []common.Package
 	PrevLink string
 	NextLink string
 }
@@ -68,7 +69,7 @@ func Handle(w http.ResponseWriter, r *http.Request) {
 		page = 1
 	}
 
-	var list []utils.Package
+	var list []common.Package
 	var err error
 	if category != "mine" {
 		list, err = db.FetchPackageListPaged(category, r.URL.Query().Get("search"), (page-1)*itemsPerPage, itemsPerPage)

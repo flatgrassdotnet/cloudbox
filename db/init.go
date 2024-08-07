@@ -16,36 +16,24 @@
 	along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-package utils
+package db
 
 import (
+	"database/sql"
 	"fmt"
-	"log"
-	"net/http"
-	"reboxed/common"
-	"strconv"
+
+	_ "github.com/go-sql-driver/mysql"
 )
 
-func WriteError(w http.ResponseWriter, r *http.Request, message string) {
-	log.Printf("%s: %s", r.URL, message)
-	w.WriteHeader(http.StatusBadRequest)
+var handle *sql.DB
 
-	// webhook related
-	var s common.PlayerSummaryInfo
-	steamid, err := strconv.Atoi(UnBinHexString(r.FormValue("u")))
-	if err == nil {
-		s, _ = GetPlayerSummary(uint64(steamid))
+func Init(username string, password string, address string, database string) error {
+	db, err := sql.Open("mysql", fmt.Sprintf("%s:%s@tcp(%s)/%s?parseTime=true", username, password, address, database))
+	if err != nil {
+		return err
 	}
 
-	SendDiscordMessage(DiscordStatsWebhookURL, DiscordWebhookRequest{
-		Embeds: []DiscordWebhookEmbed{{
-			Title:       "API Error",
-			Description: fmt.Sprintf("%s: %s", r.URL, message),
-			Color:       0x7D0000,
-			Author: DiscordWebhookEmbedAuthor{
-				Name:    s.PersonaName,
-				IconURL: s.Avatar,
-			},
-		}},
-	})
+	handle = db
+
+	return nil
 }

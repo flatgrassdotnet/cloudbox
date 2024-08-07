@@ -16,36 +16,23 @@
 	along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-package utils
+package db
 
-import (
-	"fmt"
-	"log"
-	"net/http"
-	"reboxed/common"
-	"strconv"
-)
-
-func WriteError(w http.ResponseWriter, r *http.Request, message string) {
-	log.Printf("%s: %s", r.URL, message)
-	w.WriteHeader(http.StatusBadRequest)
-
-	// webhook related
-	var s common.PlayerSummaryInfo
-	steamid, err := strconv.Atoi(UnBinHexString(r.FormValue("u")))
-	if err == nil {
-		s, _ = GetPlayerSummary(uint64(steamid))
+func InsertLogin(version int, steamid int, vac string, ticket []byte) error {
+	_, err := handle.Exec("INSERT INTO logins (version, steamid, vac, ticket) VALUES (?, ?, ?, ?)", version, steamid, vac, ticket)
+	if err != nil {
+		return err
 	}
 
-	SendDiscordMessage(DiscordStatsWebhookURL, DiscordWebhookRequest{
-		Embeds: []DiscordWebhookEmbed{{
-			Title:       "API Error",
-			Description: fmt.Sprintf("%s: %s", r.URL, message),
-			Color:       0x7D0000,
-			Author: DiscordWebhookEmbedAuthor{
-				Name:    s.PersonaName,
-				IconURL: s.Avatar,
-			},
-		}},
-	})
+	return nil
+}
+
+func FetchSteamIDFromTicket(ticket []byte) (uint64, error) {
+	var steamid uint64
+	err := handle.QueryRow("SELECT steamid FROM logins WHERE ticket = ?", ticket).Scan(&steamid)
+	if err != nil {
+		return 0, err
+	}
+
+	return steamid, nil
 }

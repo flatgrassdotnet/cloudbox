@@ -16,11 +16,9 @@
 	along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-package utils
+package common
 
-import (
-	"fmt"
-)
+import "fmt"
 
 type Package struct {
 	ID          int       `json:"id"`

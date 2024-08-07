@@ -23,6 +23,7 @@ import (
 	"fmt"
 	"io"
 	"net/http"
+	"reboxed/common"
 	"reboxed/db"
 	"reboxed/utils"
 	"strconv"
@@ -62,7 +63,7 @@ func Upload(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	id, err := db.InsertUpload(steamid, utils.Upload{Type: uploadType, Metadata: meta, Include: inc, Data: decoded})
+	id, err := db.InsertUpload(steamid, common.Upload{Type: uploadType, Metadata: meta, Include: inc, Data: decoded})
 	if err != nil {
 		utils.WriteError(w, r, fmt.Sprintf("failed to insert upload: %s", err))
 		return

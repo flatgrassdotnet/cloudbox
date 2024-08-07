@@ -16,36 +16,22 @@
 	along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-package utils
+package db
 
-import (
-	"fmt"
-	"log"
-	"net/http"
-	"reboxed/common"
-	"strconv"
-)
-
-func WriteError(w http.ResponseWriter, r *http.Request, message string) {
-	log.Printf("%s: %s", r.URL, message)
-	w.WriteHeader(http.StatusBadRequest)
-
-	// webhook related
-	var s common.PlayerSummaryInfo
-	steamid, err := strconv.Atoi(UnBinHexString(r.FormValue("u")))
-	if err == nil {
-		s, _ = GetPlayerSummary(uint64(steamid))
+func InsertMapLoad(version int, steamid int, duration float64, mapName string, platform string) error {
+	_, err := handle.Exec("INSERT INTO maploads (version, steamid, duration, map, platform) VALUES (?, ?, ?, ?, ?)", version, steamid, duration, mapName, platform)
+	if err != nil {
+		return err
 	}
 
-	SendDiscordMessage(DiscordStatsWebhookURL, DiscordWebhookRequest{
-		Embeds: []DiscordWebhookEmbed{{
-			Title:       "API Error",
-			Description: fmt.Sprintf("%s: %s", r.URL, message),
-			Color:       0x7D0000,
-			Author: DiscordWebhookEmbedAuthor{
-				Name:    s.PersonaName,
-				IconURL: s.Avatar,
-			},
-		}},
-	})
+	return nil
+}
+
+func InsertError(version int, steamid int, error string, content string, realm string, platform string) error {
+	_, err := handle.Exec("INSERT INTO errors (version, steamid, error, content, realm, platform) VALUES (?, ?, ?, ?, ?, ?)", version, steamid, error, content, realm, platform)
+	if err != nil {
+		return err
+	}
+
+	return nil
 }

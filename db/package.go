@@ -18,63 +18,7 @@
 
 package db
 
-import (
-	"database/sql"
-	"fmt"
-	"reboxed/utils"
-
-	_ "github.com/go-sql-driver/mysql"
-)
-
-var handle *sql.DB
-
-func Init(username string, password string, address string, database string) error {
-	db, err := sql.Open("mysql", fmt.Sprintf("%s:%s@tcp(%s)/%s", username, password, address, database))
-	if err != nil {
-		return err
-	}
-
-	handle = db
-
-	return nil
-}
-
-func InsertLogin(version int, steamid int, vac string, ticket []byte) error {
-	_, err := handle.Exec("INSERT INTO logins (version, steamid, vac, ticket) VALUES (?, ?, ?, ?)", version, steamid, vac, ticket)
-	if err != nil {
-		return err
-	}
-
-	return nil
-}
-
-func FetchSteamIDFromTicket(ticket []byte) (uint64, error) {
-	var steamid uint64
-	err := handle.QueryRow("SELECT steamid FROM logins WHERE ticket = ?", ticket).Scan(&steamid)
-	if err != nil {
-		return 0, err
-	}
-
-	return steamid, nil
-}
-
-func InsertMapLoad(version int, steamid int, duration float64, mapName string, platform string) error {
-	_, err := handle.Exec("INSERT INTO maploads (version, steamid, duration, map, platform) VALUES (?, ?, ?, ?, ?)", version, steamid, duration, mapName, platform)
-	if err != nil {
-		return err
-	}
-
-	return nil
-}
-
-func InsertError(version int, steamid int, error string, content string, realm string, platform string) error {
-	_, err := handle.Exec("INSERT INTO errors (version, steamid, error, content, realm, platform) VALUES (?, ?, ?, ?, ?, ?)", version, steamid, error, content, realm, platform)
-	if err != nil {
-		return err
-	}
-
-	return nil
-}
+import "reboxed/common"
 
 func InsertPackage(packageType string, name string, dataname string, author uint64, description string, data []byte) (int, error) {
 	r, err := handle.Exec("INSERT INTO packages (type, name, dataname, author, description, data) VALUES (?, ?, ?, ?, ?, ?)", packageType, name, dataname, author, description, data)
@@ -90,8 +34,8 @@ func InsertPackage(packageType string, name string, dataname string, author uint
 	return int(i), nil
 }
 
-func FetchPackage(scriptid int, rev int) (utils.Package, error) {
-	var pkg utils.Package
+func FetchPackage(scriptid int, rev int) (common.Package, error) {
+	var pkg common.Package
 	err := handle.QueryRow("SELECT id, rev, type, name, dataname, author, description, data FROM packages WHERE id = ? AND rev = ?", scriptid, rev).Scan(&pkg.ID, &pkg.Revision, &pkg.Type, &pkg.Name, &pkg.Dataname, &pkg.Author, &pkg.Description, &pkg.Data)
 	if err != nil {
 		return pkg, err
@@ -103,7 +47,7 @@ func FetchPackage(scriptid int, rev int) (utils.Package, error) {
 	}
 
 	for rows.Next() {
-		var content utils.Content
+		var content common.Content
 		err := rows.Scan(&content.ID, &content.Revision, &content.Path, &content.Size, &content.PSize)
 		if err != nil {
 			return pkg, err
@@ -118,7 +62,7 @@ func FetchPackage(scriptid int, rev int) (utils.Package, error) {
 	}
 
 	for rows.Next() {
-		var include utils.Include
+		var include common.Include
 		err := rows.Scan(&include.ID, &include.Revision, &include.Type)
 		if err != nil {
 			return pkg, err
@@ -130,8 +74,8 @@ func FetchPackage(scriptid int, rev int) (utils.Package, error) {
 	return pkg, nil
 }
 
-func FetchPackageList(category string) ([]utils.Package, error) {
-	var list []utils.Package
+func FetchPackageList(category string) ([]common.Package, error) {
+	var list []common.Package
 
 	rows, err := handle.Query("SELECT p.id, p.rev, p.type, p.name, p.dataname, p.author, p.description FROM packages p WHERE p.type = ? AND p.rev = (SELECT MAX(p2.rev) FROM packages p2 WHERE p2.id = p.id)", category)
 	if err != nil {
@@ -139,7 +83,7 @@ func FetchPackageList(category string) ([]utils.Package, error) {
 	}
 
 	for rows.Next() {
-		var pkg utils.Package
+		var pkg common.Package
 		err := rows.Scan(&pkg.ID, &pkg.Revision, &pkg.Type, &pkg.Name, &pkg.Dataname, &pkg.Author, &pkg.Description)
 		if err != nil {
 			return list, err
@@ -151,8 +95,8 @@ func FetchPackageList(category string) ([]utils.Package, error) {
 	return list, nil
 }
 
-func FetchPackageListPaged(category string, query string, offset int, count int) ([]utils.Package, error) {
-	var list []utils.Package
+func FetchPackageListPaged(category string, query string, offset int, count int) ([]common.Package, error) {
+	var list []common.Package
 
 	rows, err := handle.Query("SELECT p.id, p.rev, p.type, p.name, p.dataname, p.author, p.description FROM packages p WHERE p.type = ? AND p.rev = (SELECT MAX(p2.rev) FROM packages p2 WHERE p2.id = p.id) AND p.name LIKE CONCAT('%', ?, '%') LIMIT ?, ?", category, query, offset, count)
 	if err != nil {
@@ -160,7 +104,7 @@ func FetchPackageListPaged(category string, query string, offset int, count int)
 	}
 
 	for rows.Next() {
-		var pkg utils.Package
+		var pkg common.Package
 		err := rows.Scan(&pkg.ID, &pkg.Revision, &pkg.Type, &pkg.Name, &pkg.Dataname, &pkg.Author, &pkg.Description)
 		if err != nil {
 			return list, err
@@ -172,8 +116,8 @@ func FetchPackageListPaged(category string, query string, offset int, count int)
 	return list, nil
 }
 
-func FetchAuthorPackageListPaged(author uint64, query string, offset int, count int) ([]utils.Package, error) {
-	var list []utils.Package
+func FetchAuthorPackageListPaged(author uint64, query string, offset int, count int) ([]common.Package, error) {
+	var list []common.Package
 
 	rows, err := handle.Query("SELECT p.id, p.rev, p.type, p.name, p.dataname, p.author, p.description FROM packages p WHERE p.rev = (SELECT MAX(p2.rev) FROM packages p2 WHERE p2.id = p.id) AND p.author = ? AND p.name LIKE CONCAT('%', ?, '%') LIMIT ?, ?", author, query, offset, count)
 	if err != nil {
@@ -181,7 +125,7 @@ func FetchAuthorPackageListPaged(author uint64, query string, offset int, count 
 	}
 
 	for rows.Next() {
-		var pkg utils.Package
+		var pkg common.Package
 		err := rows.Scan(&pkg.ID, &pkg.Revision, &pkg.Type, &pkg.Name, &pkg.Dataname, &pkg.Author, &pkg.Description)
 		if err != nil {
 			return list, err
@@ -191,37 +135,4 @@ func FetchAuthorPackageListPaged(author uint64, query string, offset int, count 
 	}
 
 	return list, nil
-}
-
-func InsertUpload(steamid int, upload utils.Upload) (int, error) {
-	r, err := handle.Exec("INSERT INTO uploads (steamid, type, meta, inc, data) VALUES (?, ?, ?, ?, ?)", steamid, upload.Type, upload.Metadata, upload.Include, upload.Data)
-	if err != nil {
-		return 0, err
-	}
-
-	i, err := r.LastInsertId()
-	if err != nil {
-		return 0, err
-	}
-
-	return int(i), nil
-}
-
-func FetchUpload(id int) (utils.Upload, error) {
-	var upload utils.Upload
-	err := handle.QueryRow("SELECT type, meta, inc, data FROM uploads WHERE id = ?", id).Scan(&upload.Type, &upload.Metadata, &upload.Include, &upload.Data)
-	if err != nil {
-		return upload, err
-	}
-
-	return upload, nil
-}
-
-func DeleteUpload(id int) error {
-	_, err := handle.Exec("DELETE FROM uploads WHERE id = ?", id)
-	if err != nil {
-		return err
-	}
-
-	return nil
 }
