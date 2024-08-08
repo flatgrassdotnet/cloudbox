@@ -53,7 +53,7 @@ h1 {margin-left: 10px;}
 
 .bottomclouds {width: 100%; height: 40px; position: fixed; bottom: 0px; background-image: url('/assets/rustmb/cloudswhite.svg'); opacity: 0.25; pointer-events: none;}
 
-.underheader {animation: swoosh 30s linear infinite; -webkit-animation: swoosh 30s linear infinite;}
-.bottomclouds {animation: swoosh 10s linear infinite; -webkit-animation: swoosh 10s linear infinite;}
-@keyframes swoosh {100% {background-position: 0px;} 0% {background-position: 318px;}}
-@-webkit-keyframes swoosh {100% {background-position: 0px;} 0% {background-position: 318px;}}
+.underheader {animation: swoosh 10s linear infinite; -webkit-animation: swoosh 10s linear infinite;}
+.bottomclouds {animation: swoosh 5s linear infinite; -webkit-animation: swoosh 5s linear infinite;}
+@keyframes swoosh {0% {background-position: 318px;} 100% {background-position: 0px;}}
+@-webkit-keyframes swoosh {0% {background-position: 318px;} 100% {background-position: 0px;}}
