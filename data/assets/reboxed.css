@@ -37,7 +37,7 @@ h1 {margin-left: 10px;}
 
 .content {padding: 16px 8px; overflow-y: auto; -webkit-box-flex: 1; text-align: center;}
 
-.item {width: 128px; height: 125px; margin-left: 2px; margin-right: 2px; display: inline-block;}
+.item {width: 128px; height: 125px; margin-left: 2px; margin-right: 2px; display: inline-block; cursor: pointer;}
 .item .thumb {width: 128px; height: 100px; border: 2px solid; border-color: #595959; border-radius: 4px; margin-bottom: 1px; background-position: center;}
 .item:hover .thumb {border-color: #4096EE}
 .item .overlay {background-color: rgba(0, 0, 0, 0.5); opacity: 0;}
