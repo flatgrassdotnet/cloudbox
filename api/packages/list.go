@@ -29,8 +29,19 @@ import (
 
 func List(w http.ResponseWriter, r *http.Request) {
 	author, _ := strconv.Atoi(r.URL.Query().Get("author"))
+
 	offset, _ := strconv.Atoi(r.URL.Query().Get("offset"))
+	if offset < 0 {
+		offset = 0
+	}
+
 	count, _ := strconv.Atoi(r.URL.Query().Get("count"))
+	if count < 0 {
+		count = 0
+	}
+	if count > 100 {
+		count = 100
+	}
 
 	list, err := db.FetchPackageList(r.URL.Query().Get("type"), uint64(author), r.URL.Query().Get("search"), offset, count)
 	if err != nil {
