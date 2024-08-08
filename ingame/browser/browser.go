@@ -85,20 +85,17 @@ func Handle(w http.ResponseWriter, r *http.Request) {
 		}
 	}
 
-	var list []common.Package
-	var err error
+	c := category
+	author := uint64(0)
 	if category == "mine" {
-		list, err = db.FetchAuthorPackageListPaged(steamid, r.URL.Query().Get("search"), (page-1)*itemsPerPage, itemsPerPage)
-		if err != nil {
-			utils.WriteError(w, r, fmt.Sprintf("failed to fetch package list: %s", err))
-			return
-		}
-	} else {
-		list, err = db.FetchPackageListPaged(category, r.URL.Query().Get("search"), (page-1)*itemsPerPage, itemsPerPage)
-		if err != nil {
-			utils.WriteError(w, r, fmt.Sprintf("failed to fetch package list: %s", err))
-			return
-		}
+		c = "" // all categories
+		author = steamid
+	}
+
+	list, err := db.FetchPackageList(c, author, r.URL.Query().Get("search"), (page-1)*itemsPerPage, itemsPerPage)
+	if err != nil {
+		utils.WriteError(w, r, fmt.Sprintf("failed to fetch package list: %s", err))
+		return
 	}
 
 	prev := fmt.Sprintf("?page=%d", page-1)

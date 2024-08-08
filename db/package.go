@@ -93,52 +93,34 @@ func FetchPackage(scriptid int, rev int) (common.Package, error) {
 	return pkg, nil
 }
 
-func FetchPackageList(category string) ([]common.Package, error) {
+func FetchPackageList(category string, author uint64, search string, offset int, count int) ([]common.Package, error) {
+	var args []any
+	q := "SELECT p.id, p.rev, p.type, p.name, p.dataname, p.author, p.description FROM packages p WHERE p.rev = (SELECT MAX(p2.rev) FROM packages p2 WHERE p2.id = p.id)"
+
+	if category != "" {
+		q += " AND p.type = ?"
+		args = append(args, category)
+	}
+
+	if author != 0 {
+		q += " AND p.author = ?"
+		args = append(args, author)
+	}
+
+	if search != "" {
+		q += " LIKE CONCAT('%', ?, '%')"
+		args = append(args, search)
+	}
+
+	if count != 0 {
+		q += " LIMIT ?, ?"
+		args = append(args, offset)
+		args = append(args, count)
+	}
+
 	var list []common.Package
 
-	rows, err := handle.Query("SELECT p.id, p.rev, p.type, p.name, p.dataname, p.author, p.description FROM packages p WHERE p.type = ? AND p.rev = (SELECT MAX(p2.rev) FROM packages p2 WHERE p2.id = p.id)", category)
-	if err != nil {
-		return list, err
-	}
-
-	for rows.Next() {
-		var pkg common.Package
-		err := rows.Scan(&pkg.ID, &pkg.Revision, &pkg.Type, &pkg.Name, &pkg.Dataname, &pkg.Author, &pkg.Description)
-		if err != nil {
-			return list, err
-		}
-
-		list = append(list, pkg)
-	}
-
-	return list, nil
-}
-
-func FetchPackageListPaged(category string, query string, offset int, count int) ([]common.Package, error) {
-	var list []common.Package
-
-	rows, err := handle.Query("SELECT p.id, p.rev, p.type, p.name, p.dataname, p.author, p.description FROM packages p WHERE p.type = ? AND p.rev = (SELECT MAX(p2.rev) FROM packages p2 WHERE p2.id = p.id) AND p.name LIKE CONCAT('%', ?, '%') LIMIT ?, ?", category, query, offset, count)
-	if err != nil {
-		return list, err
-	}
-
-	for rows.Next() {
-		var pkg common.Package
-		err := rows.Scan(&pkg.ID, &pkg.Revision, &pkg.Type, &pkg.Name, &pkg.Dataname, &pkg.Author, &pkg.Description)
-		if err != nil {
-			return list, err
-		}
-
-		list = append(list, pkg)
-	}
-
-	return list, nil
-}
-
-func FetchAuthorPackageListPaged(author uint64, query string, offset int, count int) ([]common.Package, error) {
-	var list []common.Package
-
-	rows, err := handle.Query("SELECT p.id, p.rev, p.type, p.name, p.dataname, p.author, p.description FROM packages p WHERE p.rev = (SELECT MAX(p2.rev) FROM packages p2 WHERE p2.id = p.id) AND p.author = ? AND p.name LIKE CONCAT('%', ?, '%') LIMIT ?, ?", author, query, offset, count)
+	rows, err := handle.Query(q, args...)
 	if err != nil {
 		return list, err
 	}
