@@ -53,14 +53,14 @@ func FetchPackageLatestRevision(id int) (int, error) {
 	return rev, nil
 }
 
-func FetchPackage(scriptid int, rev int) (common.Package, error) {
+func FetchPackage(id int, rev int) (common.Package, error) {
 	var pkg common.Package
-	err := handle.QueryRow("SELECT id, rev, type, name, dataname, author, description, data FROM packages WHERE id = ? AND rev = ?", scriptid, rev).Scan(&pkg.ID, &pkg.Revision, &pkg.Type, &pkg.Name, &pkg.Dataname, &pkg.Author, &pkg.Description, &pkg.Data)
+	err := handle.QueryRow("SELECT id, rev, type, name, dataname, author, description, data FROM packages WHERE id = ? AND rev = ?", id, rev).Scan(&pkg.ID, &pkg.Revision, &pkg.Type, &pkg.Name, &pkg.Dataname, &pkg.Author, &pkg.Description, &pkg.Data)
 	if err != nil {
 		return pkg, err
 	}
 
-	rows, err := handle.Query("SELECT f.id, f.rev, f.path, f.size, f.psize FROM files f JOIN content c ON f.id = c.fileid AND f.rev = c.filerev WHERE c.id = ? AND c.rev = ?", scriptid, rev)
+	rows, err := handle.Query("SELECT f.id, f.rev, f.path, f.size, f.psize FROM files f JOIN content c ON f.id = c.fileid AND f.rev = c.filerev WHERE c.id = ? AND c.rev = ?", id, rev)
 	if err != nil {
 		return pkg, err
 	}
@@ -75,7 +75,7 @@ func FetchPackage(scriptid int, rev int) (common.Package, error) {
 		pkg.Content = append(pkg.Content, content)
 	}
 
-	rows, err = handle.Query("SELECT p.id, p.rev, p.type FROM packages p JOIN includes i ON p.id = i.includeid AND p.rev = i.includerev WHERE i.id = ? AND i.rev = ?", scriptid, rev)
+	rows, err = handle.Query("SELECT p.id, p.rev, p.type FROM packages p JOIN includes i ON p.id = i.includeid AND p.rev = i.includerev WHERE i.id = ? AND i.rev = ?", id, rev)
 	if err != nil {
 		return pkg, err
 	}

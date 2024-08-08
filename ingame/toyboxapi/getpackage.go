@@ -39,7 +39,7 @@ func GetPackage(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	scriptid, err := strconv.Atoi(utils.UnBinHexString(r.FormValue("scriptid")))
+	id, err := strconv.Atoi(utils.UnBinHexString(r.FormValue("scriptid")))
 	if err != nil {
 		utils.WriteError(w, r, fmt.Sprintf("failed to parse scriptid value: %s", err))
 		return
@@ -54,7 +54,7 @@ func GetPackage(w http.ResponseWriter, r *http.Request) {
 	// getscript also specifies "type" but scriptids are unique between types
 	// we don't need its value because of this
 
-	pkg, err := db.FetchPackage(scriptid, rev)
+	pkg, err := db.FetchPackage(id, rev)
 	if err != nil {
 		utils.WriteError(w, r, fmt.Sprintf("failed to fetch package: %s", err))
 		return
