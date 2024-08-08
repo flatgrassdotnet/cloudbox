@@ -36,8 +36,8 @@ func Get(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	rev, err := strconv.Atoi(r.URL.Query().Get("rev"))
-	if err != nil {
+	rev, _ := strconv.Atoi(r.URL.Query().Get("rev"))
+	if rev < 1 {
 		rev = 1
 	}
 
