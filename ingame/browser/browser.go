@@ -86,7 +86,7 @@ func Handle(w http.ResponseWriter, r *http.Request) {
 	}
 
 	c := category
-	author := uint64(0)
+	var author uint64
 	if category == "mine" {
 		c = "" // all categories
 		author = steamid
