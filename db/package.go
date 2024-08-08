@@ -108,7 +108,7 @@ func FetchPackageList(category string, author uint64, search string, offset int,
 	}
 
 	if search != "" {
-		q += " LIKE CONCAT('%', ?, '%')"
+		q += " AND p.name LIKE CONCAT('%', ?, '%')"
 		args = append(args, search)
 	}
 
