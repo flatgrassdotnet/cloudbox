@@ -20,6 +20,7 @@ package main
 
 import (
 	"flag"
+	"fmt"
 	"log"
 	"net/http"
 	"reboxed/api/content"
@@ -40,6 +41,7 @@ func main() {
 	apikey := flag.String("apikey", "", "steam web api key")
 	statswebhook := flag.String("statswebhook", "", "discord stats webhook url")
 	savewebhook := flag.String("savewebhook", "", "discord save webhook url")
+	port := flag.Int("port", 80, "web server listen port")
 	flag.Parse()
 
 	err := db.Init(*dbuser, *dbpass, *dbaddr, *dbname)
@@ -94,7 +96,7 @@ func main() {
 		http.Redirect(w, r, "//toybox.garrysmod.com/browse/maps", http.StatusSeeOther)
 	})
 
-	err = http.ListenAndServe(":8080", nil)
+	err = http.ListenAndServe(fmt.Sprintf(":%d", *port), nil)
 	if err != nil {
 		log.Fatalf("error while serving: %s", err)
 	}
