@@ -29,7 +29,7 @@
 				<a href="{{.NextLink}}" id="next"{{if eq .NextLink "#"}} class="disabled"{{end}}><div class="navbutton"></div><br>Next</a>
 			</div>
 		</div>
-		<div class="underheader"></div>
+		<div class="topclouds"></div>
 		<div class="content">
 			{{if and (.InGame) (eq .Category "savemap")}}
 				<div class="savetools">
@@ -48,15 +48,15 @@
 				{{end}}
 				<div class="item">
 					<a {{if $.InGame}}href="garrysmod://{{if (eq .Type "map")}}install{{else}}spawn{{end}}/{{.Type}}/{{.ID}}/{{.Revision}}"{{else}}onclick="reboxed.GetPackage('{{.Type}}', {{.ID}}, {{.Revision}})"{{end}}>
-						<div class="thumb" style="background-image: url('//img.reboxed.fun/{{.ID}}_thumb_128.png'), url('/assets/rustmb/missing.svg');">
-							<div class="overlay">
-								<span class="description">{{.Description}}</span>
-							</div>
-						</div>
+						<div class="thumb" style="background-image: url('//img.reboxed.fun/{{.ID}}_thumb_128.png'), url('/assets/rustmb/missing.svg');"></div>
 						<div class="name">
 							{{.Name}}
 						</div>
 					</a>
+					<div class="info">
+						<div class="clouds"></div>
+						{{.Description}}
+					</div>
 				</div>
 			{{end}}
 		</div>
