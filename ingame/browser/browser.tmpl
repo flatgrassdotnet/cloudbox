@@ -7,7 +7,7 @@
 		<div class="header">
 			<div class="navbar">
 				{{if or (not .InGame) (ne .Category "map")}}
-					{{if .InGame}}
+					{{if ne .SteamID 0}}
 						<a href="/browse/mine" id="mine"><div class="navbutton"></div><br>Mine<br></a>
 					{{end}}
 					<a href="/browse/entities" id="entity"><div class="navbutton"></div><br>Entities</a>
@@ -31,9 +31,11 @@
 		</div>
 		<div class="underheader"></div>
 		<div class="content">
-			{{if and (.InGame) (.Category | eq "savemap")}}
+			{{if and (.InGame) (eq .Category "savemap")}}
 				<div class="savetools">
-					<a href="garrysmod://action/save">Save Current Map</a>
+					{{if ne .SteamID 0}}
+						<a href="garrysmod://action/save">Save Current Map</a>
+					{{end}}
 					<a href="garrysmod://action/clean">Clean Current Map</a>
 				</div>
 			{{end}}

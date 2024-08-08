@@ -32,6 +32,7 @@ import (
 
 type Browser struct {
 	InGame   bool
+	SteamID  uint64
 	MapName  string
 	Search   string
 	Category string
@@ -69,28 +70,31 @@ func Handle(w http.ResponseWriter, r *http.Request) {
 		page = 1
 	}
 
-	var list []common.Package
-	var err error
-	if category != "mine" {
-		list, err = db.FetchPackageListPaged(category, r.URL.Query().Get("search"), (page-1)*itemsPerPage, itemsPerPage)
-		if err != nil {
-			utils.WriteError(w, r, fmt.Sprintf("failed to fetch package list: %s", err))
-			return
-		}
-	} else {
+	var steamid uint64
+	if r.Header.Get("TICKET") != "" {
 		ticket, err := base64.StdEncoding.DecodeString(r.Header.Get("TICKET"))
 		if err != nil {
 			utils.WriteError(w, r, fmt.Sprintf("failed to decode ticket value: %s", err))
 			return
 		}
 
-		steamid, err := db.FetchSteamIDFromTicket(ticket)
+		steamid, err = db.FetchSteamIDFromTicket(ticket)
 		if err != nil {
 			utils.WriteError(w, r, fmt.Sprintf("failed to fetch steamid from ticket: %s", err))
 			return
 		}
+	}
 
+	var list []common.Package
+	var err error
+	if category == "mine" {
 		list, err = db.FetchAuthorPackageListPaged(steamid, r.URL.Query().Get("search"), (page-1)*itemsPerPage, itemsPerPage)
+		if err != nil {
+			utils.WriteError(w, r, fmt.Sprintf("failed to fetch package list: %s", err))
+			return
+		}
+	} else {
+		list, err = db.FetchPackageListPaged(category, r.URL.Query().Get("search"), (page-1)*itemsPerPage, itemsPerPage)
 		if err != nil {
 			utils.WriteError(w, r, fmt.Sprintf("failed to fetch package list: %s", err))
 			return
@@ -109,6 +113,7 @@ func Handle(w http.ResponseWriter, r *http.Request) {
 
 	err = t.Execute(w, Browser{
 		InGame:   r.Header.Get("GMOD_VERSION") != "",
+		SteamID:  steamid,
 		MapName:  r.Header.Get("MAP"),
 		Search:   r.URL.Query().Get("search"),
 		Category: category,
