@@ -27,7 +27,6 @@ import (
 	"net/url"
 	"reboxed/common"
 	"reboxed/db"
-	"strconv"
 )
 
 var SteamAPIKey string
@@ -76,7 +75,7 @@ type GetPlayerSummariesResponse struct {
 	} `json:"response"`
 }
 
-func GetPlayerSummary(steamid uint64) (common.PlayerSummaryInfo, error) {
+func GetPlayerSummary(steamid string) (common.PlayerSummaryInfo, error) {
 	// fetch from cache
 	s, err := db.FetchPlayerSummary(steamid)
 	if err != nil {
@@ -91,7 +90,7 @@ func GetPlayerSummary(steamid uint64) (common.PlayerSummaryInfo, error) {
 	v := make(url.Values)
 
 	v.Set("key", SteamAPIKey)
-	v.Set("steamids", strconv.Itoa(int(steamid)))
+	v.Set("steamids", steamid)
 
 	r, err := http.Get(fmt.Sprintf("https://api.steampowered.com/ISteamUser/GetPlayerSummaries/v2/?%s", v.Encode()))
 	if err != nil {

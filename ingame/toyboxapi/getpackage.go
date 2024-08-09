@@ -33,9 +33,9 @@ func GetPackage(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	steamid, err := strconv.Atoi(utils.UnBinHexString(r.FormValue("u")))
-	if err != nil {
-		utils.WriteError(w, r, fmt.Sprintf("failed to parse u value: %s", err))
+	steamid := utils.UnBinHexString(r.FormValue("u"))
+	if steamid == "" {
+		utils.WriteError(w, r, "missing u value")
 		return
 	}
 
@@ -63,7 +63,7 @@ func GetPackage(w http.ResponseWriter, r *http.Request) {
 	w.Write(pkg.Marshal())
 
 	// webhook related
-	s, err := utils.GetPlayerSummary(uint64(steamid))
+	s, err := utils.GetPlayerSummary(steamid)
 	if err != nil {
 		utils.WriteError(w, r, fmt.Sprintf("failed to get player summary: %s", err))
 		return

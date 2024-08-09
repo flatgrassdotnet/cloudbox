@@ -67,8 +67,6 @@ func Auth(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	steamid, _ := strconv.Atoi(user.SteamID)
-
 	vac := "good"
 	if user.VACBanned {
 		vac = "banned"
@@ -81,7 +79,7 @@ func Auth(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	err = db.InsertLogin(version, steamid, vac, ticket)
+	err = db.InsertLogin(version, user.SteamID, vac, ticket)
 	if err != nil {
 		utils.WriteError(w, r, fmt.Sprintf("failed to insert login: %s", err))
 		return
@@ -90,7 +88,7 @@ func Auth(w http.ResponseWriter, r *http.Request) {
 	w.Write([]byte(base64.StdEncoding.EncodeToString(ticket)))
 
 	// webhook related
-	s, err := utils.GetPlayerSummary(uint64(steamid))
+	s, err := utils.GetPlayerSummary(user.SteamID)
 	if err != nil {
 		utils.WriteError(w, r, fmt.Sprintf("failed to get player summary: %s", err))
 		return

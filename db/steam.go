@@ -31,7 +31,7 @@ func InsertPlayerSummary(s common.PlayerSummaryInfo) error {
 	return nil
 }
 
-func FetchPlayerSummary(steamid uint64) (common.PlayerSummaryInfo, error) {
+func FetchPlayerSummary(steamid string) (common.PlayerSummaryInfo, error) {
 	var s common.PlayerSummaryInfo
 	err := handle.QueryRow("SELECT personaname, avatar, avatarmedium, avatarfull FROM profiles WHERE time > DATE_SUB(UTC_TIMESTAMP(), INTERVAL 1 WEEK) AND steamid = ?", steamid).Scan(&s.PersonaName, &s.Avatar, &s.AvatarMedium, &s.AvatarFull)
 	if err != nil {

@@ -18,7 +18,7 @@
 
 package db
 
-func InsertLogin(version int, steamid int, vac string, ticket []byte) error {
+func InsertLogin(version int, steamid string, vac string, ticket []byte) error {
 	_, err := handle.Exec("INSERT INTO logins (version, steamid, vac, ticket) VALUES (?, ?, ?, ?)", version, steamid, vac, ticket)
 	if err != nil {
 		return err
@@ -27,11 +27,11 @@ func InsertLogin(version int, steamid int, vac string, ticket []byte) error {
 	return nil
 }
 
-func FetchSteamIDFromTicket(ticket []byte) (uint64, error) {
-	var steamid uint64
+func FetchSteamIDFromTicket(ticket []byte) (string, error) {
+	var steamid string
 	err := handle.QueryRow("SELECT steamid FROM logins WHERE ticket = ?", ticket).Scan(&steamid)
 	if err != nil {
-		return 0, err
+		return "", err
 	}
 
 	return steamid, nil

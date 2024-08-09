@@ -18,9 +18,11 @@
 
 package db
 
-import "reboxed/common"
+import (
+	"reboxed/common"
+)
 
-func InsertPackage(packageType string, name string, dataname string, author uint64, description string, data []byte) (int, error) {
+func InsertPackage(packageType string, name string, dataname string, author string, description string, data []byte) (int, error) {
 	r, err := handle.Exec("INSERT INTO packages (type, name, dataname, author, description, data) VALUES (?, ?, ?, ?, ?, ?)", packageType, name, dataname, author, description, data)
 	if err != nil {
 		return 0, err
@@ -93,7 +95,7 @@ func FetchPackage(id int, rev int) (common.Package, error) {
 	return pkg, nil
 }
 
-func FetchPackageList(category string, author uint64, search string, offset int, count int) ([]common.Package, error) {
+func FetchPackageList(category string, author string, search string, offset int, count int) ([]common.Package, error) {
 	var args []any
 	q := "SELECT p.id, p.rev, p.type, p.name, p.dataname, p.author, p.description FROM packages p WHERE p.rev = (SELECT MAX(p2.rev) FROM packages p2 WHERE p2.id = p.id)"
 
@@ -102,7 +104,7 @@ func FetchPackageList(category string, author uint64, search string, offset int,
 		args = append(args, category)
 	}
 
-	if author != 0 {
+	if author != "" {
 		q += " AND p.author = ?"
 		args = append(args, author)
 	}

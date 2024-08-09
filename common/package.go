@@ -26,7 +26,7 @@ type Package struct {
 	Type        string    `json:"type"`
 	Name        string    `json:"name"`
 	Dataname    string    `json:"dataname,omitempty"`
-	Author      int       `json:"author,omitempty"`
+	Author      string    `json:"author,omitempty"`
 	Description string    `json:"description,omitempty"`
 	Data        []byte    `json:"data,omitempty"`
 	Content     []Content `json:"content,omitempty"`

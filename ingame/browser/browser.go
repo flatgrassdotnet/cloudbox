@@ -32,7 +32,7 @@ import (
 
 type Browser struct {
 	InGame   bool
-	SteamID  uint64
+	SteamID  string
 	MapName  string
 	Search   string
 	Category string
@@ -70,7 +70,7 @@ func Handle(w http.ResponseWriter, r *http.Request) {
 		page = 1
 	}
 
-	var steamid uint64
+	var steamid string
 	if r.Header.Get("TICKET") != "" {
 		ticket, err := base64.StdEncoding.DecodeString(r.Header.Get("TICKET"))
 		if err != nil {
@@ -86,7 +86,7 @@ func Handle(w http.ResponseWriter, r *http.Request) {
 	}
 
 	c := category
-	var author uint64
+	var author string
 	if category == "mine" {
 		c = "" // all categories
 		author = steamid

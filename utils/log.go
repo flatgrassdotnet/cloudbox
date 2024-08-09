@@ -23,7 +23,6 @@ import (
 	"log"
 	"net/http"
 	"reboxed/common"
-	"strconv"
 )
 
 func WriteError(w http.ResponseWriter, r *http.Request, message string) {
@@ -32,9 +31,9 @@ func WriteError(w http.ResponseWriter, r *http.Request, message string) {
 
 	// webhook related
 	var s common.PlayerSummaryInfo
-	steamid, err := strconv.Atoi(UnBinHexString(r.FormValue("u")))
-	if err == nil {
-		s, _ = GetPlayerSummary(uint64(steamid))
+	steamid := UnBinHexString(r.FormValue("u"))
+	if steamid != "" {
+		s, _ = GetPlayerSummary(steamid)
 	}
 
 	SendDiscordMessage(DiscordStatsWebhookURL, DiscordWebhookRequest{
