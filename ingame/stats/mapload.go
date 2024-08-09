@@ -33,13 +33,6 @@ func MapLoad(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// game version
-	version, err := strconv.Atoi(utils.UnBinHexString(r.FormValue("v")))
-	if err != nil {
-		utils.WriteError(w, r, fmt.Sprintf("failed to parse v value: %s", err))
-		return
-	}
-
 	// steamid64
 	steamid := utils.UnBinHexString(r.FormValue("u"))
 	if steamid == "" {
@@ -64,7 +57,7 @@ func MapLoad(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	err = db.InsertMapLoad(version, steamid, duration, mapName, platform)
+	err = db.InsertMapLoad(steamid, duration, mapName, platform)
 	if err != nil {
 		utils.WriteError(w, r, fmt.Sprintf("failed to insert map load: %s", err))
 		return

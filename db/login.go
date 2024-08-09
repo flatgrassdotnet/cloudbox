@@ -18,8 +18,8 @@
 
 package db
 
-func InsertLogin(version int, steamid string, vac string, ticket []byte) error {
-	_, err := handle.Exec("INSERT INTO logins (version, steamid, vac, ticket) VALUES (?, ?, ?, ?)", version, steamid, vac, ticket)
+func InsertLogin(steamid string, vac string, ticket []byte) error {
+	_, err := handle.Exec("INSERT INTO logins (steamid, vac, ticket) VALUES (?, ?, ?)", steamid, vac, ticket)
 	if err != nil {
 		return err
 	}

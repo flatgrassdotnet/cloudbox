@@ -18,8 +18,8 @@
 
 package db
 
-func InsertMapLoad(version int, steamid string, duration float64, mapName string, platform string) error {
-	_, err := handle.Exec("INSERT INTO maploads (version, steamid, duration, map, platform) VALUES (?, ?, ?, ?, ?)", version, steamid, duration, mapName, platform)
+func InsertMapLoad(steamid string, duration float64, mapName string, platform string) error {
+	_, err := handle.Exec("INSERT INTO maploads (steamid, duration, map, platform) VALUES (?, ?, ?, ?)", steamid, duration, mapName, platform)
 	if err != nil {
 		return err
 	}
@@ -27,8 +27,8 @@ func InsertMapLoad(version int, steamid string, duration float64, mapName string
 	return nil
 }
 
-func InsertError(version int, steamid string, error string, content string, realm string, platform string) error {
-	_, err := handle.Exec("INSERT INTO errors (version, steamid, error, content, realm, platform) VALUES (?, ?, ?, ?, ?, ?)", version, steamid, error, content, realm, platform)
+func InsertError(steamid string, error string, content string, realm string, platform string) error {
+	_, err := handle.Exec("INSERT INTO errors (steamid, error, content, realm, platform) VALUES (?, ?, ?, ?, ?)", steamid, error, content, realm, platform)
 	if err != nil {
 		return err
 	}

@@ -23,20 +23,12 @@ import (
 	"net/http"
 	"reboxed/db"
 	"reboxed/utils"
-	"strconv"
 )
 
 // error records errors from users
 func Error(w http.ResponseWriter, r *http.Request) {
 	if !utils.ValidateKey(r.URL.String()) {
 		utils.WriteError(w, r, "invalid key")
-		return
-	}
-
-	// game version
-	version, err := strconv.Atoi(utils.UnBinHexString(r.FormValue("v")))
-	if err != nil {
-		utils.WriteError(w, r, fmt.Sprintf("failed to parse v value: %s", err))
 		return
 	}
 
@@ -67,7 +59,7 @@ func Error(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	err = db.InsertError(version, steamid, error, content, realm, platform)
+	err := db.InsertError(steamid, error, content, realm, platform)
 	if err != nil {
 		utils.WriteError(w, r, fmt.Sprintf("failed to insert error: %s", err))
 		return
