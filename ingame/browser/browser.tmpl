@@ -47,7 +47,7 @@
 					{{continue}}
 				{{end}}
 				<div class="item">
-					<a {{if $.InGame}}href="garrysmod://{{if (eq .Type "map")}}install{{else}}spawn{{end}}/{{.Type}}/{{.ID}}/{{.Revision}}"{{else}}onclick="reboxed.GetPackage('{{.Type}}', {{.ID}}, {{.Revision}})"{{end}}>
+					<a href="garrysmod://{{if (eq .Type "map")}}install{{else}}spawn{{end}}/{{.Type}}/{{.ID}}/{{.Revision}}">
 						<div class="thumb" style="background-image: url('//img.reboxed.fun/{{.ID}}_thumb_128.png'), url('/assets/rustmb/missing.svg');"></div>
 						<div class="name">
 							{{.Name}}
