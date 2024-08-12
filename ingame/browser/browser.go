@@ -99,7 +99,7 @@ func Handle(w http.ResponseWriter, r *http.Request) {
 	}
 
 	prev := fmt.Sprintf("?page=%d", page-1)
-	if page < 1 {
+	if page <= 1 {
 		prev = "#"
 	}
 

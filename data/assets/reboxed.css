@@ -58,3 +58,10 @@ h1 {margin-left: 10px;}
 .bottomclouds {animation: swoosh 5s linear infinite; -webkit-animation: swoosh 5s linear infinite;}
 @keyframes swoosh {0% {background-position: 318px;} 100% {background-position: 0px;}}
 @-webkit-keyframes swoosh {0% {background-position: 318px;} 100% {background-position: 0px;}}
+
+::-webkit-scrollbar {background-color:#4096EE; border-radius:4px;}
+::-webkit-scrollbar-button, ::-webkit-scrollbar-thumb {background-color:white; border:2px solid #595959;}
+::-webkit-scrollbar-button:hover, ::-webkit-scrollbar-thumb:hover {background-color:#B8E3FF;}
+::-webkit-scrollbar-button:active, ::-webkit-scrollbar-thumb:active  {border-color:#4096EE; }
+::-webkit-scrollbar-button:decrement {border-radius:4px 4px 0px 0px;}
+::-webkit-scrollbar-button:increment {border-radius:0px 0px 4px 4px;}
