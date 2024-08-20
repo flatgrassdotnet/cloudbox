@@ -1,6 +1,6 @@
 module reboxed
 
-go 1.22.5
+go 1.23
 
 require (
 	github.com/blezek/tga v0.0.0-20150626111426-80720cbc1017
