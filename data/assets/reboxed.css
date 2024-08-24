@@ -47,6 +47,25 @@ h1 {margin-left: 10px;}
 .item:not(:hover) .info {opacity: 0; bottom: -120px;}
 .item .info .clouds {content: " "; height: 40px; background: url('/assets/rustmb/cloudswhite.svg') transparent; width: 100%; position: absolute; top: -40px; left: 0px; right: 0px; animation: swoosh 7.5s linear infinite; -webkit-animation: swoosh 10s linear infinite; opacity: 0.9;}
 
+.metabox {margin-left:10px; margin-right:10px;}
+.metabox-left, .metabox-right {height:125px;}
+.metabox-left {width:450px; float:left;}
+.metabox-right {margin-left:450px; margin-right:20px;}
+
+.metabox .meta-thumb, .metabox .meta-info, .metabox .meta-desc {display:inline-block; height:125px; margin-top:-10px;  position:relative; margin-left:5px; margin-right:5px; overflow:hidden; text-align:left; -webkit-box-sizing:border-box; box-sizing:border-box; vertical-align:top;}
+
+.metabox .meta-thumb {width:125px;}
+.metabox .meta-thumb img {width:125px; height:125px; border-radius:3px; border:2px solid #595959; -webkit-box-sizing:border-box; box-sizing:border-box;}
+
+.metabox .meta-info {width:300px;}
+.metabox .meta-info .meta-name {font-weight:bold; font-size:18px; margin-bottom:53px; max-height: 72px; overflow:hidden;}
+
+.metabox .meta-info .meta-user {height:48px; position:absolute; bottom:0; width:100%;}
+.metabox .meta-info .meta-user img {width:48px; height:48px; float:left;}
+.metabox .meta-info .meta-user .meta-uploaded, .metabox .meta-info .meta-user .meta-username {font-size:13px; margin-left:48px; padding-left:8px; line-height:24px;}
+
+.metabox .meta-desc {background:rgba(184, 227, 255, 0.6); padding:10px; font-size:12px; border-radius:8px; width:100%;}
+
 .saveform {padding: 16px 8px;}
 .saveform label {display: block;}
 

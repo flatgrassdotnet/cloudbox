@@ -97,7 +97,7 @@ func FetchPackage(id int, rev int) (common.Package, error) {
 
 func FetchPackageList(category string, author string, search string, offset int, count int) ([]common.Package, error) {
 	var args []any
-	q := "SELECT p.id, p.rev, p.type, p.name, p.dataname, p.author, p.description FROM packages p WHERE p.rev = (SELECT MAX(p2.rev) FROM packages p2 WHERE p2.id = p.id)"
+	q := "SELECT p.id, p.rev, p.type, p.name, p.dataname, p.author, IFNULL(profiles.personaname, \"\"), IFNULL(profiles.avatar, \"\"), p.description, p.time FROM packages p LEFT JOIN profiles ON p.author = profiles.steamid WHERE p.rev = (SELECT MAX(p2.rev) FROM packages p2 WHERE p2.id = p.id)"
 
 	if category != "" {
 		q += " AND p.type = ?"
@@ -129,7 +129,7 @@ func FetchPackageList(category string, author string, search string, offset int,
 
 	for rows.Next() {
 		var pkg common.Package
-		err := rows.Scan(&pkg.ID, &pkg.Revision, &pkg.Type, &pkg.Name, &pkg.Dataname, &pkg.Author, &pkg.Description)
+		err := rows.Scan(&pkg.ID, &pkg.Revision, &pkg.Type, &pkg.Name, &pkg.Dataname, &pkg.Author, &pkg.AuthorName, &pkg.AuthorIcon, &pkg.Description, &pkg.Uploaded)
 		if err != nil {
 			return list, err
 		}

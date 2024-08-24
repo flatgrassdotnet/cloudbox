@@ -28,6 +28,7 @@ import (
 	"reboxed/db"
 	"reboxed/utils"
 	"strconv"
+	"strings"
 )
 
 type Browser struct {
@@ -55,7 +56,7 @@ var (
 		"saves":    "savemap",
 		"maps":     "map",
 	}
-	t = template.Must(template.New("Browser").Parse(tmpl))
+	t = template.Must(template.New("Browser").Funcs(template.FuncMap{"StripHTTPS": func(url string) string { s, _ := strings.CutPrefix(url, "https:"); return s }}).Parse(tmpl))
 )
 
 func Handle(w http.ResponseWriter, r *http.Request) {

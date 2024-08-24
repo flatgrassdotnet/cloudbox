@@ -18,7 +18,10 @@
 
 package common
 
-import "fmt"
+import (
+	"fmt"
+	"time"
+)
 
 type Package struct {
 	ID          int       `json:"id"`
@@ -27,10 +30,13 @@ type Package struct {
 	Name        string    `json:"name"`
 	Dataname    string    `json:"dataname,omitempty"`
 	Author      string    `json:"author,omitempty"`
+	AuthorName  string    `json:"authorname,omitempty"`
+	AuthorIcon  string    `json:"authoricon,omitempty"`
 	Description string    `json:"description,omitempty"`
 	Data        []byte    `json:"data,omitempty"`
 	Content     []Content `json:"content,omitempty"`
 	Includes    []Include `json:"includes,omitempty"`
+	Uploaded    time.Time `json:"uploaded,omitempty"`
 }
 
 type Content struct {
