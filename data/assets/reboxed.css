@@ -52,7 +52,7 @@ h1 {margin-left: 10px;}
 .metabox-left {width: 450px; float: left;}
 .metabox-right {margin-left:450px; margin-right:20px;}
 
-.metabox .meta-thumb, .metabox .meta-info, .metabox .meta-desc {display: inline-block; height:125px; margin-top:-10px; position: relative; margin-left:5px; margin-right:5px; overflow: hidden; text-align: left; -webkit-box-sizing: border-box; box-sizing: border-box; vertical-align: top;}
+.metabox .meta-thumb, .metabox .meta-info, .metabox .meta-desc {display: inline-block; height:125px; margin-top:-10px; position: relative; margin-left:5px; margin-right:5px; overflow: hidden; text-align: left; -webkit-box-sizing: border-box; box-sizing: border-box; vertical-align: top; font-weight: bolder;}
 
 .metabox .meta-thumb {width:125px;}
 .metabox .meta-thumb .img {width:125px; height:125px; border-radius:3px; border:2px solid #595959; -webkit-box-sizing: border-box; box-sizing: border-box; background-size: contain; background-position: center;}
