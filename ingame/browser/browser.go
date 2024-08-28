@@ -110,7 +110,7 @@ func Handle(w http.ResponseWriter, r *http.Request) {
 	}
 
 	err = t.Execute(w, Browser{
-		InGame:   r.Header.Get("GMOD_VERSION") != "",
+		InGame:   r.Header.Get("GMOD_VERSION") != "" || strings.Contains(r.UserAgent(), "Valve"),
 		SteamID:  steamid,
 		MapName:  r.Header.Get("MAP"),
 		Search:   r.URL.Query().Get("search"),
