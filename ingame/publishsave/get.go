@@ -32,7 +32,7 @@ type PublishSaveGet struct {
 	SID int
 }
 
-//go:embed get.tmpl
+//go:embed get.html
 var tmplGet string
 
 var tg = template.Must(template.New("PublishSaveGet").Parse(tmplGet))

@@ -37,7 +37,7 @@ import (
 
 type PublishSavePost struct{}
 
-//go:embed post.tmpl
+//go:embed post.html
 var tmplPost string
 
 var tp = template.Must(template.New("PublishSavePost").Parse(tmplPost))

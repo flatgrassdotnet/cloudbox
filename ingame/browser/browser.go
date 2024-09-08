@@ -44,7 +44,7 @@ type Browser struct {
 
 const itemsPerPage = 50
 
-//go:embed browser.tmpl
+//go:embed browser.html
 var tmpl string
 
 var (
