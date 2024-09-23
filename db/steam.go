@@ -1,5 +1,5 @@
 /*
-	reboxed - the toybox server emulator
+	cloudbox - the toybox server emulator
 	Copyright (C) 2024  patapancakes <patapancakes@pagefault.games>
 
 	This program is free software: you can redistribute it and/or modify
@@ -19,7 +19,7 @@
 package db
 
 import (
-	"reboxed/common"
+	"github.com/flatgrassdotnet/cloudbox/common"
 )
 
 func InsertPlayerSummary(s common.PlayerSummaryInfo) error {

@@ -1,5 +1,5 @@
 /*
-	reboxed - the toybox server emulator
+	cloudbox - the toybox server emulator
 	Copyright (C) 2024  patapancakes <patapancakes@pagefault.games>
 
 	This program is free software: you can redistribute it and/or modify
@@ -25,8 +25,9 @@ import (
 	"fmt"
 	"net/http"
 	"net/url"
-	"reboxed/common"
-	"reboxed/db"
+
+	"github.com/flatgrassdotnet/cloudbox/common"
+	"github.com/flatgrassdotnet/cloudbox/db"
 )
 
 var SteamAPIKey string

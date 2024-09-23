@@ -1,5 +1,5 @@
 /*
-	reboxed - the toybox server emulator
+	cloudbox - the toybox server emulator
 	Copyright (C) 2024  patapancakes <patapancakes@pagefault.games>
 
 	This program is free software: you can redistribute it and/or modify
@@ -23,10 +23,11 @@ import (
 	"fmt"
 	"io"
 	"net/http"
-	"reboxed/common"
-	"reboxed/db"
-	"reboxed/utils"
 	"strconv"
+
+	"github.com/flatgrassdotnet/cloudbox/common"
+	"github.com/flatgrassdotnet/cloudbox/db"
+	"github.com/flatgrassdotnet/cloudbox/utils"
 )
 
 func Upload(w http.ResponseWriter, r *http.Request) {

@@ -1,4 +1,4 @@
-module reboxed
+module github.com/flatgrassdotnet/cloudbox
 
 go 1.23
 

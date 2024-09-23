@@ -1,5 +1,5 @@
 /*
-	reboxed - the toybox server emulator
+	cloudbox - the toybox server emulator
 	Copyright (C) 2024  patapancakes <patapancakes@pagefault.games>
 
 	This program is free software: you can redistribute it and/or modify
@@ -27,10 +27,11 @@ import (
 	"image/png"
 	"net/http"
 	"os"
-	"reboxed/db"
-	"reboxed/utils"
 	"strconv"
 	"strings"
+
+	"github.com/flatgrassdotnet/cloudbox/db"
+	"github.com/flatgrassdotnet/cloudbox/utils"
 
 	"github.com/blezek/tga"
 )
@@ -180,7 +181,7 @@ func Post(w http.ResponseWriter, r *http.Request) {
 				IconURL: s.Avatar,
 			},
 			Image: utils.DiscordWebhookEmbedImage{
-				URL: fmt.Sprintf("https://img.reboxed.fun/%d_thumb_128.png", pkgID),
+				URL: fmt.Sprintf("https://img.cl0udb0x.com/%d_thumb_128.png", pkgID),
 			},
 		},
 		},

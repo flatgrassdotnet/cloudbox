@@ -1,5 +1,5 @@
 /*
-	reboxed - the toybox server emulator
+	cloudbox - the toybox server emulator
 	Copyright (C) 2024  patapancakes <patapancakes@pagefault.games>
 
 	This program is free software: you can redistribute it and/or modify
@@ -21,8 +21,9 @@ package toyboxapi
 import (
 	"fmt"
 	"net/http"
-	"reboxed/db"
-	"reboxed/utils"
+
+	"github.com/flatgrassdotnet/cloudbox/db"
+	"github.com/flatgrassdotnet/cloudbox/utils"
 )
 
 // error records errors from users

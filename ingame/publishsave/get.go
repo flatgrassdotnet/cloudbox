@@ -1,5 +1,5 @@
 /*
-	reboxed - the toybox server emulator
+	cloudbox - the toybox server emulator
 	Copyright (C) 2024  patapancakes <patapancakes@pagefault.games>
 
 	This program is free software: you can redistribute it and/or modify
@@ -23,8 +23,9 @@ import (
 	"fmt"
 	"html/template"
 	"net/http"
-	"reboxed/utils"
 	"strconv"
+
+	"github.com/flatgrassdotnet/cloudbox/utils"
 )
 
 type PublishSaveGet struct {

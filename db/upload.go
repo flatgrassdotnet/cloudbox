@@ -1,5 +1,5 @@
 /*
-	reboxed - the toybox server emulator
+	cloudbox - the toybox server emulator
 	Copyright (C) 2024  patapancakes <patapancakes@pagefault.games>
 
 	This program is free software: you can redistribute it and/or modify
@@ -18,7 +18,7 @@
 
 package db
 
-import "reboxed/common"
+import "github.com/flatgrassdotnet/cloudbox/common"
 
 func InsertUpload(steamid int, upload common.Upload) (int, error) {
 	r, err := handle.Exec("INSERT INTO uploads (steamid, type, meta, inc, data) VALUES (?, ?, ?, ?, ?)", steamid, upload.Type, upload.Metadata, upload.Include, upload.Data)

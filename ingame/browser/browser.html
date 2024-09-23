@@ -1,7 +1,7 @@
 <html>
 	<head>
-		<title>reboxed</title>
-		<link rel="stylesheet" href="/assets/reboxed.css" type="text/css">
+		<title>Cloudbox</title>
+		<link rel="stylesheet" href="/assets/cloudbox.css" type="text/css">
 	</head>
 	<body>
 		<div class="header">
@@ -47,8 +47,8 @@
 					{{continue}}
 				{{end}}
 				<div class="item">
-					<a {{if $.InGame}}href="garrysmod://{{if (eq .Type "map")}}install{{else}}spawn{{end}}/{{.Type}}/{{.ID}}/{{.Revision}}"{{else}}onclick="reboxed.GetPackage('{{.Type}}', {{.ID}}, {{.Revision}})"{{end}}>
-						<div class="thumb" style="background-image: url('//img.reboxed.fun/{{.ID}}_thumb_128.png'), url('/assets/rustmb/missing.svg');"></div>
+					<a {{if $.InGame}}href="garrysmod://{{if (eq .Type "map")}}install{{else}}spawn{{end}}/{{.Type}}/{{.ID}}/{{.Revision}}"{{else}}onclick="cloudbox.GetPackage('{{.Type}}', {{.ID}}, {{.Revision}})"{{end}}>
+						<div class="thumb" style="background-image: url('//img.cl0udb0x.com/{{.ID}}_thumb_128.png'), url('/assets/rustmb/missing.svg');"></div>
 						<div class="name">
 							{{.Name}}
 						</div>
@@ -57,7 +57,7 @@
 						<div class="clouds"></div>
 							<div class="metabox">
 								<div class="metabox-left">
-								<div class="meta-thumb"><div class="img" style="background-image: url('//img.reboxed.fun/{{.ID}}_thumb_128.png'), url('/assets/rustmb/missing.svg');"></div></div>
+								<div class="meta-thumb"><div class="img" style="background-image: url('//img.cl0udb0x.com/{{.ID}}_thumb_128.png'), url('/assets/rustmb/missing.svg');"></div></div>
 									<div class="meta-info">
 										<div class="meta-name">{{.Name}}</div>
 										<div class="meta-user">

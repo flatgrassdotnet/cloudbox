@@ -1,5 +1,5 @@
 /*
-	reboxed - the toybox server emulator
+	cloudbox - the toybox server emulator
 	Copyright (C) 2024  patapancakes <patapancakes@pagefault.games>
 
 	This program is free software: you can redistribute it and/or modify
@@ -78,7 +78,7 @@ func (pkg Package) Marshal() []byte {
 			item["id"] = c.ID
 			item["rev"] = c.Revision
 			item["name"] = c.Path
-			item["url"] = fmt.Sprintf("http://cdn.reboxed.fun/%d/%d", c.ID, c.Revision)
+			item["url"] = fmt.Sprintf("http://cdn.cl0udb0x.com/%d/%d", c.ID, c.Revision)
 			item["size"] = c.PSize
 
 			content[fmt.Sprintf("content_%d", c.ID)] = item

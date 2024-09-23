@@ -1,5 +1,5 @@
 /*
-	reboxed - the toybox server emulator
+	cloudbox - the toybox server emulator
 	Copyright (C) 2024  patapancakes <patapancakes@pagefault.games>
 
 	This program is free software: you can redistribute it and/or modify
@@ -25,8 +25,9 @@ import (
 	"io"
 	"net/http"
 	"os"
-	"reboxed/utils"
 	"strconv"
+
+	"github.com/flatgrassdotnet/cloudbox/utils"
 )
 
 func Get(w http.ResponseWriter, r *http.Request) {

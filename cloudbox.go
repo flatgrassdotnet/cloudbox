@@ -1,5 +1,5 @@
 /*
-	reboxed - the toybox server emulator
+	cloudbox - the toybox server emulator
 	Copyright (C) 2024  patapancakes <patapancakes@pagefault.games>
 
 	This program is free software: you can redistribute it and/or modify
@@ -23,21 +23,22 @@ import (
 	"fmt"
 	"log"
 	"net/http"
-	"reboxed/api/content"
-	"reboxed/api/packages"
-	"reboxed/db"
-	"reboxed/ingame/browser"
-	"reboxed/ingame/publishsave"
-	"reboxed/ingame/stats"
-	"reboxed/ingame/toyboxapi"
-	"reboxed/utils"
+
+	"github.com/flatgrassdotnet/cloudbox/api/content"
+	"github.com/flatgrassdotnet/cloudbox/api/packages"
+	"github.com/flatgrassdotnet/cloudbox/db"
+	"github.com/flatgrassdotnet/cloudbox/ingame/browser"
+	"github.com/flatgrassdotnet/cloudbox/ingame/publishsave"
+	"github.com/flatgrassdotnet/cloudbox/ingame/stats"
+	"github.com/flatgrassdotnet/cloudbox/ingame/toyboxapi"
+	"github.com/flatgrassdotnet/cloudbox/utils"
 )
 
 func main() {
-	dbuser := flag.String("dbuser", "reboxed", "database user's name")
+	dbuser := flag.String("dbuser", "cloudbox", "database user's name")
 	dbpass := flag.String("dbpass", "", "database user's password")
 	dbaddr := flag.String("dbaddr", "localhost", "database server address")
-	dbname := flag.String("dbname", "reboxed", "database name")
+	dbname := flag.String("dbname", "cloudbox", "database name")
 	apikey := flag.String("apikey", "", "steam web api key")
 	statswebhook := flag.String("statswebhook", "", "discord stats webhook url")
 	savewebhook := flag.String("savewebhook", "", "discord save webhook url")
@@ -55,16 +56,16 @@ func main() {
 
 	// static assets - using nginx now
 	//http.Handle("GET /assets/", http.StripPrefix("/assets/", http.FileServer(http.Dir("data/assets"))))
-	//http.Handle("GET cdn.reboxed.fun/", http.FileServer(http.Dir("data/cdn")))
-	//http.Handle("GET img.reboxed.fun/", http.FileServer(http.Dir("data/img")))
+	//http.Handle("GET cdn.cl0udb0x.com/", http.FileServer(http.Dir("data/cdn")))
+	//http.Handle("GET img.cl0udb0x.com/", http.FileServer(http.Dir("data/img")))
 
 	// browser
 	http.HandleFunc("GET /browse/{category}/", browser.Handle)
 
-	// reboxed api
-	http.HandleFunc("GET api.reboxed.fun/packages/list", packages.List)
-	http.HandleFunc("GET api.reboxed.fun/packages/get", packages.Get)
-	http.HandleFunc("GET api.reboxed.fun/content/get", content.Get)
+	// cloudbox api
+	http.HandleFunc("GET api.cl0udb0x.com/packages/list", packages.List)
+	http.HandleFunc("GET api.cl0udb0x.com/packages/get", packages.Get)
+	http.HandleFunc("GET api.cl0udb0x.com/content/get", content.Get)
 
 	// stats.garrysmod.com
 	http.HandleFunc("GET /API/mapload_001/", stats.MapLoad)
