@@ -43,7 +43,7 @@ h1 {margin-left: 10px;}
 .item .name {font-size: 11px; font-weight: bolder; text-align: center; white-space: nowrap; letter-spacing: -0.1px; text-overflow: ellipsis; overflow: hidden;}
 .item:hover .name {color: #4096EE;}
 
-.item .info {position: fixed; background: rgba(255, 255, 255, 0.9); bottom: 0; left: 0; right: 0; height: 120px; opacity: 1; pointer-events: none; transition: opacity 0.2s linear, bottom 0.2s linear; -webkit-transition: opacity 0.2s linear, bottom 0.2s linear;}
+.item .info {position: fixed; background: rgba(255, 255, 255, 0.9); bottom: 0; left: 0; right: 0; height: 120px; opacity: 1; pointer-events: none; transition: opacity 0.2s linear, bottom 0.2s linear; -webkit-transition: opacity 0.2s linear, bottom 0.2s linear; z-index: 10;}
 .item:not(:hover) .info {opacity: 0; bottom: -120px;}
 .item .info .clouds {content: " "; height: 40px; background: url('/assets/rustmb/cloudswhite.svg') transparent; width: 100%; position: absolute; top: -40px; left: 0px; right: 0px; animation: swoosh 7.5s linear infinite; -webkit-animation: swoosh 10s linear infinite; opacity: 0.9;}
 
