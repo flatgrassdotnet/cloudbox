@@ -38,10 +38,7 @@ import (
 
 type PublishSavePost struct{}
 
-//go:embed post.html
-var tmplPost string
-
-var tp = template.Must(template.New("PublishSavePost").Parse(tmplPost))
+var tp = template.Must(template.New("post.html").ParseFiles("data/templates/publishsave/post.html"))
 
 func Post(w http.ResponseWriter, r *http.Request) {
 	err := r.ParseForm()

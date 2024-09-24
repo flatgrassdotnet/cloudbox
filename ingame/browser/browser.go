@@ -45,9 +45,6 @@ type Browser struct {
 
 const itemsPerPage = 50
 
-//go:embed browser.html
-var tmpl string
-
 var (
 	categories = map[string]string{
 		"mine":     "mine",
@@ -57,7 +54,7 @@ var (
 		"saves":    "savemap",
 		"maps":     "map",
 	}
-	t = template.Must(template.New("Browser").Funcs(template.FuncMap{"StripHTTPS": func(url string) string { s, _ := strings.CutPrefix(url, "https:"); return s }}).Parse(tmpl))
+	t = template.Must(template.New("browser.html").Funcs(template.FuncMap{"StripHTTPS": func(url string) string { s, _ := strings.CutPrefix(url, "https:"); return s }}).ParseFiles("data/templates/browser/browser.html"))
 )
 
 func Handle(w http.ResponseWriter, r *http.Request) {

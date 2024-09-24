@@ -33,10 +33,7 @@ type PublishSaveGet struct {
 	SID int
 }
 
-//go:embed get.html
-var tmplGet string
-
-var tg = template.Must(template.New("PublishSaveGet").Parse(tmplGet))
+var tg = template.Must(template.New("get.html").ParseFiles("data/templates/publishsave/get.html"))
 
 func Get(w http.ResponseWriter, r *http.Request) {
 	id, err := strconv.Atoi(r.URL.Query().Get("id"))
