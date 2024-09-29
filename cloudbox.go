@@ -31,6 +31,7 @@ import (
 	"github.com/flatgrassdotnet/cloudbox/ingame/publishsave"
 	"github.com/flatgrassdotnet/cloudbox/ingame/stats"
 	"github.com/flatgrassdotnet/cloudbox/ingame/toyboxapi"
+	"github.com/flatgrassdotnet/cloudbox/ingame/viewer"
 	"github.com/flatgrassdotnet/cloudbox/utils"
 )
 
@@ -59,8 +60,9 @@ func main() {
 	//http.Handle("GET cdn.cl0udb0x.com/", http.FileServer(http.Dir("data/cdn")))
 	//http.Handle("GET img.cl0udb0x.com/", http.FileServer(http.Dir("data/img")))
 
-	// browser
-	http.HandleFunc("GET /browse/{category}/", browser.Handle)
+	// cloudbox pages
+	http.HandleFunc("GET /browse/{category}", browser.Handle)
+	http.HandleFunc("GET /view/{id}", viewer.Handle)
 
 	// cloudbox api
 	http.HandleFunc("GET api.cl0udb0x.com/packages/list", packages.List)
