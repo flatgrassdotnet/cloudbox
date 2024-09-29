@@ -7,7 +7,9 @@
 		<div class="header">
 			<div class="navbar">
 				{{if or (not .InGame) (ne .Category "map")}}
-					<a href="/browse/mine" id="mine" {{if eq .SteamID ""}} class="disabled"{{end}}><div class="navbutton"></div><br>Mine<br></a>
+					{{if .InGame}}
+						<a href="/browse/mine" id="mine" {{if eq .SteamID ""}} class="disabled"{{end}}><div class="navbutton"></div><br>Mine<br></a>
+					{{end}}
 					<a href="/browse/entities" id="entity"><div class="navbutton"></div><br>Entities</a>
 					<a href="/browse/weapons" id="weapon"><div class="navbutton"></div><br>Weapons</a>
 					<a href="/browse/props" id="prop"><div class="navbutton"></div><br>Props</a>
