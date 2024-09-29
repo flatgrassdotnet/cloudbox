@@ -7,9 +7,7 @@
 		<div class="header">
 			<div class="navbar">
 				{{if or (not .InGame) (ne .Category "map")}}
-					{{if ne .SteamID ""}}
-						<a href="/browse/mine" id="mine"><div class="navbutton"></div><br>Mine<br></a>
-					{{end}}
+					<a href="/browse/mine" id="mine" {{if eq .SteamID ""}} class="disabled"{{end}}><div class="navbutton"></div><br>Mine<br></a>
 					<a href="/browse/entities" id="entity"><div class="navbutton"></div><br>Entities</a>
 					<a href="/browse/weapons" id="weapon"><div class="navbutton"></div><br>Weapons</a>
 					<a href="/browse/props" id="prop"><div class="navbutton"></div><br>Props</a>
@@ -25,23 +23,26 @@
 				</form>
 			</div>
 			<div class="navbar">
-				<a href="{{.PrevLink}}" id="prev"{{if eq .PrevLink "#"}} class="disabled"{{end}}><div class="navbutton"></div><br>Previous</a>
-				<a href="{{.NextLink}}" id="next"{{if eq .NextLink "#"}} class="disabled"{{end}}><div class="navbutton"></div><br>Next</a>
+				<a href="{{.PrevLink}}{{if ne .Sort ""}}&sort={{.Sort}}{{end}}" id="prev"{{if eq .PrevLink "#"}} class="disabled"{{end}}><div class="navbutton"></div><br>Previous</a>
+				<a href="{{.NextLink}}{{if ne .Sort ""}}&sort={{.Sort}}{{end}}" id="next"{{if eq .NextLink "#"}} class="disabled"{{end}}><div class="navbutton"></div><br>Next</a>
+			</div>
+		</div>
+		<div class="header">
+			<div class="navbar">
+				<a href="?sort=newest" id="newest"><div class="navbutton"></div><br>Newest</a>
+				<a href="?sort=random" id="random"><div class="navbutton"></div><br>Random</a>
+				<a href="?sort=mostfavs" id="mostfavs"><div class="navbutton"></div><br>Most Favs</a>
+				<a href="?sort=mostlikes" id="mostlikes"><div class="navbutton"></div><br>Most Likes</a>
+				<a href="?sort=mostdls" id="mostdls"><div class="navbutton"></div><br>Most DLs</a>
+				{{if and (.InGame) (eq .Category "savemap")}}
+					<a></a>
+					<a href="garrysmod://action/save" id="uploadsave"{{if eq .SteamID ""}} class="disabled"{{end}}><div class="navbutton"></div><br>Upload</a>
+					<a href="garrysmod://action/clean" id="cleanup"><div class="navbutton"></div><br>Cleanup</a>
+				{{end}}
 			</div>
 		</div>
 		<div class="topclouds"></div>
 		<div class="content">
-			{{if and (.InGame) (eq .Category "savemap")}}
-				<div class="savetools">
-					{{if ne .SteamID ""}}
-						<a href="garrysmod://action/save">Save Current Map</a>
-					{{end}}
-					<a href="garrysmod://action/clean">Clean Current Map</a>
-				</div>
-			{{end}}
-			{{if ne .Search ""}}
-				<h1>Searched for {{.Search}}</h1>
-			{{end}}
 			{{range .Packages}}
 				{{if and ($.InGame) (eq $.Category "savemap") (ne $.MapName .Dataname)}}
 					{{continue}}

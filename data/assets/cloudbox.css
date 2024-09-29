@@ -27,6 +27,22 @@ h1 {margin-left: 10px;}
 #next {background-image: url('/assets/rustmb/rightarrow.png')}
 #next:hover {background-image: url('/assets/rustmb/rightarrow_hover.png')}
 
+#newest {background-image: url('/assets/rustmb/newest.png')}
+#newest:hover {background-image: url('/assets/rustmb/newest_hover.png')}
+#random {background-image: url('/assets/rustmb/random.png')}
+#random:hover {background-image: url('/assets/rustmb/random_hover.png')}
+#mostfavs {background-image: url('/assets/rustmb/mostfavs.png')}
+#mostfavs:hover {background-image: url('/assets/rustmb/mostfavs_hover.png')}
+#mostlikes {background-image: url('/assets/rustmb/mostlikes.png')}
+#mostlikes:hover {background-image: url('/assets/rustmb/mostlikes_hover.png')}
+#mostdls {background-image: url('/assets/rustmb/mostdls.png')}
+#mostdls:hover {background-image: url('/assets/rustmb/mostdls_hover.png')}
+
+#uploadsave {background-image: url('/assets/rustmb/uploadsave.png')}
+#uploadsave:hover {background-image: url('/assets/rustmb/uploadsave_hover.png')}
+#cleanup {background-image: url('/assets/rustmb/cleanup.png')}
+#cleanup:hover {background-image: url('/assets/rustmb/cleanup_hover.png')}
+
 .search {padding: 16px; padding-bottom: 0px;}
 .search #searchbox {width: 100%; padding: 5px; border: 2px solid; border-color: #595959; border-radius: 4px;}
 

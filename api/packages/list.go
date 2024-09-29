@@ -42,7 +42,21 @@ func List(w http.ResponseWriter, r *http.Request) {
 		count = 100
 	}
 
-	list, err := db.FetchPackageList(r.URL.Query().Get("type"), r.URL.Query().Get("author"), r.URL.Query().Get("search"), offset, count)
+	var sort string // must NOT be user input
+	switch r.URL.Query().Get("sort") {
+	case "mostfavs":
+		sort = "favorites"
+	case "mostlikes":
+		sort = "goods"
+	case "mostdls":
+		sort = "downloads"
+	case "random":
+		sort = "RAND()"
+	default: // newest
+		sort = "id"
+	}
+
+	list, err := db.FetchPackageList(r.URL.Query().Get("type"), r.URL.Query().Get("author"), r.URL.Query().Get("search"), offset, count, sort)
 	if err != nil {
 		utils.WriteError(w, r, fmt.Sprintf("failed to fetch package list: %s", err))
 		return

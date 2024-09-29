@@ -56,7 +56,7 @@ func main() {
 	utils.DiscordSaveWebhookURL = *savewebhook
 
 	// static assets - using nginx now
-	//http.Handle("GET /assets/", http.StripPrefix("/assets/", http.FileServer(http.Dir("data/assets"))))
+	http.Handle("GET /assets/", http.StripPrefix("/assets/", http.FileServer(http.Dir("data/assets"))))
 	//http.Handle("GET cdn.cl0udb0x.com/", http.FileServer(http.Dir("data/cdn")))
 	//http.Handle("GET img.cl0udb0x.com/", http.FileServer(http.Dir("data/img")))
 

@@ -37,6 +37,7 @@ type Browser struct {
 	SteamID  string
 	MapName  string
 	Search   string
+	Sort     string
 	Category string
 	Packages []common.Package
 	PrevLink string
@@ -91,7 +92,21 @@ func Handle(w http.ResponseWriter, r *http.Request) {
 		author = steamid
 	}
 
-	list, err := db.FetchPackageList(c, author, r.URL.Query().Get("search"), (page-1)*itemsPerPage, itemsPerPage)
+	var sort string // must NOT be user input
+	switch r.URL.Query().Get("sort") {
+	case "mostfavs":
+		sort = "favorites"
+	case "mostlikes":
+		sort = "goods"
+	case "mostdls":
+		sort = "downloads"
+	case "random":
+		sort = "RAND()"
+	default: // newest
+		sort = "id"
+	}
+
+	list, err := db.FetchPackageList(c, author, r.URL.Query().Get("search"), (page-1)*itemsPerPage, itemsPerPage, sort)
 	if err != nil {
 		utils.WriteError(w, r, fmt.Sprintf("failed to fetch package list: %s", err))
 		return
@@ -112,6 +127,7 @@ func Handle(w http.ResponseWriter, r *http.Request) {
 		SteamID:  steamid,
 		MapName:  r.Header.Get("MAP"),
 		Search:   r.URL.Query().Get("search"),
+		Sort:     r.URL.Query().Get("sort"),
 		Category: category,
 		Packages: list,
 		PrevLink: prev,
