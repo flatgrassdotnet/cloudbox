@@ -9,22 +9,23 @@ h1 {margin-left: 10px;}
 .navbar .navicon {width: 32px; height: 32px; margin-bottom: 2px; display: inline-block;}
 .navbar .disabled {opacity: 0.25; pointer-events: none;}
 
-.subbar a {float: left; font-size: 16px; margin-left: 12px; margin-top: 4px; margin-bottom: 4px; font-weight: bolder; text-decoration: none; background-repeat: no-repeat; background-size: contain; height: 16px;}
+.subbar {margin-left: 12px;}
+.subbar a {float: left; font-size: 16px; margin-right: 12px; margin-top: 4px; margin-bottom: 4px; font-weight: bolder; text-decoration: none; background-repeat: no-repeat; background-size: contain; height: 16px;}
 .subbar span {margin-left: 20px;}
 .subbar .disabled {opacity: 0.25; pointer-events: none;}
 
 #mine {background-image: url('/assets/rustmb/mine.png');}
-#mine:hover {background-image: url('/assets/rustmb/mine_hover.png');}
+#mine:hover, #mine.active {background-image: url('/assets/rustmb/mine_hover.png');}
 #entity {background-image: url('/assets/rustmb/entity.png');}
-#entity:hover {background-image: url('/assets/rustmb/entity_hover.png');}
+#entity:hover, #entity.active {background-image: url('/assets/rustmb/entity_hover.png');}
 #weapon {background-image: url('/assets/rustmb/weapon.png');}
-#weapon:hover {background-image: url('/assets/rustmb/weapon_hover.png');}
+#weapon:hover, #weapon.active {background-image: url('/assets/rustmb/weapon_hover.png');}
 #prop {background-image: url('/assets/rustmb/prop.png');}
-#prop:hover {background-image: url('/assets/rustmb/prop_hover.png');}
+#prop:hover, #prop.active {background-image: url('/assets/rustmb/prop_hover.png');}
 #savemap {background-image: url('/assets/rustmb/savemap.png');}
-#savemap:hover {background-image: url('/assets/rustmb/savemap_hover.png');}
+#savemap:hover, #savemap.active {background-image: url('/assets/rustmb/savemap_hover.png');}
 #map {background-image: url('/assets/rustmb/map.png');}
-#map:hover {background-image: url('/assets/rustmb/map_hover.png');}
+#map:hover, #map.active {background-image: url('/assets/rustmb/map_hover.png');}
 
 #prev {background-image: url('/assets/rustmb/leftarrow.png')}
 #prev:hover {background-image: url('/assets/rustmb/leftarrow_hover.png')}
@@ -32,15 +33,15 @@ h1 {margin-left: 10px;}
 #next:hover {background-image: url('/assets/rustmb/rightarrow_hover.png')}
 
 #newest {background-image: url('/assets/rustmb/newest.png')}
-#newest:hover {background-image: url('/assets/rustmb/newest_hover.png')}
+#newest:hover, #newest.active {background-image: url('/assets/rustmb/newest_hover.png')}
 #random {background-image: url('/assets/rustmb/random.png')}
-#random:hover {background-image: url('/assets/rustmb/random_hover.png')}
+#random:hover, #random.active {background-image: url('/assets/rustmb/random_hover.png')}
 #mostfavs {background-image: url('/assets/rustmb/mostfavs.png')}
-#mostfavs:hover {background-image: url('/assets/rustmb/mostfavs_hover.png')}
+#mostfavs:hover, #mostfavs.active {background-image: url('/assets/rustmb/mostfavs_hover.png')}
 #mostlikes {background-image: url('/assets/rustmb/mostlikes.png')}
-#mostlikes:hover {background-image: url('/assets/rustmb/mostlikes_hover.png')}
+#mostlikes:hover, #mostlikes.active {background-image: url('/assets/rustmb/mostlikes_hover.png')}
 #mostdls {background-image: url('/assets/rustmb/mostdls.png')}
-#mostdls:hover {background-image: url('/assets/rustmb/mostdls_hover.png')}
+#mostdls:hover, #mostdls.active {background-image: url('/assets/rustmb/mostdls_hover.png')}
 
 #uploadsave {background-image: url('/assets/rustmb/uploadsave.png')}
 #uploadsave:hover {background-image: url('/assets/rustmb/uploadsave_hover.png')}

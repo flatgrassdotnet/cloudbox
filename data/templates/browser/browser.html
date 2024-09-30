@@ -8,14 +8,14 @@
 			<div class="navbar">
 				{{if or (not .InGame) (ne .Category "map")}}
 					{{if .InGame}}
-						<a href="/browse/mine" id="mine" {{if eq .SteamID ""}} class="disabled"{{end}}><div class="navicon"></div><br>Mine<br></a>
+						<a href="/browse/mine" id="mine"{{if eq .SteamID ""}} class="disabled"{{end}}{{if eq .Category "mine"}} class="active"{{end}}><div class="navicon"></div><br>Mine<br></a>
 					{{end}}
-					<a href="/browse/entities" id="entity"><div class="navicon"></div><br>Entities</a>
-					<a href="/browse/weapons" id="weapon"><div class="navicon"></div><br>Weapons</a>
-					<a href="/browse/props" id="prop"><div class="navicon"></div><br>Props</a>
-					<a href="/browse/saves" id="savemap"><div class="navicon"></div><br>Saves</a>
+					<a href="/browse/entities" id="entity"{{if eq .Category "entity"}} class="active"{{end}}><div class="navicon"></div><br>Entities</a>
+					<a href="/browse/weapons" id="weapon"{{if eq .Category "weapon"}} class="active"{{end}}><div class="navicon"></div><br>Weapons</a>
+					<a href="/browse/props" id="prop"{{if eq .Category "prop"}} class="active"{{end}}><div class="navicon"></div><br>Props</a>
+					<a href="/browse/saves" id="savemap"{{if eq .Category "savemap"}} class="active"{{end}}><div class="navicon"></div><br>Saves</a>
 					{{if not .InGame}}
-						<a href="/browse/maps" id="map"><div class="navicon"></div><br>Maps</a>
+						<a href="/browse/maps" id="map"{{if eq .Category "map"}} class="active"{{end}}><div class="navicon"></div><br>Maps</a>
 					{{end}}
 				{{end}}
 			</div>
@@ -31,15 +31,18 @@
 		</div>
 		<div class="header">
 			<div class="subbar">
-				<a href="?sort=newest" id="newest"><span>Newest</span></a>
-				<a href="?sort=random" id="random"><span>Random</span></span></a>
-				<a href="?sort=mostfavs" id="mostfavs"><span>Most Favorite</span></a>
-				<a href="?sort=mostlikes" id="mostlikes"><span>Most Liked</span></a>
-				<a href="?sort=mostdls" id="mostdls"><span>Most Used</span></a>
+				<a href="?sort=newest" id="newest"{{if eq .Sort "newest"}} class="active"{{end}}><span>Newest</span></a>
+				<a href="?sort=random" id="random"{{if eq .Sort "random"}} class="active"{{end}}><span>Random</span></span></a>
+				<a href="?sort=mostfavs" id="mostfavs"{{if eq .Sort "mostfavs"}} class="active"{{end}}><span>Most Favorite</span></a>
+				<a href="?sort=mostlikes" id="mostlikes"{{if eq .Sort "mostlikes"}} class="active"{{end}}><span>Most Liked</span></a>
+				<a href="?sort=mostdls" id="mostdls"{{if eq .Sort "mostdls"}} class="active"{{end}}><span>Most Used</span></a>
+			</div>
 				{{if and (.InGame) (eq .Category "savemap")}}
-					<a></a>
-					<a href="garrysmod://action/save" id="uploadsave"{{if eq .SteamID ""}} class="disabled"{{end}}><span>Upload</span></a>
-					<a href="garrysmod://action/clean" id="cleanup"><span>Cleanup</span></a>
+					<div style="-webkit-box-flex: 1; width: 100%;"></div>
+					<div class="subbar">
+						<a href="garrysmod://action/save" id="uploadsave"{{if eq .SteamID ""}} class="disabled"{{end}}><span>Upload</span></a>
+						<a href="garrysmod://action/clean" id="cleanup"><span>Cleanup</span></a>
+					</div>
 				{{end}}
 			</div>
 		</div>
