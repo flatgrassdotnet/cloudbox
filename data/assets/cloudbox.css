@@ -9,8 +9,8 @@ h1 {margin-left: 10px;}
 .navbar .navicon {width: 32px; height: 32px; margin-bottom: 2px; display: inline-block;}
 .navbar .disabled {opacity: 0.25; pointer-events: none;}
 
-.subbar a {overflow: hidden; font-size: 14px; margin-left: 12px; margin-top: 4px; margin-bottom: 4px; font-weight: bolder; text-decoration: none; background-repeat: no-repeat; background-size: contain; display: -webkit-inline-box;}
-.subbar .navicon {width: 16px; margin-right: 2px;}
+.subbar a {float: left; font-size: 16px; margin-left: 12px; margin-top: 4px; margin-bottom: 4px; font-weight: bolder; text-decoration: none; background-repeat: no-repeat; background-size: contain; height: 16px;}
+.subbar span {margin-left: 20px;}
 .subbar .disabled {opacity: 0.25; pointer-events: none;}
 
 #mine {background-image: url('/assets/rustmb/mine.png');}

@@ -31,15 +31,15 @@
 		</div>
 		<div class="header">
 			<div class="subbar">
-				<a href="?sort=newest" id="newest"><div class="navicon"></div>Newest</a>
-				<a href="?sort=random" id="random"><div class="navicon"></div>Random</span></a>
-				<a href="?sort=mostfavs" id="mostfavs"><div class="navicon"></div>Most Favorited</a>
-				<a href="?sort=mostlikes" id="mostlikes"><div class="navicon"></div>Most Liked</a>
-				<a href="?sort=mostdls" id="mostdls"><div class="navicon"></div>Most Downloaded</a>
+				<a href="?sort=newest" id="newest"><span>Newest</span></a>
+				<a href="?sort=random" id="random"><span>Random</span></span></a>
+				<a href="?sort=mostfavs" id="mostfavs"><span>Most Favorite</span></a>
+				<a href="?sort=mostlikes" id="mostlikes"><span>Most Liked</span></a>
+				<a href="?sort=mostdls" id="mostdls"><span>Most Used</span></a>
 				{{if and (.InGame) (eq .Category "savemap")}}
 					<a></a>
-					<a href="garrysmod://action/save" id="uploadsave"{{if eq .SteamID ""}} class="disabled"{{end}}><div class="navicon"></div>Upload</a>
-					<a href="garrysmod://action/clean" id="cleanup"><div class="navicon"></div>Cleanup</a>
+					<a href="garrysmod://action/save" id="uploadsave"{{if eq .SteamID ""}} class="disabled"{{end}}><span>Upload</span></a>
+					<a href="garrysmod://action/clean" id="cleanup"><span>Cleanup</span></a>
 				{{end}}
 			</div>
 		</div>
