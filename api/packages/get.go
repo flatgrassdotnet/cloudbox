@@ -37,7 +37,11 @@ func Get(w http.ResponseWriter, r *http.Request) {
 
 	rev, _ := strconv.Atoi(r.URL.Query().Get("rev"))
 	if rev < 1 {
-		rev = 1
+		rev, err = db.FetchPackageLatestRevision(id)
+		if err != nil {
+			utils.WriteError(w, r, fmt.Sprintf("failed to fetch package latest revision: %s", err))
+			return
+		}
 	}
 
 	pkg, err := db.FetchPackage(id, rev)

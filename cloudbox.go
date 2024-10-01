@@ -24,14 +24,12 @@ import (
 	"log"
 	"net/http"
 
+	"github.com/flatgrassdotnet/cloudbox/api/auth"
 	"github.com/flatgrassdotnet/cloudbox/api/content"
 	"github.com/flatgrassdotnet/cloudbox/api/packages"
 	"github.com/flatgrassdotnet/cloudbox/db"
-	"github.com/flatgrassdotnet/cloudbox/ingame/browser"
-	"github.com/flatgrassdotnet/cloudbox/ingame/publishsave"
 	"github.com/flatgrassdotnet/cloudbox/ingame/stats"
 	"github.com/flatgrassdotnet/cloudbox/ingame/toyboxapi"
-	"github.com/flatgrassdotnet/cloudbox/ingame/viewer"
 	"github.com/flatgrassdotnet/cloudbox/utils"
 )
 
@@ -55,18 +53,11 @@ func main() {
 	utils.DiscordStatsWebhookURL = *statswebhook
 	utils.DiscordSaveWebhookURL = *savewebhook
 
-	// static assets - using nginx now
-	//http.Handle("GET /assets/", http.StripPrefix("/assets/", http.FileServer(http.Dir("data/assets"))))
-	//http.Handle("GET cdn.cl0udb0x.com/", http.FileServer(http.Dir("data/cdn")))
-	//http.Handle("GET img.cl0udb0x.com/", http.FileServer(http.Dir("data/img")))
-
-	// cloudbox pages
-	http.HandleFunc("GET /browse/{category}", browser.Handle)
-	http.HandleFunc("GET /view/{id}", viewer.Handle)
-
 	// cloudbox api
+	http.HandleFunc("GET api.cl0udb0x.com/auth/getid", auth.GetID)
 	http.HandleFunc("GET api.cl0udb0x.com/packages/list", packages.List)
 	http.HandleFunc("GET api.cl0udb0x.com/packages/get", packages.Get)
+	http.HandleFunc("GET api.cl0udb0x.com/packages/publishsave", packages.PublishSave)
 	http.HandleFunc("GET api.cl0udb0x.com/content/get", content.Get)
 
 	// stats.garrysmod.com
@@ -78,26 +69,6 @@ func main() {
 	http.HandleFunc("GET /getinstall_003/", toyboxapi.GetPackage)
 	http.HandleFunc("GET /getscript_003/", toyboxapi.GetPackage)
 	http.HandleFunc("POST /upload_003/", toyboxapi.Upload)
-
-	// toybox.garrysmod.com
-	http.HandleFunc("GET /API/publishsave_002/", publishsave.Get)
-	http.HandleFunc("POST /API/publishsave_002/", publishsave.Post)
-
-	// redirects
-	http.HandleFunc("GET /", func(w http.ResponseWriter, r *http.Request) {
-		if r.URL.Path != "/" { // there has to be a better way to do this
-			w.WriteHeader(http.StatusNotFound)
-			return
-		}
-
-		http.Redirect(w, r, "/browse/entities", http.StatusSeeOther)
-	})
-	http.HandleFunc("GET toybox.garrysmod.com/ingame/", func(w http.ResponseWriter, r *http.Request) {
-		http.Redirect(w, r, "//toybox.garrysmod.com/browse/entities", http.StatusSeeOther)
-	})
-	http.HandleFunc("GET toybox.garrysmod.com/IG/maps/", func(w http.ResponseWriter, r *http.Request) {
-		http.Redirect(w, r, "//toybox.garrysmod.com/browse/maps", http.StatusSeeOther)
-	})
 
 	err = http.ListenAndServe(fmt.Sprintf(":%d", *port), nil)
 	if err != nil {
