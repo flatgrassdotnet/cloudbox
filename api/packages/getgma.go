@@ -19,7 +19,6 @@
 package packages
 
 import (
-	"bytes"
 	"encoding/binary"
 	"encoding/json"
 	"fmt"
@@ -63,13 +62,16 @@ func GetGMA(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	var buf bytes.Buffer
+	w.Header().Set("X-Package-ID", strconv.Itoa(pkg.ID))
+	w.Header().Set("X-Package-Revision", strconv.Itoa(pkg.Revision))
+	w.Header().Set("X-Package-Type", pkg.Type)
+	w.Header().Set("X-Package-Name", pkg.Name)
 
 	// magic
-	buf.Write([]byte("GMAD"))
+	w.Write([]byte("GMAD"))
 
 	// gma version
-	buf.Write([]byte{3})
+	w.Write([]byte{3})
 
 	// steamid (unused)
 	author, err := strconv.Atoi(pkg.Author)
@@ -80,21 +82,21 @@ func GetGMA(w http.ResponseWriter, r *http.Request) {
 
 	steamid := make([]byte, 8)
 	binary.LittleEndian.PutUint64(steamid, uint64(author))
-	buf.Write(steamid)
+	w.Write(steamid)
 
 	// timestamp (unused)
 	timestamp := make([]byte, 8)
 	binary.LittleEndian.PutUint64(timestamp, uint64(pkg.Uploaded.Unix()))
-	buf.Write(timestamp)
+	w.Write(timestamp)
 
 	// required content (unused)
-	buf.Write([]byte{0x00})
+	w.Write([]byte{0x00})
 
 	// addon name
-	buf.Write(append([]byte(pkg.Name), 0))
+	w.Write(append([]byte(pkg.Name), 0))
 
 	// addon description
-	description, err := json.Marshal(GMADescription{
+	err = json.NewEncoder(w).Encode(GMADescription{
 		Description: pkg.Description,
 		Type:        pkg.Type,
 		Tags:        []string{"fun"},
@@ -104,38 +106,38 @@ func GetGMA(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	buf.Write(append([]byte(description), 0x00))
+	w.Write([]byte{0x00})
 
 	// addon author
-	buf.Write(append([]byte(pkg.AuthorName), 0x00))
+	w.Write(append([]byte(pkg.AuthorName), 0x00))
 
 	// addon version
 	version := make([]byte, 4)
 	binary.LittleEndian.PutUint32(version, uint32(pkg.Revision))
 
-	buf.Write(version)
+	w.Write(version)
 
 	// file list
 	for i, content := range pkg.Content {
 		// file number
 		fileNum := make([]byte, 4)
 		binary.LittleEndian.PutUint32(fileNum, uint32(i+1))
-		buf.Write(fileNum)
+		w.Write(fileNum)
 
 		// file name
-		buf.Write(append([]byte(content.Path), 0x00))
+		w.Write(append([]byte(content.Path), 0x00))
 
 		// file size
 		fileSize := make([]byte, 8)
 		binary.LittleEndian.PutUint64(fileSize, uint64(content.Size))
-		buf.Write(fileSize)
+		w.Write(fileSize)
 
 		// file crc (skipped)
-		buf.Write(make([]byte, 4))
+		w.Write(make([]byte, 4))
 	}
 
 	// end of file list marker
-	buf.Write(make([]byte, 4))
+	w.Write(make([]byte, 4))
 
 	// file content
 	for _, content := range pkg.Content {
@@ -145,16 +147,9 @@ func GetGMA(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 
-		buf.Write(data)
+		w.Write(data)
 	}
 
 	// content crc (skipped)
-	buf.Write(make([]byte, 4))
-
-	w.Header().Set("X-Package-ID", strconv.Itoa(pkg.ID))
-	w.Header().Set("X-Package-Revision", strconv.Itoa(pkg.Revision))
-	w.Header().Set("X-Package-Type", pkg.Type)
-	w.Header().Set("X-Package-Name", pkg.Name)
-
-	w.Write(buf.Bytes())
+	w.Write(make([]byte, 4))
 }
