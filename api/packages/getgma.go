@@ -19,14 +19,11 @@
 package packages
 
 import (
-	"archive/zip"
 	"bytes"
 	"encoding/binary"
 	"encoding/json"
 	"fmt"
-	"io"
 	"net/http"
-	"os"
 	"strconv"
 
 	"github.com/flatgrassdotnet/cloudbox/db"
@@ -142,33 +139,13 @@ func GetGMA(w http.ResponseWriter, r *http.Request) {
 
 	// file content
 	for _, content := range pkg.Content {
-		b, err := os.ReadFile(fmt.Sprintf("data/cdn/%d/%d", content.ID, content.Revision))
+		data, err := utils.GetContentFile(content.ID, content.Revision)
 		if err != nil {
-			utils.WriteError(w, r, fmt.Sprintf("failed to read zip: %s", err))
+			utils.WriteError(w, r, fmt.Sprintf("failed to get content file data: %s", err))
 			return
 		}
 
-		zr, err := zip.NewReader(bytes.NewReader(b), int64(len(b)))
-		if err != nil {
-			utils.WriteError(w, r, fmt.Sprintf("failed to create zip reader: %s", err))
-			return
-		}
-
-		f, err := zr.Open("file")
-		if err != nil {
-			utils.WriteError(w, r, fmt.Sprintf("failed to open file from zip: %s", err))
-			return
-		}
-
-		defer f.Close()
-
-		fb, err := io.ReadAll(f)
-		if err != nil {
-			utils.WriteError(w, r, fmt.Sprintf("failed to read file from zip: %s", err))
-			return
-		}
-
-		buf.Write(fb)
+		buf.Write(data)
 	}
 
 	// content crc (skipped)

@@ -16,33 +16,38 @@
 	along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-package content
+package utils
 
 import (
+	"archive/zip"
+	"bytes"
 	"fmt"
-	"net/http"
-	"strconv"
-
-	"github.com/flatgrassdotnet/cloudbox/utils"
+	"io"
+	"os"
 )
 
-func Get(w http.ResponseWriter, r *http.Request) {
-	id, err := strconv.Atoi(r.URL.Query().Get("id"))
+func GetContentFile(id int, rev int) ([]byte, error) {
+	b, err := os.ReadFile(fmt.Sprintf("data/cdn/%d/%d", id, rev))
 	if err != nil {
-		utils.WriteError(w, r, fmt.Sprintf("failed to parse id value: %s", err))
-		return
+		return nil, err
 	}
 
-	rev, _ := strconv.Atoi(r.URL.Query().Get("rev"))
-	if rev < 1 {
-		rev = 1
-	}
-
-	data, err := utils.GetContentFile(id, rev)
+	zr, err := zip.NewReader(bytes.NewReader(b), int64(len(b)))
 	if err != nil {
-		utils.WriteError(w, r, fmt.Sprintf("failed to get content file data: %s", err))
-		return
+		return nil, err
 	}
 
-	w.Write(data)
+	f, err := zr.Open("file")
+	if err != nil {
+		return nil, err
+	}
+
+	defer f.Close()
+
+	fb, err := io.ReadAll(f)
+	if err != nil {
+		return nil, err
+	}
+
+	return fb, nil
 }
