@@ -151,5 +151,10 @@ func GetGMA(w http.ResponseWriter, r *http.Request) {
 	// content crc (skipped)
 	buf.Write(make([]byte, 4))
 
+	w.Header().Set("X-Package-ID", strconv.Itoa(pkg.ID))
+	w.Header().Set("X-Package-Revision", strconv.Itoa(pkg.Revision))
+	w.Header().Set("X-Package-Type", pkg.Type)
+	w.Header().Set("X-Package-Name", pkg.Name)
+
 	w.Write(buf.Bytes())
 }
