@@ -57,15 +57,15 @@ func GetGMA(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	if len(pkg.Content) == 0 {
-		utils.WriteError(w, r, fmt.Sprintf("requested package with no content: %dr%d", id, rev))
-		return
-	}
-
 	w.Header().Set("X-Package-ID", strconv.Itoa(pkg.ID))
 	w.Header().Set("X-Package-Revision", strconv.Itoa(pkg.Revision))
 	w.Header().Set("X-Package-Type", pkg.Type)
 	w.Header().Set("X-Package-Name", pkg.Name)
+	
+	if len(pkg.Content) == 0 {
+		w.WriteHeader(http.StatusOK)
+		return
+	}
 
 	// magic
 	w.Write([]byte("GMAD"))
