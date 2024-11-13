@@ -146,3 +146,14 @@ func FetchPackageList(category string, author string, search string, offset int,
 
 	return list, nil
 }
+
+func FetchFileInfoFromPath(path string) (int, int, error) {
+	var id int
+	var rev int
+	err := handle.QueryRow("SELECT id, rev FROM files WHERE path = ?", path).Scan(&id, &rev)
+	if err != nil {
+		return 0, 0, err
+	}
+
+	return id, rev, nil
+}

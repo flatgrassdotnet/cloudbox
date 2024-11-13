@@ -60,6 +60,7 @@ func main() {
 	http.HandleFunc("GET api.cl0udb0x.com/packages/getgma", packages.GetGMA)
 	http.HandleFunc("GET api.cl0udb0x.com/packages/publishsave", packages.PublishSave)
 	http.HandleFunc("GET api.cl0udb0x.com/content/get", content.Get)
+	http.HandleFunc("GET api.cl0udb0x.com/content/fastdl", content.FastDL)
 
 	// stats.garrysmod.com
 	http.HandleFunc("GET /API/mapload_001/", stats.MapLoad)
