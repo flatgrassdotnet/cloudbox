@@ -57,6 +57,7 @@ func main() {
 	http.HandleFunc("GET api.cl0udb0x.com/auth/getid", auth.GetID)
 	http.HandleFunc("GET api.cl0udb0x.com/packages/list", packages.List)
 	http.HandleFunc("GET api.cl0udb0x.com/packages/get", packages.Get)
+	http.HandleFunc("GET api.cl0udb0x.com/packages/getscript", packages.GetScript)
 	http.HandleFunc("GET api.cl0udb0x.com/packages/getgma", packages.GetGMA)
 	http.HandleFunc("GET api.cl0udb0x.com/packages/publishsave", packages.PublishSave)
 	http.HandleFunc("GET api.cl0udb0x.com/content/get", content.Get)
