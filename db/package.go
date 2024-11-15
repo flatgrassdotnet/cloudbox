@@ -97,7 +97,7 @@ func FetchPackage(id int, rev int) (common.Package, error) {
 	return pkg, nil
 }
 
-func FetchPackageList(category string, author string, search string, offset int, count int, sort string) ([]common.Package, error) {
+func FetchPackageList(category string, author string, search string, offset int, count int, sort string, safemode bool) ([]common.Package, error) {
 	var args []any
 	q := "SELECT p.id, p.rev, p.type, p.name, p.dataname, p.author, IFNULL(profiles.personaname, p.legacyauthor), IFNULL(profiles.avatarmedium, \"\"), p.description, p.time FROM packages p LEFT JOIN profiles ON p.author = profiles.steamid WHERE p.rev = (SELECT MAX(p2.rev) FROM packages p2 WHERE p2.id = p.id)"
 
@@ -114,6 +114,10 @@ func FetchPackageList(category string, author string, search string, offset int,
 	if search != "" {
 		q += " AND p.name LIKE CONCAT('%', ?, '%')"
 		args = append(args, search)
+	}
+
+	if safemode {
+		q += " AND unsafe = 0"
 	}
 
 	// dangerous!
