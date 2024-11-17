@@ -23,8 +23,10 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
+	"regexp"
 	"strconv"
 
+	"github.com/flatgrassdotnet/cloudbox/common"
 	"github.com/flatgrassdotnet/cloudbox/db"
 	"github.com/flatgrassdotnet/cloudbox/utils"
 )
@@ -57,11 +59,6 @@ func GetGMA(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	w.Header().Set("X-Package-ID", strconv.Itoa(pkg.ID))
-	w.Header().Set("X-Package-Revision", strconv.Itoa(pkg.Revision))
-	w.Header().Set("X-Package-Type", pkg.Type)
-	w.Header().Set("X-Package-Name", pkg.Name)
-	
 	if len(pkg.Content) == 0 {
 		w.WriteHeader(http.StatusOK)
 		return
@@ -117,19 +114,32 @@ func GetGMA(w http.ResponseWriter, r *http.Request) {
 
 	w.Write(version)
 
+	var content []common.Content
+	for _, item := range pkg.Content {
+		whitelisted, err := IsGMAPathWhitelisted(item.Path)
+		if err != nil {
+			utils.WriteError(w, r, fmt.Sprintf("failed to check if path is whitelisted: %s", err))
+			return
+		}
+
+		if whitelisted {
+			content = append(content, item)
+		}
+	}
+
 	// file list
-	for i, content := range pkg.Content {
+	for i, item := range content {
 		// file number
 		fileNum := make([]byte, 4)
 		binary.LittleEndian.PutUint32(fileNum, uint32(i+1))
 		w.Write(fileNum)
 
 		// file name
-		w.Write(append([]byte(content.Path), 0x00))
+		w.Write(append([]byte(item.Path), 0x00))
 
 		// file size
 		fileSize := make([]byte, 8)
-		binary.LittleEndian.PutUint64(fileSize, uint64(content.Size))
+		binary.LittleEndian.PutUint64(fileSize, uint64(item.Size))
 		w.Write(fileSize)
 
 		// file crc (skipped)
@@ -140,8 +150,8 @@ func GetGMA(w http.ResponseWriter, r *http.Request) {
 	w.Write(make([]byte, 4))
 
 	// file content
-	for _, content := range pkg.Content {
-		data, err := utils.GetContentFile(content.ID, content.Revision)
+	for _, item := range content {
+		data, err := utils.GetContentFile(item.ID, item.Revision)
 		if err != nil {
 			utils.WriteError(w, r, fmt.Sprintf("failed to get content file data: %s", err))
 			return
@@ -152,4 +162,103 @@ func GetGMA(w http.ResponseWriter, r *http.Request) {
 
 	// content crc (skipped)
 	w.Write(make([]byte, 4))
+}
+
+var gmaWhitelist = map[string]bool{
+	"^lua/(.*).lua$":                               true,
+	"^scenes/(.*).vcd$":                            true,
+	"^particles/(.*).pcf$":                         true,
+	"^resource/fonts/(.*).ttf$":                    true,
+	"^scripts/vehicles/(.*).txt$":                  true,
+	"^resource/localization/(.*)/(.*).properties$": true,
+	"^maps/(.*).bsp$":                              true,
+	"^maps/(.*).lmp$":                              true,
+	"^maps/(.*).nav$":                              true,
+	"^maps/(.*).ain$":                              true,
+	"^maps/thumb/(.*).png$":                        true,
+	"^sound/(.*).wav$":                             true,
+	"^sound/(.*).mp3$":                             true,
+	"^sound/(.*).ogg$":                             true,
+	"^materials/(.*).vmt$":                         true,
+	"^materials/(.*).vtf$":                         true,
+	"^materials/(.*).png$":                         true,
+	"^materials/(.*).jpg$":                         true,
+	"^materials/(.*).jpeg$":                        true,
+	"^materials/colorcorrection/(.*).raw$":         true,
+	"^models/(.*).mdl$":                            true,
+	"^models/(.*).phy$":                            true,
+	"^models/(.*).ani$":                            true,
+	"^models/(.*).vvd$":                            true,
+
+	"^models/(.*).vtx$":       true,
+	"^!models/(.*).sw.vtx$":   false, // These variations are unused by the game
+	"^!models/(.*).360.vtx$":  false,
+	"^!models/(.*).xbox.vtx$": false,
+
+	"^gamemodes/(.*)/(.*).txt$":       true,
+	"^!gamemodes/(.*)/(.*)/(.*).txt$": false, // Only in the root gamemode folder please!
+	"^gamemodes/(.*)/(.*).fgd$":       true,
+	"^!gamemodes/(.*)/(.*)/(.*).fgd$": false,
+
+	"^gamemodes/(.*)/logo.png$":                   true,
+	"^gamemodes/(.*)/icon24.png$":                 true,
+	"^gamemodes/(.*)/gamemode/(.*).lua$":          true,
+	"^gamemodes/(.*)/entities/effects/(.*).lua$":  true,
+	"^gamemodes/(.*)/entities/weapons/(.*).lua$":  true,
+	"^gamemodes/(.*)/entities/entities/(.*).lua$": true,
+	"^gamemodes/(.*)/backgrounds/(.*).png$":       true,
+	"^gamemodes/(.*)/backgrounds/(.*).jpg$":       true,
+	"^gamemodes/(.*)/backgrounds/(.*).jpeg$":      true,
+	"^gamemodes/(.*)/content/models/(.*).mdl$":    true,
+	"^gamemodes/(.*)/content/models/(.*).phy$":    true,
+	"^gamemodes/(.*)/content/models/(.*).ani$":    true,
+	"^gamemodes/(.*)/content/models/(.*).vvd$":    true,
+
+	"^gamemodes/(.*)/content/models/(.*).vtx$":       true,
+	"^!gamemodes/(.*)/content/models/(.*).sw.vtx$":   false,
+	"^!gamemodes/(.*)/content/models/(.*).360.vtx$":  false,
+	"^!gamemodes/(.*)/content/models/(.*).xbox.vtx$": false,
+
+	"^gamemodes/(.*)/content/materials/(.*).vmt$":                         true,
+	"^gamemodes/(.*)/content/materials/(.*).vtf$":                         true,
+	"^gamemodes/(.*)/content/materials/(.*).png$":                         true,
+	"^gamemodes/(.*)/content/materials/(.*).jpg$":                         true,
+	"^gamemodes/(.*)/content/materials/(.*).jpeg$":                        true,
+	"^gamemodes/(.*)/content/materials/colorcorrection/(.*).raw$":         true,
+	"^gamemodes/(.*)/content/scenes/(.*).vcd$":                            true,
+	"^gamemodes/(.*)/content/particles/(.*).pcf$":                         true,
+	"^gamemodes/(.*)/content/resource/fonts/(.*).ttf$":                    true,
+	"^gamemodes/(.*)/content/scripts/vehicles/(.*).txt$":                  true,
+	"^gamemodes/(.*)/content/resource/localization/(.*)/(.*).properties$": true,
+	"^gamemodes/(.*)/content/maps/(.*).bsp$":                              true,
+	"^gamemodes/(.*)/content/maps/(.*).nav$":                              true,
+	"^gamemodes/(.*)/content/maps/(.*).ain$":                              true,
+	"^gamemodes/(.*)/content/maps/thumb/(.*).png$":                        true,
+	"^gamemodes/(.*)/content/sound/(.*).wav$":                             true,
+	"^gamemodes/(.*)/content/sound/(.*).mp3$":                             true,
+	"^gamemodes/(.*)/content/sound/(.*).ogg$":                             true,
+
+	// static version of the data/ folder
+	// (because you wouldn't be able to modify these)
+	// We only allow filetypes here that are not already allowed above
+	"^data_static/(.*).txt$":  true,
+	"^data_static/(.*).dat$":  true,
+	"^data_static/(.*).json$": true,
+	"^data_static/(.*).xml$":  true,
+	"^data_static/(.*).csv$":  true,
+}
+
+func IsGMAPathWhitelisted(path string) (bool, error) {
+	for rule, allowed := range gmaWhitelist {
+		matched, err := regexp.MatchString(rule, path)
+		if err != nil {
+			return false, err
+		}
+
+		if matched {
+			return allowed, nil
+		}
+	}
+
+	return false, nil
 }
