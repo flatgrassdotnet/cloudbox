@@ -37,6 +37,11 @@ type Package struct {
 	Content     []Content `json:"content,omitempty"`
 	Includes    []Include `json:"includes,omitempty"`
 	Uploaded    time.Time `json:"uploaded,omitempty"`
+
+	Downloads int `json:"downloads,omitempty"`
+	Favorites int `json:"favorites,omitempty"`
+	Goods     int `json:"goods,omitempty"`
+	Bads      int `json:"bads,omitempty"`
 }
 
 type Content struct {

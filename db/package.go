@@ -59,7 +59,7 @@ func FetchPackageLatestRevision(id int) (int, error) {
 
 func FetchPackage(id int, rev int) (common.Package, error) {
 	var pkg common.Package
-	err := handle.QueryRow("SELECT id, rev, type, name, dataname, author, description, data FROM packages WHERE id = ? AND rev = ?", id, rev).Scan(&pkg.ID, &pkg.Revision, &pkg.Type, &pkg.Name, &pkg.Dataname, &pkg.Author, &pkg.Description, &pkg.Data)
+	err := handle.QueryRow("SELECT id, rev, type, name, dataname, author, description, downloads, favorites, goods, bads, data FROM packages WHERE id = ? AND rev = ?", id, rev).Scan(&pkg.ID, &pkg.Revision, &pkg.Type, &pkg.Name, &pkg.Dataname, &pkg.Author, &pkg.Description, &pkg.Downloads, &pkg.Favorites, &pkg.Goods, &pkg.Bads, &pkg.Data)
 	if err != nil {
 		return pkg, err
 	}
