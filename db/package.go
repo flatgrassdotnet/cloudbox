@@ -99,7 +99,27 @@ func FetchPackage(id int, rev int) (common.Package, error) {
 
 func FetchPackageList(category string, author string, search string, offset int, count int, sort string, safemode bool) ([]common.Package, error) {
 	var args []any
-	q := "SELECT p.id, p.rev, p.type, p.name, p.dataname, p.author, IFNULL(profiles.personaname, p.legacyauthor), IFNULL(profiles.avatarmedium, \"\"), p.description, p.downloads, p.favorites, p.goods, p.bads, p.time FROM packages p LEFT JOIN profiles ON p.author = profiles.steamid WHERE p.rev = (SELECT MAX(p2.rev) FROM packages p2 WHERE p2.id = p.id)"
+	q := `SELECT 
+	p.id, 
+	p.rev, 
+	p.type, 
+	p.name, 
+	p.dataname, 
+	COALESCE(p.author, ""), 
+	COALESCE(pr.personaname, s.author, ""), 
+	COALESCE(pr.avatarmedium, ""), 
+	COALESCE(p.description, s.description, ""), 
+	COALESCE(p.downloads, s.downloads, 0), 
+	COALESCE(p.favorites, s.favorites, 0), 
+	COALESCE(p.goods, s.goods, 0), 
+	COALESCE(p.bads, s.bads, 0), 
+	p.time 
+	FROM packages p 
+	LEFT JOIN profiles pr
+	ON p.author = pr.steamid 
+	LEFT JOIN scraped s
+	ON p.id = s.id 
+	WHERE p.rev = (SELECT MAX(p2.rev) FROM packages p2 WHERE p2.id = p.id)`
 
 	if category != "" {
 		q += " AND p.type = ?"
