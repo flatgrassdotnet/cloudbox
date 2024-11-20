@@ -119,6 +119,7 @@ func FetchPackageList(category string, author string, search string, offset int,
 	ON p.author = pr.steamid 
 	LEFT JOIN scraped s
 	ON p.id = s.id 
+	AND s.rev = (SELECT MAX(s2.rev) FROM scraped s2 WHERE s2.id = s.id) 
 	WHERE p.rev = (SELECT MAX(p2.rev) FROM packages p2 WHERE p2.id = p.id)`
 
 	if category != "" {
