@@ -71,10 +71,13 @@ func GetGMA(w http.ResponseWriter, r *http.Request) {
 	w.Write([]byte{3})
 
 	// steamid (unused)
-	author, err := strconv.Atoi(pkg.Author)
-	if err != nil {
-		utils.WriteError(w, r, fmt.Sprintf("failed to convert author steamid: %s", err))
-		return
+	var author int
+	if pkg.Author != "" {
+		author, err = strconv.Atoi(pkg.Author)
+		if err != nil {
+			utils.WriteError(w, r, fmt.Sprintf("failed to convert author steamid: %s", err))
+			return
+		}
 	}
 
 	steamid := make([]byte, 8)
