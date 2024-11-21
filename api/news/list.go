@@ -16,12 +16,10 @@ func List(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	resp, err := json.Marshal(entries)
+	w.Header().Set("Content-Type", "application/json")
+	err = json.NewEncoder(w).Encode(entries)
 	if err != nil {
-		utils.WriteError(w, r, fmt.Sprintf("failed to marshal response: %s", err))
+		utils.WriteError(w, r, fmt.Sprintf("failed to encode response: %s", err))
 		return
 	}
-
-	w.Header().Set("Content-Type", "application/json")
-	w.Write(resp)
 }
