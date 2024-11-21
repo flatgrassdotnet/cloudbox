@@ -26,6 +26,7 @@ import (
 
 	"github.com/flatgrassdotnet/cloudbox/api/auth"
 	"github.com/flatgrassdotnet/cloudbox/api/content"
+	"github.com/flatgrassdotnet/cloudbox/api/news"
 	"github.com/flatgrassdotnet/cloudbox/api/packages"
 	"github.com/flatgrassdotnet/cloudbox/db"
 	"github.com/flatgrassdotnet/cloudbox/ingame/stats"
@@ -55,6 +56,7 @@ func main() {
 
 	// cloudbox api
 	http.HandleFunc("GET api.cl0udb0x.com/auth/getid", auth.GetID)
+	http.HandleFunc("GET api.cl0udb0x.com/news/list", news.List)
 	http.HandleFunc("GET api.cl0udb0x.com/packages/list", packages.List)
 	http.HandleFunc("GET api.cl0udb0x.com/packages/get", packages.Get)
 	http.HandleFunc("GET api.cl0udb0x.com/packages/getscript", packages.GetScript)
