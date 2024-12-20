@@ -145,7 +145,7 @@ func FetchPackageList(category string, author string, search string, offset int,
 	safemode = true
 
 	if safemode {
-		q += " AND unsafe = 0"
+		q += " AND incompatible = 0"
 	}
 
 	// dangerous!
