@@ -38,13 +38,18 @@ func InsertPackage(packageType string, name string, dataname string, author stri
 	return int(i), nil
 }
 
-func InsertPackageInclude(id int, rev int, iid int, irev int) error {
-	_, err := handle.Exec("INSERT INTO includes (id, rev, includeid, includerev) VALUES (?, ?, ?, ?)", id, rev, iid, irev)
+func InsertPackageInclude(id int, rev int, iid int, irev int) (int, error) {
+	r, err := handle.Exec("INSERT INTO includes (id, rev, includeid, includerev) VALUES (?, ?, ?, ?)", id, rev, iid, irev)
 	if err != nil {
-		return err
+		return 0, err
 	}
 
-	return nil
+	i, err := r.LastInsertId()
+	if err != nil {
+		return 0, err
+	}
+
+	return int(i), nil
 }
 
 func FetchPackageLatestRevision(id int) (int, error) {
@@ -109,10 +114,10 @@ func FetchPackageList(category string, author string, search string, offset int,
 	COALESCE(pr.personaname, s.author, ""), 
 	COALESCE(pr.avatarmedium, ""), 
 	COALESCE(p.description, s.description, ""), 
-	COALESCE(p.downloads, s.downloads, 0), 
-	COALESCE(p.favorites, s.favorites, 0), 
-	COALESCE(p.goods, s.goods, 0), 
-	COALESCE(p.bads, s.bads, 0), 
+	COALESCE(s.downloads, 0), 
+	COALESCE(s.favorites, 0), 
+	COALESCE(s.goods, 0), 
+	COALESCE(s.bads, 0), 
 	p.time 
 	FROM packages p 
 	LEFT JOIN profiles pr
@@ -136,6 +141,8 @@ func FetchPackageList(category string, author string, search string, offset int,
 		q += " AND p.name LIKE CONCAT('%', ?, '%')"
 		args = append(args, search)
 	}
+
+	safemode = true
 
 	if safemode {
 		q += " AND unsafe = 0"

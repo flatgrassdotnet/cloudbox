@@ -79,7 +79,7 @@ func PublishSave(w http.ResponseWriter, r *http.Request) {
 			}
 
 			// save revision should always be 1 unless something has gone horribly wrong
-			err = db.InsertPackageInclude(pkgID, 1, i, rev)
+			_, err = db.InsertPackageInclude(pkgID, 1, i, rev)
 			if err != nil {
 				utils.WriteError(w, r, fmt.Sprintf("failed to insert package include: %s", err))
 				return
