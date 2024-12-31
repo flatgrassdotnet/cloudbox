@@ -55,15 +55,15 @@ func main() {
 	utils.DiscordSaveWebhookURL = *savewebhook
 
 	// cloudbox api
-	http.HandleFunc("GET api.cl0udb0x.com/auth/getid", auth.GetID)
-	http.HandleFunc("GET api.cl0udb0x.com/news/list", news.List)
-	http.HandleFunc("GET api.cl0udb0x.com/packages/list", packages.List)
-	http.HandleFunc("GET api.cl0udb0x.com/packages/get", packages.Get)
-	http.HandleFunc("GET api.cl0udb0x.com/packages/getscript", packages.GetScript)
-	http.HandleFunc("GET api.cl0udb0x.com/packages/getgma", packages.GetGMA)
-	http.HandleFunc("GET api.cl0udb0x.com/packages/publishsave", packages.PublishSave)
-	http.HandleFunc("GET api.cl0udb0x.com/content/get", content.Get)
-	http.HandleFunc("GET api.cl0udb0x.com/content/fastdl", content.FastDL)
+	http.HandleFunc("GET /auth/getid", auth.GetID)
+	http.HandleFunc("GET /news/list", news.List)
+	http.HandleFunc("GET /packages/list", packages.List)
+	http.HandleFunc("GET /packages/get", packages.Get)
+	http.HandleFunc("GET /packages/getscript", packages.GetScript)
+	http.HandleFunc("GET /packages/getgma", packages.GetGMA)
+	http.HandleFunc("GET /packages/publishsave", packages.PublishSave)
+	http.HandleFunc("GET /content/get", content.Get)
+	http.HandleFunc("GET /content/fastdl", content.FastDL)
 
 	// stats.garrysmod.com
 	http.HandleFunc("GET /API/mapload_001/", stats.MapLoad)
