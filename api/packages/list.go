@@ -44,12 +44,8 @@ func List(w http.ResponseWriter, r *http.Request) {
 
 	var sort string // must NOT be user input
 	switch r.URL.Query().Get("sort") {
-	case "mostfavs":
+	case "popular":
 		sort = "COALESCE(s.favorites, 0)"
-	case "mostlikes":
-		sort = "COALESCE(s.goods, 0)"
-	case "mostdls":
-		sort = "COALESCE(s.downloads, 0)"
 	case "random":
 		sort = "RAND()"
 	default: // newest
