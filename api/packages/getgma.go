@@ -25,6 +25,7 @@ import (
 	"net/http"
 	"regexp"
 	"strconv"
+	"strings"
 
 	"github.com/flatgrassdotnet/cloudbox/common"
 	"github.com/flatgrassdotnet/cloudbox/db"
@@ -67,8 +68,8 @@ func GetGMA(w http.ResponseWriter, r *http.Request) {
 	// magic
 	w.Write([]byte("GMAD"))
 
-	// gma version
-	w.Write([]byte{3})
+	// version
+	binary.Write(w, binary.LittleEndian, uint8(3))
 
 	// steamid (unused)
 	var author int
@@ -80,20 +81,16 @@ func GetGMA(w http.ResponseWriter, r *http.Request) {
 		}
 	}
 
-	steamid := make([]byte, 8)
-	binary.LittleEndian.PutUint64(steamid, uint64(author))
-	w.Write(steamid)
+	binary.Write(w, binary.LittleEndian, uint64(author))
 
-	// timestamp (unused)
-	timestamp := make([]byte, 8)
-	binary.LittleEndian.PutUint64(timestamp, uint64(pkg.Uploaded.Unix()))
-	w.Write(timestamp)
+	// timestamp
+	binary.Write(w, binary.LittleEndian, uint64(pkg.Uploaded.Unix()))
 
-	// required content (unused)
-	w.Write([]byte{0x00})
+	// required content (stubbed)
+	binary.Write(w, binary.LittleEndian, uint8(0))
 
 	// addon name
-	w.Write(append([]byte(pkg.Name), 0))
+	w.Write([]byte(pkg.Name + "\000"))
 
 	// addon description
 	err = json.NewEncoder(w).Encode(GMADescription{
@@ -106,20 +103,18 @@ func GetGMA(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	w.Write([]byte{0x00})
+	binary.Write(w, binary.LittleEndian, uint8(0)) // null terminator
 
-	// addon author
-	w.Write(append([]byte(pkg.AuthorName), 0x00))
+	// addon author (unused)
+	w.Write([]byte(pkg.AuthorName + "\000"))
 
-	// addon version
-	version := make([]byte, 4)
-	binary.LittleEndian.PutUint32(version, uint32(pkg.Revision))
+	// addon version (unused)
+	binary.Write(w, binary.LittleEndian, uint32(pkg.Revision))
 
-	w.Write(version)
-
+	// exclude non-whitelisted files
 	var content []common.Content
 	for _, item := range pkg.Content {
-		whitelisted, err := IsGMAPathWhitelisted(item.Path)
+		whitelisted, err := isPathWhitelisted(item.Path)
 		if err != nil {
 			utils.WriteError(w, r, fmt.Sprintf("failed to check if path is whitelisted: %s", err))
 			return
@@ -133,24 +128,20 @@ func GetGMA(w http.ResponseWriter, r *http.Request) {
 	// file list
 	for i, item := range content {
 		// file number
-		fileNum := make([]byte, 4)
-		binary.LittleEndian.PutUint32(fileNum, uint32(i+1))
-		w.Write(fileNum)
+		binary.Write(w, binary.LittleEndian, uint32(i+1))
 
 		// file name
-		w.Write(append([]byte(item.Path), 0x00))
+		w.Write([]byte(strings.ToLower(item.Path) + "\000"))
 
 		// file size
-		fileSize := make([]byte, 8)
-		binary.LittleEndian.PutUint64(fileSize, uint64(item.Size))
-		w.Write(fileSize)
+		binary.Write(w, binary.LittleEndian, uint64(item.Size))
 
 		// file crc (skipped)
-		w.Write(make([]byte, 4))
+		binary.Write(w, binary.LittleEndian, uint32(0))
 	}
 
 	// end of file list marker
-	w.Write(make([]byte, 4))
+	binary.Write(w, binary.LittleEndian, uint32(0))
 
 	// file content
 	for _, item := range content {
@@ -164,7 +155,7 @@ func GetGMA(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// content crc (skipped)
-	w.Write(make([]byte, 4))
+	binary.Write(w, binary.LittleEndian, uint32(0))
 }
 
 var gmaWhitelist = map[string]bool{
@@ -251,7 +242,7 @@ var gmaWhitelist = map[string]bool{
 	"^data_static/(.*).csv$":  true,
 }
 
-func IsGMAPathWhitelisted(path string) (bool, error) {
+func isPathWhitelisted(path string) (bool, error) {
 	for rule, allowed := range gmaWhitelist {
 		matched, err := regexp.MatchString(rule, path)
 		if err != nil {
