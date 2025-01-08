@@ -32,7 +32,7 @@ import (
 	"github.com/flatgrassdotnet/cloudbox/utils"
 )
 
-type GMADescription struct {
+type gmaDescription struct {
 	Description string   `json:"description"`
 	Type        string   `json:"type"`
 	Tags        []string `json:"tags"`
@@ -93,7 +93,7 @@ func GetGMA(w http.ResponseWriter, r *http.Request) {
 	w.Write([]byte(pkg.Name + "\000"))
 
 	// addon description
-	err = json.NewEncoder(w).Encode(GMADescription{
+	err = json.NewEncoder(w).Encode(gmaDescription{
 		Description: pkg.Description,
 		Type:        pkg.Type,
 		Tags:        []string{"fun"},
