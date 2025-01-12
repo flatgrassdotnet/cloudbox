@@ -64,7 +64,7 @@ func FetchPackageLatestRevision(id int) (int, error) {
 
 func FetchPackage(id int, rev int) (common.Package, error) {
 	var pkg common.Package
-	err := handle.QueryRow("SELECT id, rev, type, name, dataname, COALESCE(author, \"\"), COALESCE(description, \"\"), data FROM packages WHERE id = ? AND rev = ?", id, rev).Scan(&pkg.ID, &pkg.Revision, &pkg.Type, &pkg.Name, &pkg.Dataname, &pkg.Author, &pkg.Description, &pkg.Data)
+	err := handle.QueryRow("SELECT id, rev, type, name, COALESCE(dataname, \"\"), COALESCE(author, \"\"), COALESCE(description, \"\"), data FROM packages WHERE id = ? AND rev = ?", id, rev).Scan(&pkg.ID, &pkg.Revision, &pkg.Type, &pkg.Name, &pkg.Dataname, &pkg.Author, &pkg.Description, &pkg.Data)
 	if err != nil {
 		return pkg, err
 	}
@@ -109,7 +109,7 @@ func FetchPackageList(category string, author string, search string, offset int,
 	p.rev, 
 	p.type, 
 	p.name, 
-	p.dataname, 
+	COALESCE(p.dataname, ""), 
 	COALESCE(p.author, ""), 
 	COALESCE(pr.personaname, s.author, ""), 
 	COALESCE(pr.avatarmedium, ""), 
@@ -141,8 +141,6 @@ func FetchPackageList(category string, author string, search string, offset int,
 		q += " AND p.name LIKE CONCAT('%', ?, '%')"
 		args = append(args, search)
 	}
-
-	safemode = true
 
 	if safemode {
 		q += " AND incompatible = 0"
