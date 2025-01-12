@@ -64,7 +64,7 @@ func AuthenticateUserTicket(ticket string) (common.UserTicketInfo, error) {
 
 	// no steamid, something is wrong
 	if rd.Response.Params.SteamID == "" {
-		return common.UserTicketInfo{}, fmt.Errorf(rd.Response.Error.ErrorDesc)
+		return common.UserTicketInfo{}, errors.New(rd.Response.Error.ErrorDesc)
 	}
 
 	return rd.Response.Params, nil
