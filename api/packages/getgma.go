@@ -19,8 +19,10 @@
 package packages
 
 import (
+	"database/sql"
 	"encoding/binary"
 	"encoding/json"
+	"errors"
 	"fmt"
 	"net/http"
 	"regexp"
@@ -56,6 +58,11 @@ func GetGMA(w http.ResponseWriter, r *http.Request) {
 
 	pkg, err := db.FetchPackage(id, rev)
 	if err != nil {
+		if errors.Is(err, sql.ErrNoRows) {
+			http.Error(w, "package not found", http.StatusNotFound)
+			return
+		}
+
 		utils.WriteError(w, r, fmt.Sprintf("failed to fetch package: %s", err))
 		return
 	}

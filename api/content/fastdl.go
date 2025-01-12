@@ -1,6 +1,8 @@
 package content
 
 import (
+	"database/sql"
+	"errors"
 	"fmt"
 	"net/http"
 	"strconv"
@@ -19,6 +21,11 @@ func FastDL(w http.ResponseWriter, r *http.Request) {
 
 	id, rev, err := db.FetchFileInfoFromPath(strings.TrimPrefix(file, "/"))
 	if err != nil {
+		if errors.Is(err, sql.ErrNoRows) {
+			http.Error(w, "file not found", http.StatusNotFound)
+			return
+		}
+
 		utils.WriteError(w, r, fmt.Sprintf("failed to fetch file info: %s", err))
 		return
 	}
