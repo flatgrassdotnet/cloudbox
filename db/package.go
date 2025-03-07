@@ -24,8 +24,8 @@ import (
 	"github.com/flatgrassdotnet/cloudbox/common"
 )
 
-func InsertPackage(packageType string, name string, dataname string, author string, description string, data []byte) (int, error) {
-	r, err := handle.Exec("INSERT INTO packages (type, name, dataname, author, description, data) VALUES (?, ?, ?, ?, ?, ?)", packageType, name, dataname, author, description, data)
+func InsertPackage(pkg common.Package) (int, error) {
+	r, err := handle.Exec("INSERT INTO packages (type, name, dataname, author, description, data) VALUES (?, ?, ?, ?, ?, ?)", pkg.Type, pkg.Name, pkg.Dataname, pkg.Author, pkg.Description, pkg.Data)
 	if err != nil {
 		return 0, err
 	}
