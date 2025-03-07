@@ -22,11 +22,11 @@ import (
 	"archive/zip"
 	"bytes"
 	"fmt"
-	"io"
+	"io/fs"
 	"os"
 )
 
-func GetContentFile(id int, rev int) ([]byte, error) {
+func GetContentFile(id int, rev int) (fs.File, error) {
 	b, err := os.ReadFile(fmt.Sprintf("data/cdn/%d/%d", id, rev))
 	if err != nil {
 		return nil, err
@@ -42,12 +42,5 @@ func GetContentFile(id int, rev int) ([]byte, error) {
 		return nil, err
 	}
 
-	defer f.Close()
-
-	fb, err := io.ReadAll(f)
-	if err != nil {
-		return nil, err
-	}
-
-	return fb, nil
+	return f, nil
 }

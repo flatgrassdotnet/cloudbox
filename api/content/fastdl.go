@@ -4,6 +4,7 @@ import (
 	"database/sql"
 	"errors"
 	"fmt"
+	"io"
 	"net/http"
 	"strconv"
 	"strings"
@@ -30,12 +31,20 @@ func FastDL(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	data, err := utils.GetContentFile(id, rev)
+	f, err := utils.GetContentFile(id, rev)
 	if err != nil {
-		utils.WriteError(w, r, fmt.Sprintf("failed to get content file data: %s", err))
+		utils.WriteError(w, r, fmt.Sprintf("failed to open content file: %s", err))
 		return
 	}
 
-	w.Header().Set("Content-Length", strconv.Itoa(len(data)))
-	w.Write(data)
+	defer f.Close()
+
+	stat, err := f.Stat()
+	if err != nil {
+		utils.WriteError(w, r, fmt.Sprintf("failed to stat content file: %s", err))
+		return
+	}
+
+	w.Header().Set("Content-Length", strconv.Itoa(int(stat.Size())))
+	io.Copy(w, f)
 }

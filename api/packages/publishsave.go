@@ -53,7 +53,7 @@ func PublishSave(w http.ResponseWriter, r *http.Request) {
 		utils.WriteError(w, r, fmt.Sprintf("failed to fetch upload: %s", err))
 		return
 	}
-	
+
 	pkgID, err := db.InsertPackage(common.Package{Type: "savemap", Name: name, Dataname: save.Metadata, Author: steamid, Description: desc, Data: save.Data})
 	if err != nil {
 		utils.WriteError(w, r, fmt.Sprintf("failed to insert package: %s", err))

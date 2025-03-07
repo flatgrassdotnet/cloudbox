@@ -24,6 +24,7 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	"io"
 	"net/http"
 	"regexp"
 	"strconv"
@@ -152,13 +153,15 @@ func GetGMA(w http.ResponseWriter, r *http.Request) {
 
 	// file content
 	for _, item := range content {
-		data, err := utils.GetContentFile(item.ID, item.Revision)
+		f, err := utils.GetContentFile(item.ID, item.Revision)
 		if err != nil {
 			utils.WriteError(w, r, fmt.Sprintf("failed to get content file data: %s", err))
 			return
 		}
 
-		w.Write(data)
+		defer f.Close()
+
+		io.Copy(w, f)
 	}
 
 	// content crc (skipped)

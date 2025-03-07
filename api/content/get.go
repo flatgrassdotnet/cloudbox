@@ -20,6 +20,7 @@ package content
 
 import (
 	"fmt"
+	"io"
 	"net/http"
 	"strconv"
 
@@ -38,11 +39,13 @@ func Get(w http.ResponseWriter, r *http.Request) {
 		rev = 1
 	}
 
-	data, err := utils.GetContentFile(id, rev)
+	f, err := utils.GetContentFile(id, rev)
 	if err != nil {
 		utils.WriteError(w, r, fmt.Sprintf("failed to get content file data: %s", err))
 		return
 	}
 
-	w.Write(data)
+	defer f.Close()
+
+	io.Copy(w, f)
 }
