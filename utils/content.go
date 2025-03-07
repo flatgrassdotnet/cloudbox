@@ -20,27 +20,33 @@ package utils
 
 import (
 	"archive/zip"
-	"bytes"
-	"fmt"
 	"io/fs"
 	"os"
+	"path/filepath"
+	"strconv"
 )
 
-func GetContentFile(id int, rev int) (fs.File, error) {
-	b, err := os.ReadFile(fmt.Sprintf("data/cdn/%d/%d", id, rev))
+// it's the caller's responsibility to close both the zip and content file
+func GetContentFile(id int, rev int) (fs.File, *os.File, error) {
+	f, err := os.Open(filepath.Join("data", "cdn", strconv.Itoa(id), strconv.Itoa(rev)))
 	if err != nil {
-		return nil, err
+		return nil, nil, err
 	}
 
-	zr, err := zip.NewReader(bytes.NewReader(b), int64(len(b)))
+	stat, err := f.Stat()
 	if err != nil {
-		return nil, err
+		return nil, nil, err
 	}
 
-	f, err := zr.Open("file")
+	zr, err := zip.NewReader(f, stat.Size())
 	if err != nil {
-		return nil, err
+		return nil, nil, err
 	}
 
-	return f, nil
+	zf, err := zr.Open("file")
+	if err != nil {
+		return nil, nil, err
+	}
+
+	return zf, f, nil
 }

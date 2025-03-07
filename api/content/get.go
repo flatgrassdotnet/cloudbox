@@ -39,13 +39,14 @@ func Get(w http.ResponseWriter, r *http.Request) {
 		rev = 1
 	}
 
-	f, err := utils.GetContentFile(id, rev)
+	f, zf, err := utils.GetContentFile(id, rev)
 	if err != nil {
 		utils.WriteError(w, r, fmt.Sprintf("failed to get content file data: %s", err))
 		return
 	}
 
 	defer f.Close()
+	defer zf.Close()
 
 	io.Copy(w, f)
 }
