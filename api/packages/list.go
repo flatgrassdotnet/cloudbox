@@ -52,10 +52,7 @@ func List(w http.ResponseWriter, r *http.Request) {
 		sort = "id"
 	}
 
-	var safemode bool
-	if r.URL.Query().Get("safemode") == "true" {
-		safemode = true
-	}
+	safemode, _ := strconv.ParseBool(r.URL.Query().Get("safemode"))
 
 	list, err := db.FetchPackageList(r.URL.Query().Get("type"), r.URL.Query().Get("dataname"), r.URL.Query().Get("author"), r.URL.Query().Get("search"), offset, count, sort, safemode)
 	if err != nil {
