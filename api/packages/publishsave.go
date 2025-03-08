@@ -114,7 +114,7 @@ func PublishSave(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	err = os.WriteFile(filepath.Join("data", "img", strconv.Itoa(pkgID) + "_thumb_128.png"), buf.Bytes(), 0644)
+	err = os.WriteFile(filepath.Join("data", "img", strconv.Itoa(pkgID)+"_thumb_128.png"), buf.Bytes(), 0644)
 	if err != nil {
 		utils.WriteError(w, r, fmt.Sprintf("failed to write thumbnail: %s", err))
 		return

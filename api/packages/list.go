@@ -57,7 +57,7 @@ func List(w http.ResponseWriter, r *http.Request) {
 		safemode = true
 	}
 
-	list, err := db.FetchPackageList(r.URL.Query().Get("type"), r.URL.Query().Get("author"), r.URL.Query().Get("search"), offset, count, sort, safemode)
+	list, err := db.FetchPackageList(r.URL.Query().Get("type"), r.URL.Query().Get("dataname"), r.URL.Query().Get("author"), r.URL.Query().Get("search"), offset, count, sort, safemode)
 	if err != nil {
 		utils.WriteError(w, r, fmt.Sprintf("failed to fetch package list: %s", err))
 		return

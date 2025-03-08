@@ -102,7 +102,7 @@ func FetchPackage(id int, rev int) (common.Package, error) {
 	return pkg, nil
 }
 
-func FetchPackageList(category string, author string, search string, offset int, count int, sort string, safemode bool) ([]common.Package, error) {
+func FetchPackageList(category string, dataname string, author string, search string, offset int, count int, sort string, safemode bool) ([]common.Package, error) {
 	var args []any
 	q := `SELECT 
 	p.id, 
@@ -140,6 +140,11 @@ func FetchPackageList(category string, author string, search string, offset int,
 	if search != "" {
 		q += " AND p.name LIKE CONCAT('%', ?, '%')"
 		args = append(args, search)
+	}
+
+	if dataname != "" {
+		q += " AND dataname = ?"
+		args = append(args, dataname)
 	}
 
 	if safemode {
