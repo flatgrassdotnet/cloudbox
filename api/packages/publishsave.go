@@ -107,16 +107,16 @@ func PublishSave(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	var buf bytes.Buffer
-	err = png.Encode(&buf, img)
+	f, err := os.OpenFile(filepath.Join("data", "img", strconv.Itoa(pkgID)+"_thumb_128.png"), os.O_CREATE | os.O_TRUNC | os.O_RDWR, 0644)
 	if err != nil {
-		utils.WriteError(w, r, fmt.Sprintf("failed to encode thumbnail png: %s", err))
-		return
+		utils.WriteError(w, r, fmt.Sprintf("failed to open thumbnail for writing: %s", err))
 	}
 
-	err = os.WriteFile(filepath.Join("data", "img", strconv.Itoa(pkgID)+"_thumb_128.png"), buf.Bytes(), 0644)
+	defer f.Close()
+
+	err = png.Encode(f, img)
 	if err != nil {
-		utils.WriteError(w, r, fmt.Sprintf("failed to write thumbnail: %s", err))
+		utils.WriteError(w, r, fmt.Sprintf("failed to encode thumbnail png: %s", err))
 		return
 	}
 
