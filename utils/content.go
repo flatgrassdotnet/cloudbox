@@ -24,7 +24,7 @@ import (
 	"strconv"
 )
 
-// it's the caller's responsibility to close both the file
+// it's the caller's responsibility to close the file
 func GetContentFile(id int) (*os.File, error) {
 	f, err := os.Open(filepath.Join("data", "cdn", strconv.Itoa(id)))
 	if err != nil {
