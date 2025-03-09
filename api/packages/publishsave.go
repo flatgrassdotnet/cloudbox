@@ -9,7 +9,6 @@ import (
 	"os"
 	"path/filepath"
 	"strconv"
-	"strings"
 
 	"github.com/blezek/tga"
 	"github.com/flatgrassdotnet/cloudbox/common"
@@ -61,31 +60,18 @@ func PublishSave(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	if save.Include != "" {
-		for _, inc := range strings.Split(save.Include, ",") {
-			// usually means it hit the end but maybe not
-			if inc == "" {
-				continue
-			}
+	for _, include := range save.Includes {
+		rev, err := db.FetchPackageLatestRevision(include)
+		if err != nil {
+			utils.WriteError(w, r, fmt.Sprintf("failed to fetch package latest revision: %s", err))
+			return
+		}
 
-			i, err := strconv.Atoi(inc)
-			if err != nil {
-				utils.WriteError(w, r, fmt.Sprintf("failed to parse inc value: %s", err))
-				return
-			}
-
-			rev, err := db.FetchPackageLatestRevision(i)
-			if err != nil {
-				utils.WriteError(w, r, fmt.Sprintf("failed to fetch package latest revision: %s", err))
-				return
-			}
-
-			// save revision should always be 1 unless something has gone horribly wrong
-			_, err = db.InsertPackageInclude(pkgID, 1, i, rev)
-			if err != nil {
-				utils.WriteError(w, r, fmt.Sprintf("failed to insert package include: %s", err))
-				return
-			}
+		// save revision should always be 1
+		_, err = db.InsertPackageInclude(pkgID, 1, include, rev)
+		if err != nil {
+			utils.WriteError(w, r, fmt.Sprintf("failed to insert package include: %s", err))
+			return
 		}
 	}
 

@@ -18,10 +18,16 @@
 
 package db
 
-import "github.com/flatgrassdotnet/cloudbox/common"
+import (
+	"encoding/json"
+
+	"github.com/flatgrassdotnet/cloudbox/common"
+)
 
 func InsertUpload(steamid int, upload common.Upload) (int, error) {
-	r, err := handle.Exec("INSERT INTO uploads (steamid, type, meta, inc, data) VALUES (?, ?, ?, ?, ?)", steamid, upload.Type, upload.Metadata, upload.Include, upload.Data)
+	includes, _ := json.Marshal(upload.Includes)
+
+	r, err := handle.Exec("INSERT INTO uploads (steamid, type, meta, includes, data) VALUES (?, ?, ?, ?, ?)", steamid, upload.Type, upload.Metadata, includes, upload.Data)
 	if err != nil {
 		return 0, err
 	}
@@ -36,10 +42,13 @@ func InsertUpload(steamid int, upload common.Upload) (int, error) {
 
 func FetchUpload(id int) (common.Upload, error) {
 	var upload common.Upload
-	err := handle.QueryRow("SELECT type, meta, inc, data FROM uploads WHERE id = ?", id).Scan(&upload.Type, &upload.Metadata, &upload.Include, &upload.Data)
+	var includes string
+	err := handle.QueryRow("SELECT type, meta, includes, data FROM uploads WHERE id = ?", id).Scan(&upload.Type, &upload.Metadata, &includes, &upload.Data)
 	if err != nil {
 		return upload, err
 	}
+
+	json.Unmarshal([]byte(includes), &upload.Includes)
 
 	return upload, nil
 }

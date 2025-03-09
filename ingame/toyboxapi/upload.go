@@ -19,7 +19,9 @@
 package toyboxapi
 
 import (
+	"bytes"
 	"encoding/base64"
+	"encoding/csv"
 	"fmt"
 	"io"
 	"net/http"
@@ -48,23 +50,38 @@ func Upload(w http.ResponseWriter, r *http.Request) {
 	// metadata
 	meta := r.URL.Query().Get("meta")
 
-	// unknown
-	inc := r.URL.Query().Get("inc")
+	// includes
+	var includes []int
+	if r.URL.Query().Has("inc") {
+		incs, err := csv.NewReader(bytes.NewReader([]byte(r.URL.Query().Get("inc")))).Read()
+		if err != nil {
+			utils.WriteError(w, r, fmt.Sprintf("failed to decode inc: %s", err))
+			return
+		}
 
-	body, err := io.ReadAll(r.Body)
+		for _, inc := range incs {
+			// ignore blank entries
+			if inc == "" {
+				continue
+			}
+
+			id, err := strconv.Atoi(inc)
+			if err != nil {
+				utils.WriteError(w, r, fmt.Sprintf("failed to decode inc value: %s", err))
+				return
+			}
+
+			includes = append(includes, id)
+		}
+	}
+
+	body, err := io.ReadAll(base64.NewDecoder(base64.StdEncoding, r.Body))
 	if err != nil {
-		utils.WriteError(w, r, fmt.Sprintf("failed to read post body: %s", err))
+		utils.WriteError(w, r, fmt.Sprintf("failed to decode request body: %s", err))
 		return
 	}
 
-	decoded := make([]byte, base64.StdEncoding.DecodedLen(len(body)))
-	_, err = base64.StdEncoding.Decode(decoded, body)
-	if err != nil {
-		utils.WriteError(w, r, fmt.Sprintf("failed to parse post body: %s", err))
-		return
-	}
-
-	id, err := db.InsertUpload(steamid, common.Upload{Type: uploadType, Metadata: meta, Include: inc, Data: decoded})
+	id, err := db.InsertUpload(steamid, common.Upload{Type: uploadType, Metadata: meta, Includes: includes, Data: body})
 	if err != nil {
 		utils.WriteError(w, r, fmt.Sprintf("failed to insert upload: %s", err))
 		return

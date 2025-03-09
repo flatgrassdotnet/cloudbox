@@ -21,6 +21,6 @@ package common
 type Upload struct {
 	Type     string
 	Metadata string
-	Include  string
+	Includes []int
 	Data     []byte
 }
