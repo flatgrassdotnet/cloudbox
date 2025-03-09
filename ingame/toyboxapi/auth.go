@@ -65,6 +65,13 @@ func Auth(w http.ResponseWriter, r *http.Request) {
 		vac = "banned"
 	}
 
+	// store new profile or get its data
+	s, err := utils.GetPlayerSummary(user.SteamID)
+	if err != nil {
+		utils.WriteError(w, r, fmt.Sprintf("failed to get player summary: %s", err))
+		return
+	}
+
 	ticket := make([]byte, 24)
 	_, err = rand.Read(ticket)
 	if err != nil {
@@ -86,7 +93,8 @@ func Auth(w http.ResponseWriter, r *http.Request) {
 			Title: "Login",
 			Color: 0x4096EE,
 			Author: utils.DiscordWebhookEmbedAuthor{
-				Name: user.SteamID,
+				Name:    s.PersonaName,
+				IconURL: s.Avatar,
 			},
 		}},
 	})
