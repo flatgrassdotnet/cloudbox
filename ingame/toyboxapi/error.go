@@ -69,20 +69,13 @@ func Error(w http.ResponseWriter, r *http.Request) {
 	w.WriteHeader(http.StatusOK)
 
 	// webhook related
-	s, err := utils.GetPlayerSummary(steamid)
-	if err != nil {
-		utils.WriteError(w, r, fmt.Sprintf("failed to get player summary: %s", err))
-		return
-	}
-
 	err = utils.SendDiscordMessage(utils.DiscordStatsWebhookURL, utils.DiscordWebhookRequest{
 		Embeds: []utils.DiscordWebhookEmbed{{
 			Title:       "Lua Error",
 			Description: error,
 			Color:       0x00007D,
 			Author: utils.DiscordWebhookEmbedAuthor{
-				Name:    s.PersonaName,
-				IconURL: s.Avatar,
+				Name:    steamid,
 			},
 		}},
 	})

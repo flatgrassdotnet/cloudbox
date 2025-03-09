@@ -22,8 +22,6 @@ import (
 	"fmt"
 	"log"
 	"net/http"
-
-	"github.com/flatgrassdotnet/cloudbox/common"
 )
 
 func WriteError(w http.ResponseWriter, r *http.Request, message string) {
@@ -31,20 +29,13 @@ func WriteError(w http.ResponseWriter, r *http.Request, message string) {
 	w.WriteHeader(http.StatusBadRequest)
 
 	// webhook related
-	var s common.PlayerSummaryInfo
-	steamid := UnBinHexString(r.FormValue("u"))
-	if steamid != "" {
-		s, _ = GetPlayerSummary(steamid)
-	}
-
 	SendDiscordMessage(DiscordStatsWebhookURL, DiscordWebhookRequest{
 		Embeds: []DiscordWebhookEmbed{{
 			Title:       "API Error",
 			Description: fmt.Sprintf("%s: %s", r.URL, message),
 			Color:       0x7D0000,
 			Author: DiscordWebhookEmbedAuthor{
-				Name:    s.PersonaName,
-				IconURL: s.Avatar,
+				Name:    UnBinHexString(r.FormValue("u")),
 			},
 		}},
 	})

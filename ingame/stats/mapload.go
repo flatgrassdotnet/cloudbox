@@ -67,20 +67,13 @@ func MapLoad(w http.ResponseWriter, r *http.Request) {
 	w.WriteHeader(http.StatusOK)
 
 	// webhook related
-	s, err := utils.GetPlayerSummary(steamid)
-	if err != nil {
-		utils.WriteError(w, r, fmt.Sprintf("failed to get player summary: %s", err))
-		return
-	}
-
 	err = utils.SendDiscordMessage(utils.DiscordStatsWebhookURL, utils.DiscordWebhookRequest{
 		Embeds: []utils.DiscordWebhookEmbed{{
 			Title:       "Map Load",
 			Description: mapName,
 			Color:       0x4096EE,
 			Author: utils.DiscordWebhookEmbedAuthor{
-				Name:    s.PersonaName,
-				IconURL: s.Avatar,
+				Name:    steamid,
 			},
 		}},
 	})

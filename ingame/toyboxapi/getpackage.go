@@ -71,20 +71,13 @@ func GetPackage(w http.ResponseWriter, r *http.Request) {
 	w.Write(pkg.Marshal())
 
 	// webhook related
-	s, err := utils.GetPlayerSummary(steamid)
-	if err != nil {
-		utils.WriteError(w, r, fmt.Sprintf("failed to get player summary: %s", err))
-		return
-	}
-
 	err = utils.SendDiscordMessage(utils.DiscordStatsWebhookURL, utils.DiscordWebhookRequest{
 		Embeds: []utils.DiscordWebhookEmbed{{
 			Title:       "Package Download",
 			Description: fmt.Sprintf("%s (%dr%d/%s)", pkg.Name, pkg.ID, pkg.Revision, pkg.Type),
 			Color:       0x4096EE,
 			Author: utils.DiscordWebhookEmbedAuthor{
-				Name:    s.PersonaName,
-				IconURL: s.Avatar,
+				Name:    steamid,
 			},
 			Image: utils.DiscordWebhookEmbedImage{
 				URL: fmt.Sprintf("https://img.cl0udb0x.com/%d_thumb_128.png", pkg.ID),

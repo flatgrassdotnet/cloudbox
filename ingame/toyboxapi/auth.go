@@ -81,19 +81,12 @@ func Auth(w http.ResponseWriter, r *http.Request) {
 	w.Write([]byte(base64.StdEncoding.EncodeToString(ticket)))
 
 	// webhook related
-	s, err := utils.GetPlayerSummary(user.SteamID)
-	if err != nil {
-		utils.WriteError(w, r, fmt.Sprintf("failed to get player summary: %s", err))
-		return
-	}
-
 	err = utils.SendDiscordMessage(utils.DiscordStatsWebhookURL, utils.DiscordWebhookRequest{
 		Embeds: []utils.DiscordWebhookEmbed{{
 			Title: "Login",
 			Color: 0x4096EE,
 			Author: utils.DiscordWebhookEmbedAuthor{
-				Name:    s.PersonaName,
-				IconURL: s.Avatar,
+				Name:    user.SteamID,
 			},
 		}},
 	})
