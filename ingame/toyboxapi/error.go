@@ -75,7 +75,7 @@ func Error(w http.ResponseWriter, r *http.Request) {
 			Description: error,
 			Color:       0x00007D,
 			Author: utils.DiscordWebhookEmbedAuthor{
-				Name:    steamid,
+				Name: steamid,
 			},
 		}},
 	})

@@ -20,7 +20,7 @@ func FastDL(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	id, rev, err := db.FetchFileInfoFromPath(strings.TrimPrefix(file, "/"))
+	id, err := db.FetchFileInfoFromPath(strings.TrimPrefix(file, "/"))
 	if err != nil {
 		if errors.Is(err, sql.ErrNoRows) {
 			http.Error(w, "file not found", http.StatusNotFound)
@@ -31,14 +31,13 @@ func FastDL(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	f, zf, err := utils.GetContentFile(id, rev)
+	f, err := utils.GetContentFile(id)
 	if err != nil {
 		utils.WriteError(w, r, fmt.Sprintf("failed to open content file: %s", err))
 		return
 	}
 
 	defer f.Close()
-	defer zf.Close()
 
 	stat, err := f.Stat()
 	if err != nil {

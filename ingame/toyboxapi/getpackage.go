@@ -77,7 +77,7 @@ func GetPackage(w http.ResponseWriter, r *http.Request) {
 			Description: fmt.Sprintf("%s (%dr%d/%s)", pkg.Name, pkg.ID, pkg.Revision, pkg.Type),
 			Color:       0x4096EE,
 			Author: utils.DiscordWebhookEmbedAuthor{
-				Name:    steamid,
+				Name: steamid,
 			},
 			Image: utils.DiscordWebhookEmbedImage{
 				URL: fmt.Sprintf("https://img.cl0udb0x.com/%d_thumb_128.png", pkg.ID),

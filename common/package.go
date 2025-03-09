@@ -45,11 +45,10 @@ type Package struct {
 }
 
 type Content struct {
-	ID       int    `json:"id"`
-	Revision int    `json:"rev"`
-	Path     string `json:"path"`
-	Size     int    `json:"size"`
-	PSize    int    `json:"psize"`
+	ID    int    `json:"id"`
+	Path  string `json:"path"`
+	Size  int    `json:"size"`
+	PSize int    `json:"psize"`
 }
 
 type Include struct {
@@ -81,9 +80,9 @@ func (pkg Package) Marshal() []byte {
 			item := make(VDF)
 
 			item["id"] = c.ID
-			item["rev"] = c.Revision
+			item["rev"] = 1
 			item["name"] = c.Path
-			item["url"] = fmt.Sprintf("http://cdn.cl0udb0x.com/%d/%d", c.ID, c.Revision)
+			item["url"] = fmt.Sprintf("http://api.cl0udb0x.com/content/getzip?id=%d", c.ID)
 			item["size"] = c.PSize
 
 			content[fmt.Sprintf("content_%d", c.ID)] = item

@@ -73,7 +73,7 @@ func MapLoad(w http.ResponseWriter, r *http.Request) {
 			Description: mapName,
 			Color:       0x4096EE,
 			Author: utils.DiscordWebhookEmbedAuthor{
-				Name:    steamid,
+				Name: steamid,
 			},
 		}},
 	})

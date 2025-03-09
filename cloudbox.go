@@ -63,6 +63,7 @@ func main() {
 	http.HandleFunc("GET /packages/getgma", packages.GetGMA)
 	http.HandleFunc("GET /packages/publishsave", packages.PublishSave)
 	http.HandleFunc("GET /content/get", content.Get)
+	http.HandleFunc("GET /content/getzip", content.GetZIP)
 	http.HandleFunc("GET /content/fastdl", content.FastDL)
 
 	// stats.garrysmod.com

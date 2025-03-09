@@ -35,7 +35,7 @@ func WriteError(w http.ResponseWriter, r *http.Request, message string) {
 			Description: fmt.Sprintf("%s: %s", r.URL, message),
 			Color:       0x7D0000,
 			Author: DiscordWebhookEmbedAuthor{
-				Name:    UnBinHexString(r.FormValue("u")),
+				Name: UnBinHexString(r.FormValue("u")),
 			},
 		}},
 	})

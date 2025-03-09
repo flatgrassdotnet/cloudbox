@@ -19,34 +19,17 @@
 package utils
 
 import (
-	"archive/zip"
-	"io/fs"
 	"os"
 	"path/filepath"
 	"strconv"
 )
 
-// it's the caller's responsibility to close both the zip and content file
-func GetContentFile(id int, rev int) (fs.File, *os.File, error) {
-	f, err := os.Open(filepath.Join("data", "cdn", strconv.Itoa(id), strconv.Itoa(rev)))
+// it's the caller's responsibility to close both the file
+func GetContentFile(id int) (*os.File, error) {
+	f, err := os.Open(filepath.Join("data", "cdn", strconv.Itoa(id)))
 	if err != nil {
-		return nil, nil, err
+		return nil, err
 	}
 
-	stat, err := f.Stat()
-	if err != nil {
-		return nil, nil, err
-	}
-
-	zr, err := zip.NewReader(f, stat.Size())
-	if err != nil {
-		return nil, nil, err
-	}
-
-	zf, err := zr.Open("file")
-	if err != nil {
-		return nil, nil, err
-	}
-
-	return zf, f, nil
+	return f, nil
 }

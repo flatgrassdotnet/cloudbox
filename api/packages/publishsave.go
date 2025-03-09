@@ -107,7 +107,7 @@ func PublishSave(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	f, err := os.OpenFile(filepath.Join("data", "img", strconv.Itoa(pkgID)+"_thumb_128.png"), os.O_CREATE | os.O_TRUNC | os.O_RDWR, 0644)
+	f, err := os.OpenFile(filepath.Join("data", "img", strconv.Itoa(pkgID)+"_thumb_128.png"), os.O_CREATE|os.O_TRUNC|os.O_RDWR, 0644)
 	if err != nil {
 		utils.WriteError(w, r, fmt.Sprintf("failed to open thumbnail for writing: %s", err))
 	}

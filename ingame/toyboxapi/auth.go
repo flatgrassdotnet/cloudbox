@@ -86,7 +86,7 @@ func Auth(w http.ResponseWriter, r *http.Request) {
 			Title: "Login",
 			Color: 0x4096EE,
 			Author: utils.DiscordWebhookEmbedAuthor{
-				Name:    user.SteamID,
+				Name: user.SteamID,
 			},
 		}},
 	})

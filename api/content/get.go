@@ -34,19 +34,13 @@ func Get(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	rev, _ := strconv.Atoi(r.URL.Query().Get("rev"))
-	if rev < 1 {
-		rev = 1
-	}
-
-	f, zf, err := utils.GetContentFile(id, rev)
+	f, err := utils.GetContentFile(id)
 	if err != nil {
-		utils.WriteError(w, r, fmt.Sprintf("failed to get content file data: %s", err))
+		utils.WriteError(w, r, fmt.Sprintf("failed to open content file for reading: %s", err))
 		return
 	}
 
 	defer f.Close()
-	defer zf.Close()
 
 	io.Copy(w, f)
 }

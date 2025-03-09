@@ -69,14 +69,14 @@ func FetchPackage(id int, rev int) (common.Package, error) {
 		return pkg, err
 	}
 
-	rows, err := handle.Query("SELECT f.id, f.rev, f.path, f.size, f.psize FROM files f JOIN content c ON f.id = c.fileid AND f.rev = c.filerev WHERE c.id = ? AND c.rev = ?", id, rev)
+	rows, err := handle.Query("SELECT f.id, f.path, f.size, f.psize FROM files f JOIN content c ON f.id = c.fileid WHERE c.id = ?", id)
 	if err != nil {
 		return pkg, err
 	}
 
 	for rows.Next() {
 		var content common.Content
-		err := rows.Scan(&content.ID, &content.Revision, &content.Path, &content.Size, &content.PSize)
+		err := rows.Scan(&content.ID, &content.Path, &content.Size, &content.PSize)
 		if err != nil {
 			return pkg, err
 		}
@@ -182,13 +182,12 @@ func FetchPackageList(category string, dataname string, author string, search st
 	return list, nil
 }
 
-func FetchFileInfoFromPath(path string) (int, int, error) {
+func FetchFileInfoFromPath(path string) (int, error) {
 	var id int
-	var rev int
-	err := handle.QueryRow("SELECT id, rev FROM files WHERE path = ?", path).Scan(&id, &rev)
+	err := handle.QueryRow("SELECT id FROM files WHERE path = ?", path).Scan(&id)
 	if err != nil {
-		return 0, 0, err
+		return 0, err
 	}
 
-	return id, rev, nil
+	return id, nil
 }
