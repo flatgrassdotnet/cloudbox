@@ -19,7 +19,7 @@
 package db
 
 func InsertLogin(steamid string, vac string, ticket []byte) error {
-	_, err := handle.Exec("INSERT INTO logins (steamid, vac, ticket) VALUES (?, ?, ?)", steamid, vac, ticket)
+	_, err := handle.Exec("REPLACE INTO logins (steamid, vac, ticket) VALUES (?, ?, ?)", steamid, vac, ticket)
 	if err != nil {
 		return err
 	}
