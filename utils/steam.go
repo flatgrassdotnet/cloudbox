@@ -19,12 +19,15 @@
 package utils
 
 import (
+	"bytes"
 	"database/sql"
+	"encoding/csv"
 	"encoding/json"
 	"errors"
 	"fmt"
 	"net/http"
 	"net/url"
+	"slices"
 
 	"github.com/flatgrassdotnet/cloudbox/common"
 	"github.com/flatgrassdotnet/cloudbox/db"
@@ -76,26 +79,46 @@ type GetPlayerSummariesResponse struct {
 	} `json:"response"`
 }
 
-func GetPlayerSummary(steamid string) (common.PlayerSummaryInfo, error) {
+func GetPlayerSummaries(steamids ...string) ([]common.PlayerSummaryInfo, error) {
+	var summaries []common.PlayerSummaryInfo
+
 	// fetch from cache
-	s, err := db.FetchPlayerSummary(steamid)
-	if err != nil {
-		if !errors.Is(err, sql.ErrNoRows) {
-			return s, fmt.Errorf("failed to fetch player summary: %s", err)
+	for i, steamid := range steamids {
+		summary, err := db.FetchPlayerSummary(steamid)
+		if err != nil {
+			if !errors.Is(err, sql.ErrNoRows) {
+				return nil, fmt.Errorf("failed to fetch player summary: %s", err)
+			}
+
+			continue
 		}
-	} else {
-		return s, nil
+
+		// remove from todo
+		steamids = slices.Delete(steamids, i, i)
+
+		summaries = append(summaries, summary)
 	}
 
-	// otherwise get new data
+	// return now if there's none left
+	if len(steamids) == 0 {
+		return summaries, nil
+	}
+
+	// comma separated steamids
+	buf := new(bytes.Buffer)
+
+	cw := csv.NewWriter(buf)
+	cw.Write(steamids)
+	cw.Flush()
+
 	v := make(url.Values)
 
 	v.Set("key", SteamAPIKey)
-	v.Set("steamids", steamid)
+	v.Set("steamids", buf.String())
 
 	r, err := http.Get(fmt.Sprintf("https://api.steampowered.com/ISteamUser/GetPlayerSummaries/v2/?%s", v.Encode()))
 	if err != nil {
-		return s, err
+		return nil, err
 	}
 
 	defer r.Body.Close()
@@ -103,18 +126,23 @@ func GetPlayerSummary(steamid string) (common.PlayerSummaryInfo, error) {
 	var rd GetPlayerSummariesResponse
 	err = json.NewDecoder(r.Body).Decode(&rd)
 	if err != nil {
-		return s, err
+		return nil, err
 	}
 
 	if len(rd.Response.Players) == 0 {
-		return s, fmt.Errorf("no players returned")
+		return nil, fmt.Errorf("no players returned")
 	}
 
-	// insert into cache
-	err = db.InsertPlayerSummary(rd.Response.Players[0])
-	if err != nil {
-		return s, fmt.Errorf("failed to insert player summary: %s", err)
+	for _, summary := range rd.Response.Players {
+		// insert into cache
+		err = db.InsertPlayerSummary(summary)
+		if err != nil {
+			return nil, fmt.Errorf("failed to insert player summary: %s", err)
+		}
+
+		// add to summaries
+		summaries = append(summaries, summary)
 	}
 
-	return rd.Response.Players[0], nil
+	return summaries, nil
 }

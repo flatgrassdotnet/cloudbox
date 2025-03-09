@@ -66,7 +66,7 @@ func Auth(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// store new profile or get its data
-	s, err := utils.GetPlayerSummary(user.SteamID)
+	s, err := utils.GetPlayerSummaries(user.SteamID)
 	if err != nil {
 		utils.WriteError(w, r, fmt.Sprintf("failed to get player summary: %s", err))
 		return
@@ -93,8 +93,8 @@ func Auth(w http.ResponseWriter, r *http.Request) {
 			Title: "Login",
 			Color: 0x4096EE,
 			Author: utils.DiscordWebhookEmbedAuthor{
-				Name:    s.PersonaName,
-				IconURL: s.Avatar,
+				Name:    s[0].PersonaName,
+				IconURL: s[0].Avatar,
 			},
 		}},
 	})

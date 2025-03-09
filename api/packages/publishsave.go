@@ -127,7 +127,7 @@ func PublishSave(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// webhook related
-	s, err := utils.GetPlayerSummary(steamid)
+	s, err := utils.GetPlayerSummaries(steamid)
 	if err != nil {
 		utils.WriteError(w, r, fmt.Sprintf("failed to get player summary: %s", err))
 		return
@@ -139,8 +139,8 @@ func PublishSave(w http.ResponseWriter, r *http.Request) {
 			Description: desc,
 			Color:       0xB8E3FF,
 			Author: utils.DiscordWebhookEmbedAuthor{
-				Name:    s.PersonaName,
-				IconURL: s.Avatar,
+				Name:    s[0].PersonaName,
+				IconURL: s[0].Avatar,
 			},
 			Image: utils.DiscordWebhookEmbedImage{
 				URL: fmt.Sprintf("https://img.cl0udb0x.com/%d_thumb_128.png", pkgID),
