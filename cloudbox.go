@@ -97,9 +97,6 @@ func main() {
 	http.HandleFunc("POST toyboxapi.garrysmod.com/publishsave_001/", publishsave.Publish) // v106 - v108
 	http.HandleFunc("POST toyboxapi.garrysmod.com/publishsave_002/", publishsave.Publish) // v109 - v142
 
-	// mapload (legacy)
-	http.HandleFunc("GET toyboxapi.garrysmod.com/mapload_001/", stats.MapLoad) // v98 - v101
-
 	err = http.ListenAndServe(fmt.Sprintf(":%d", *port), nil)
 	if err != nil {
 		log.Fatalf("error while serving: %s", err)
