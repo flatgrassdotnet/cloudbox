@@ -92,8 +92,11 @@ func main() {
 	http.HandleFunc("GET toyboxapi.garrysmod.com/error_003/", toyboxapi.Error)
 
 	// publishsave
-	http.HandleFunc("GET toyboxapi.garrysmod.com/publishsave_002/", publishsave.Save)     // virtual
-	http.HandleFunc("POST toyboxapi.garrysmod.com/publishsave_002/", publishsave.Publish) // virtual
+	http.HandleFunc("GET toyboxapi.garrysmod.com/publishsave_002/", publishsave.Save)
+	http.HandleFunc("POST toyboxapi.garrysmod.com/publishsave_002/", publishsave.Publish)
+
+	// mapload (legacy)
+	http.HandleFunc("GET toyboxapi.garrysmod.com/mapload_001/", stats.MapLoad)
 
 	err = http.ListenAndServe(fmt.Sprintf(":%d", *port), nil)
 	if err != nil {
