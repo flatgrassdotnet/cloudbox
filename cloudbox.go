@@ -67,36 +67,38 @@ func main() {
 	http.HandleFunc("GET /content/fastdl", content.FastDL)
 
 	// stats.garrysmod.com
-	http.HandleFunc("GET stats.garrysmod.com/API/mapload_001/", stats.MapLoad)
+	http.HandleFunc("GET stats.garrysmod.com/API/mapload_001/", stats.MapLoad) // v102 - v142
 
 	// toyboxapi.garrysmod.com
 	// auth
-	http.HandleFunc("GET toyboxapi.garrysmod.com/auth_001/", toyboxapi.Auth)
-	http.HandleFunc("POST toyboxapi.garrysmod.com/auth_002/", toyboxapi.Auth)
-	http.HandleFunc("POST toyboxapi.garrysmod.com/auth_003/", toyboxapi.Auth)
+	http.HandleFunc("GET toyboxapi.garrysmod.com/auth_001/", toyboxapi.Auth)  // v104 - v106
+	http.HandleFunc("POST toyboxapi.garrysmod.com/auth_002/", toyboxapi.Auth) // v107 - v133
+	http.HandleFunc("POST toyboxapi.garrysmod.com/auth_003/", toyboxapi.Auth) // v134 - v142
 
 	// getinstall
-	http.HandleFunc("GET toyboxapi.garrysmod.com/getinstall_001/", toyboxapi.GetPackage)
-	http.HandleFunc("GET toyboxapi.garrysmod.com/getinstall_003/", toyboxapi.GetPackage)
+	http.HandleFunc("GET toyboxapi.garrysmod.com/getinstall_003/", toyboxapi.GetPackage) // v134 - v142
 
 	// getscript
-	http.HandleFunc("GET toyboxapi.garrysmod.com/getscript_001/", toyboxapi.GetPackage)
-	http.HandleFunc("GET toyboxapi.garrysmod.com/getscript_003/", toyboxapi.GetPackage)
+	http.HandleFunc("GET toyboxapi.garrysmod.com/getscript_001/", toyboxapi.GetPackage) // v100 - v133
+	http.HandleFunc("GET toyboxapi.garrysmod.com/getscript_003/", toyboxapi.GetPackage) // v134 - v142
 
 	// upload
-	http.HandleFunc("POST toyboxapi.garrysmod.com/upload_001/", toyboxapi.Upload)
-	http.HandleFunc("POST toyboxapi.garrysmod.com/upload_003/", toyboxapi.Upload)
+	http.HandleFunc("POST toyboxapi.garrysmod.com/upload_001/", toyboxapi.Upload) // v109 - v133
+	http.HandleFunc("POST toyboxapi.garrysmod.com/upload_003/", toyboxapi.Upload) // v134 - v142
 
 	// error
-	http.HandleFunc("GET toyboxapi.garrysmod.com/error_001/", toyboxapi.Error)
-	http.HandleFunc("GET toyboxapi.garrysmod.com/error_003/", toyboxapi.Error)
+	http.HandleFunc("GET toyboxapi.garrysmod.com/error_001/", toyboxapi.Error) // v98 - v133
+	http.HandleFunc("GET toyboxapi.garrysmod.com/error_003/", toyboxapi.Error) // v134 - v142
 
 	// publishsave
-	http.HandleFunc("GET toyboxapi.garrysmod.com/publishsave_002/", publishsave.Save)
-	http.HandleFunc("POST toyboxapi.garrysmod.com/publishsave_002/", publishsave.Publish)
+	http.HandleFunc("GET toyboxapi.garrysmod.com/publishsave_001/", publishsave.Save) // v106 - v108
+	http.HandleFunc("GET toyboxapi.garrysmod.com/publishsave_002/", publishsave.Save) // v109 - v142
+
+	http.HandleFunc("POST toyboxapi.garrysmod.com/publishsave_001/", publishsave.Publish) // v106 - v108
+	http.HandleFunc("POST toyboxapi.garrysmod.com/publishsave_002/", publishsave.Publish) // v109 - v142
 
 	// mapload (legacy)
-	http.HandleFunc("GET toyboxapi.garrysmod.com/mapload_001/", stats.MapLoad)
+	http.HandleFunc("GET toyboxapi.garrysmod.com/mapload_001/", stats.MapLoad) // v98 - v101
 
 	err = http.ListenAndServe(fmt.Sprintf(":%d", *port), nil)
 	if err != nil {
