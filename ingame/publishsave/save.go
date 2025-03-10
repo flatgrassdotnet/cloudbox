@@ -48,10 +48,12 @@ func Save(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	sd.SID, err = strconv.Atoi(r.URL.Query().Get("sid"))
-	if err != nil {
-		utils.WriteError(w, r, fmt.Sprintf("failed to parse sid value: %s", err))
-		return
+	if r.URL.Path == "/publishsave_002/" {
+		sd.SID, err = strconv.Atoi(r.URL.Query().Get("sid"))
+		if err != nil {
+			utils.WriteError(w, r, fmt.Sprintf("failed to parse sid value: %s", err))
+			return
+		}
 	}
 
 	err = ts.Execute(w, sd)
