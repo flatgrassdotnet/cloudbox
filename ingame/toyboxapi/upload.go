@@ -52,7 +52,7 @@ func Upload(w http.ResponseWriter, r *http.Request) {
 
 	// includes
 	var includes []int
-	if r.URL.Query().Has("inc") {
+	if r.URL.Query().Get("inc") != "" {
 		incs, err := csv.NewReader(bytes.NewReader([]byte(r.URL.Query().Get("inc")))).Read()
 		if err != nil {
 			utils.WriteError(w, r, fmt.Sprintf("failed to decode inc: %s", err))

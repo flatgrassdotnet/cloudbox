@@ -1,0 +1,39 @@
+<html>
+	<head>
+		{{template "style"}}
+	</head>
+	<body>
+		<div id="container">
+			<h2>Publish Saved Game</h2>
+			<form action="/API/publishsave_002/?id={{.ID}}&sid={{.SID}}" method="post">
+				<div class="row">
+					<label for="name">Name:</label>
+					<input type="text" name="name" id="name" required>
+				</div>
+				<div class="row">
+					<label>Map:</label>
+					<input type="text" value="{{.Map}}" disabled>
+				</div>
+				<div class="row">
+					<label for="desc">Description:</label>
+					<textarea name="desc" id="desc" required></textarea>
+				</div>
+				<div class="row">
+					<label>Category:</label>
+					<fieldset>
+						<label><input type="radio" name="cat" value="1" checked> Uncategorized</label>
+						<label><input type="radio" name="cat" value="2"> Fun</label>
+						<label><input type="radio" name="cat" value="3"> Construction</label>
+						<label><input type="radio" name="cat" value="4"> Scene</label>
+						<label><input type="radio" name="cat" value="5"> Assault Course</label>
+						<label><input type="radio" name="cat" value="6"> Gun Fight</label>
+					</fieldset>
+				</div>
+				<div class="row">
+					<label></label>
+					<button>Publish Saved Game</button>
+				</div>
+			</form>
+		</div>
+	</body>
+</html>

@@ -1,9 +1,29 @@
-package packages
+/*
+	cloudbox - the toybox server emulator
+	Copyright (C) 2024-2025  patapancakes <patapancakes@pagefault.games>
+
+	This program is free software: you can redistribute it and/or modify
+	it under the terms of the GNU Affero General Public License as published by
+	the Free Software Foundation, either version 3 of the License, or
+	(at your option) any later version.
+
+	This program is distributed in the hope that it will be useful,
+	but WITHOUT ANY WARRANTY; without even the implied warranty of
+	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+	GNU Affero General Public License for more details.
+
+	You should have received a copy of the GNU Affero General Public License
+	along with this program.  If not, see <http://www.gnu.org/licenses/>.
+*/
+
+package publishsave
 
 import (
 	"bytes"
+	_ "embed"
 	"encoding/base64"
 	"fmt"
+	"html/template"
 	"image/png"
 	"net/http"
 	"os"
@@ -16,7 +36,15 @@ import (
 	"github.com/flatgrassdotnet/cloudbox/utils"
 )
 
-func PublishSave(w http.ResponseWriter, r *http.Request) {
+var tp = template.Must(template.New("publish.html").ParseGlob("data/templates/publishsave/*.html"))
+
+func Publish(w http.ResponseWriter, r *http.Request) {
+	err := r.ParseForm()
+	if err != nil {
+		utils.WriteError(w, r, fmt.Sprintf("failed to parse form data: %s", err))
+		return
+	}
+
 	id, err := strconv.Atoi(r.URL.Query().Get("id"))
 	if err != nil {
 		utils.WriteError(w, r, fmt.Sprintf("failed to parse id value: %s", err))
@@ -36,7 +64,7 @@ func PublishSave(w http.ResponseWriter, r *http.Request) {
 
 	desc := r.URL.Query().Get("desc")
 
-	ticket, err := base64.StdEncoding.DecodeString(r.URL.Query().Get("ticket"))
+	ticket, err := base64.StdEncoding.DecodeString(r.Header.Get("TICKET"))
 	if err != nil {
 		utils.WriteError(w, r, fmt.Sprintf("failed to decode ticket value: %s", err))
 		return
@@ -109,6 +137,12 @@ func PublishSave(w http.ResponseWriter, r *http.Request) {
 	err = db.DeleteUpload(sid)
 	if err != nil {
 		utils.WriteError(w, r, fmt.Sprintf("failed to delete upload: %s", err))
+		return
+	}
+
+	err = tp.Execute(w, nil)
+	if err != nil {
+		utils.WriteError(w, r, fmt.Sprintf("failed to execute template: %s", err))
 		return
 	}
 

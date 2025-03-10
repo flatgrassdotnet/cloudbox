@@ -29,6 +29,7 @@ import (
 	"github.com/flatgrassdotnet/cloudbox/api/news"
 	"github.com/flatgrassdotnet/cloudbox/api/packages"
 	"github.com/flatgrassdotnet/cloudbox/db"
+	"github.com/flatgrassdotnet/cloudbox/ingame/publishsave"
 	"github.com/flatgrassdotnet/cloudbox/ingame/stats"
 	"github.com/flatgrassdotnet/cloudbox/ingame/toyboxapi"
 	"github.com/flatgrassdotnet/cloudbox/utils"
@@ -61,20 +62,38 @@ func main() {
 	http.HandleFunc("GET /packages/get", packages.Get)
 	http.HandleFunc("GET /packages/getscript", packages.GetScript)
 	http.HandleFunc("GET /packages/getgma", packages.GetGMA)
-	http.HandleFunc("GET /packages/publishsave", packages.PublishSave)
 	http.HandleFunc("GET /content/get", content.Get)
 	http.HandleFunc("GET /content/getzip", content.GetZIP)
 	http.HandleFunc("GET /content/fastdl", content.FastDL)
 
 	// stats.garrysmod.com
-	http.HandleFunc("GET /API/mapload_001/", stats.MapLoad)
+	http.HandleFunc("GET stats.garrysmod.com/API/mapload_001/", stats.MapLoad)
 
 	// toyboxapi.garrysmod.com
-	http.HandleFunc("POST /auth_003/", toyboxapi.Auth)
-	http.HandleFunc("GET /error_003/", toyboxapi.Error)
-	http.HandleFunc("GET /getinstall_003/", toyboxapi.GetPackage)
-	http.HandleFunc("GET /getscript_003/", toyboxapi.GetPackage)
-	http.HandleFunc("POST /upload_003/", toyboxapi.Upload)
+	// auth
+	http.HandleFunc("GET toyboxapi.garrysmod.com/auth_001/", toyboxapi.Auth)
+	http.HandleFunc("POST toyboxapi.garrysmod.com/auth_002/", toyboxapi.Auth)
+	http.HandleFunc("POST toyboxapi.garrysmod.com/auth_003/", toyboxapi.Auth)
+
+	// getinstall
+	http.HandleFunc("GET toyboxapi.garrysmod.com/getinstall_001/", toyboxapi.GetPackage)
+	http.HandleFunc("GET toyboxapi.garrysmod.com/getinstall_003/", toyboxapi.GetPackage)
+
+	// getscript
+	http.HandleFunc("GET toyboxapi.garrysmod.com/getscript_001/", toyboxapi.GetPackage)
+	http.HandleFunc("GET toyboxapi.garrysmod.com/getscript_003/", toyboxapi.GetPackage)
+
+	// upload
+	http.HandleFunc("POST toyboxapi.garrysmod.com/upload_001/", toyboxapi.Upload)
+	http.HandleFunc("POST toyboxapi.garrysmod.com/upload_003/", toyboxapi.Upload)
+
+	// error
+	http.HandleFunc("GET toyboxapi.garrysmod.com/error_001/", toyboxapi.Error)
+	http.HandleFunc("GET toyboxapi.garrysmod.com/error_003/", toyboxapi.Error)
+
+	// publishsave
+	http.HandleFunc("GET toyboxapi.garrysmod.com/publishsave_002/", publishsave.Save)     // virtual
+	http.HandleFunc("POST toyboxapi.garrysmod.com/publishsave_002/", publishsave.Publish) // virtual
 
 	err = http.ListenAndServe(fmt.Sprintf(":%d", *port), nil)
 	if err != nil {

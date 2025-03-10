@@ -1,0 +1,29 @@
+{{define "style"}}<style type="text/css">body {background-color: #222; margin: 15px; font-family: Helvetica, sans-serif;}
+
+#container {background-color: white; border-radius: 8px; padding: 25px; color: #333;}
+
+h2 {margin-top: 10px;}
+
+/* row */
+.row {display: -webkit-box; margin-top: 5px; margin-right: 120px;}
+
+/* all row cells */
+.row > * {display: block; box-sizing: border-box;}
+
+/* left cell (label) */
+.row > label {width: 160px; text-align: right; font-size: 12px; font-weight: bold; padding-right: 10px; padding-top: 3px;}
+
+/* right cell (form input) */
+.row > label + * {-webkit-box-flex: 1; font-size: 13px;}
+
+input[type="text"], textarea, fieldset {padding: 3px 5px; border: 2px solid #aaa; border-radius: 3px; background-color: #fafafa; margin: 0;}
+textarea {min-height: 70px;}
+
+input[type="text"]:focus, textarea:focus {background-color: #ffa; border-color: #fb9; outline: none;}
+
+input[type="text"]:disabled, textarea:disabled {opacity: 0.8;}
+
+fieldset {-webkit-box-flex: 0 !important; padding-top: 8px; padding-bottom: 8px;}
+fieldset label {display: block; padding-right: 8px;}
+
+button {-webkit-box-flex: 0 !important; margin: 0 auto; margin-top: 20px; padding: 5px 20px; font-size: 16px !important; font-weight:bold;}</style>{{end}}
