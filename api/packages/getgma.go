@@ -153,15 +153,15 @@ func GetGMA(w http.ResponseWriter, r *http.Request) {
 
 	// file content
 	for _, item := range content {
-		f, err := utils.GetContentFile(item.ID)
+		o, err := db.GetContentFile(item.ID)
 		if err != nil {
 			utils.WriteError(w, r, fmt.Sprintf("failed to get content file data: %s", err))
 			return
 		}
 
-		defer f.Close()
+		defer o.Body.Close()
 
-		io.Copy(w, f)
+		io.Copy(w, o.Body)
 	}
 
 	// content crc (skipped)

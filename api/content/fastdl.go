@@ -31,20 +31,14 @@ func FastDL(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	f, err := utils.GetContentFile(id)
+	f, err := db.GetContentFile(id)
 	if err != nil {
 		utils.WriteError(w, r, fmt.Sprintf("failed to open content file: %s", err))
 		return
 	}
 
-	defer f.Close()
+	defer f.Body.Close()
 
-	stat, err := f.Stat()
-	if err != nil {
-		utils.WriteError(w, r, fmt.Sprintf("failed to stat content file: %s", err))
-		return
-	}
-
-	w.Header().Set("Content-Length", strconv.Itoa(int(stat.Size())))
-	io.Copy(w, f)
+	w.Header().Set("Content-Length", strconv.Itoa(int(*f.ContentLength)))
+	io.Copy(w, f.Body)
 }

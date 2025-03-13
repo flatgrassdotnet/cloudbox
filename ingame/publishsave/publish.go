@@ -26,8 +26,6 @@ import (
 	"html/template"
 	"image/png"
 	"net/http"
-	"os"
-	"path/filepath"
 	"strconv"
 
 	"github.com/blezek/tga"
@@ -121,14 +119,8 @@ func Publish(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	f, err := os.OpenFile(filepath.Join("data", "img", strconv.Itoa(pkgID)+"_thumb_128.png"), os.O_CREATE|os.O_TRUNC|os.O_RDWR, 0644)
-	if err != nil {
-		utils.WriteError(w, r, fmt.Sprintf("failed to open thumbnail for writing: %s", err))
-	}
-
-	defer f.Close()
-
-	err = png.Encode(f, img)
+	buf := new(bytes.Buffer)
+	err = png.Encode(buf, img)
 	if err != nil {
 		utils.WriteError(w, r, fmt.Sprintf("failed to encode thumbnail png: %s", err))
 		return
@@ -137,6 +129,12 @@ func Publish(w http.ResponseWriter, r *http.Request) {
 	err = db.DeleteUpload(sid)
 	if err != nil {
 		utils.WriteError(w, r, fmt.Sprintf("failed to delete upload: %s", err))
+		return
+	}
+
+	err = db.PutThumbnail(id, buf)
+	if err != nil {
+		utils.WriteError(w, r, fmt.Sprintf("failed to upload thumbnail: %s", err))
 		return
 	}
 

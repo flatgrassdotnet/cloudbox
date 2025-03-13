@@ -19,13 +19,19 @@
 package db
 
 import (
+	"context"
 	"database/sql"
 	"fmt"
 
+	"github.com/aws/aws-sdk-go-v2/config"
+	"github.com/aws/aws-sdk-go-v2/service/s3"
 	_ "github.com/go-sql-driver/mysql"
 )
 
-var handle *sql.DB
+var (
+	handle   *sql.DB
+	s3client *s3.Client
+)
 
 func Init(username string, password string, address string, database string) error {
 	db, err := sql.Open("mysql", fmt.Sprintf("%s:%s@tcp(%s)/%s?parseTime=true", username, password, address, database))
@@ -34,6 +40,13 @@ func Init(username string, password string, address string, database string) err
 	}
 
 	handle = db
+
+	cfg, err := config.LoadDefaultConfig(context.TODO())
+	if err != nil {
+		return err
+	}
+
+	s3client = s3.NewFromConfig(cfg)
 
 	return nil
 }

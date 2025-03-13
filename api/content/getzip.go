@@ -8,6 +8,7 @@ import (
 	"net/http"
 	"strconv"
 
+	"github.com/flatgrassdotnet/cloudbox/db"
 	"github.com/flatgrassdotnet/cloudbox/utils"
 )
 
@@ -18,13 +19,13 @@ func GetZIP(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	f, err := utils.GetContentFile(id)
+	o, err := db.GetContentFile(id)
 	if err != nil {
 		utils.WriteError(w, r, fmt.Sprintf("failed to open content file for reading: %s", err))
 		return
 	}
 
-	defer f.Close()
+	defer o.Body.Close()
 
 	// GM12 won't show download progress without Content-Length
 	buf := new(bytes.Buffer)
@@ -37,7 +38,7 @@ func GetZIP(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	io.Copy(file, f)
+	io.Copy(file, o.Body)
 
 	zw.Close()
 

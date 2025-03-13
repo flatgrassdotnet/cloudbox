@@ -24,6 +24,7 @@ import (
 	"net/http"
 	"strconv"
 
+	"github.com/flatgrassdotnet/cloudbox/db"
 	"github.com/flatgrassdotnet/cloudbox/utils"
 )
 
@@ -34,13 +35,14 @@ func Get(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	f, err := utils.GetContentFile(id)
+	o, err := db.GetContentFile(id)
 	if err != nil {
 		utils.WriteError(w, r, fmt.Sprintf("failed to open content file for reading: %s", err))
 		return
 	}
 
-	defer f.Close()
+	defer o.Body.Close()
 
-	io.Copy(w, f)
+	w.Header().Set("Content-Length", strconv.Itoa(int(*o.ContentLength)))
+	io.Copy(w, o.Body)
 }
