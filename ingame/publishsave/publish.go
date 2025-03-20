@@ -55,12 +55,12 @@ func Publish(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	name := r.URL.Query().Get("name")
+	name := r.PostForm.Get("name")
 	if name == "" {
 		name = "No Name"
 	}
 
-	desc := r.URL.Query().Get("desc")
+	desc := r.PostForm.Get("desc")
 
 	ticket, err := base64.StdEncoding.DecodeString(r.Header.Get("TICKET"))
 	if err != nil {
@@ -101,12 +101,7 @@ func Publish(w http.ResponseWriter, r *http.Request) {
 		}
 	}
 
-	err = db.DeleteUpload(id)
-	if err != nil {
-		utils.WriteError(w, r, fmt.Sprintf("failed to delete upload: %s", err))
-		return
-	}
-
+	// thumbnail
 	thumb, err := db.FetchUpload(sid)
 	if err != nil {
 		utils.WriteError(w, r, fmt.Sprintf("failed to fetch upload: %s", err))
@@ -126,18 +121,26 @@ func Publish(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	err = db.PutThumbnail(pkgID, buf)
+	if err != nil {
+		utils.WriteError(w, r, fmt.Sprintf("failed to upload thumbnail: %s", err))
+		return
+	}
+
+	// clean up
+	err = db.DeleteUpload(id)
+	if err != nil {
+		utils.WriteError(w, r, fmt.Sprintf("failed to delete upload: %s", err))
+		return
+	}
+
 	err = db.DeleteUpload(sid)
 	if err != nil {
 		utils.WriteError(w, r, fmt.Sprintf("failed to delete upload: %s", err))
 		return
 	}
 
-	err = db.PutThumbnail(id, buf)
-	if err != nil {
-		utils.WriteError(w, r, fmt.Sprintf("failed to upload thumbnail: %s", err))
-		return
-	}
-
+	// execute template
 	err = tp.Execute(w, nil)
 	if err != nil {
 		utils.WriteError(w, r, fmt.Sprintf("failed to execute template: %s", err))

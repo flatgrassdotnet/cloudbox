@@ -25,10 +25,11 @@ func GetContentFile(id int) (*s3.GetObjectOutput, error) {
 
 func PutThumbnail(id int, data io.Reader) error {
 	_, err := s3client.PutObject(context.TODO(), &s3.PutObjectInput{
-		Bucket: aws.String("flatgrass-toybox-image"),
-		Key:    aws.String(fmt.Sprintf("%d_thumb_128.png", id)),
-		ACL:    types.ObjectCannedACLAuthenticatedRead,
-		Body:   data,
+		Bucket:         aws.String("flatgrass-toybox-image"),
+		Key:            aws.String(fmt.Sprintf("%d_thumb_128.png", id)),
+		ACL:            types.ObjectCannedACLPublicRead,
+		Body:           data,
+		ChecksumSHA256: aws.String("UNSIGNED-PAYLOAD"), // required otherwise OVH S3 rejects
 	})
 	if err != nil {
 		return err
