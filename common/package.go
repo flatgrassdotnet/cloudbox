@@ -20,6 +20,8 @@ package common
 
 import (
 	"fmt"
+	"path/filepath"
+	"strings"
 	"time"
 )
 
@@ -70,7 +72,7 @@ func (pkg Package) Marshal() []byte {
 	if pkg.Type == "map" {
 		script["uid"] = fmt.Sprintf("map_%d", pkg.ID)
 		script["luamenu_installed"] = "OnMapDownloaded();"
-		script["luamenu_action"] = fmt.Sprintf("OnMapSelected( '%s' );", pkg.Name)
+		script["luamenu_action"] = fmt.Sprintf("OnMapSelected('%s');", pkg.RealMapName())
 	}
 
 	if len(pkg.Content) != 0 {
@@ -115,4 +117,17 @@ func (pkg Package) Marshal() []byte {
 	}
 
 	return []byte(root.Marshal())
+}
+
+func (pkg Package) RealMapName() string {
+	mapname := pkg.Name
+	for _, c := range pkg.Content {
+		if filepath.Ext(c.Path) != ".bsp" {
+			continue
+		}
+
+		mapname = strings.TrimSuffix(filepath.Base(c.Path), filepath.Ext(c.Path))
+	}
+
+	return mapname
 }
