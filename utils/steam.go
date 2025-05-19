@@ -35,44 +35,6 @@ import (
 
 var SteamAPIKey string
 
-type AuthenticateUserTicketResponse struct {
-	Response struct {
-		Params common.UserTicketInfo `json:"params"`
-		Error  struct {
-			ErrorCode int    `json:"errorcode"`
-			ErrorDesc string `json:"errordesc"`
-		} `json:"error"`
-	} `json:"response"`
-}
-
-func AuthenticateUserTicket(ticket string) (common.UserTicketInfo, error) {
-	v := make(url.Values)
-
-	v.Set("key", SteamAPIKey)
-	v.Set("appid", "4000") // garry's mod
-	v.Set("ticket", ticket)
-
-	r, err := http.Get(fmt.Sprintf("https://api.steampowered.com/ISteamUserAuth/AuthenticateUserTicket/v0001/?%s", v.Encode()))
-	if err != nil {
-		return common.UserTicketInfo{}, err
-	}
-
-	defer r.Body.Close()
-
-	var rd AuthenticateUserTicketResponse
-	err = json.NewDecoder(r.Body).Decode(&rd)
-	if err != nil {
-		return common.UserTicketInfo{}, err
-	}
-
-	// no steamid, something is wrong
-	if rd.Response.Params.SteamID == "" {
-		return common.UserTicketInfo{}, errors.New(rd.Response.Error.ErrorDesc)
-	}
-
-	return rd.Response.Params, nil
-}
-
 type GetPlayerSummariesResponse struct {
 	Response struct {
 		Players []common.PlayerSummaryInfo `json:"players"`

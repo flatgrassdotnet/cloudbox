@@ -23,10 +23,13 @@ import (
 	"encoding/base64"
 	"fmt"
 	"net/http"
-	"strings"
+	"slices"
+	"strconv"
 
 	"github.com/flatgrassdotnet/cloudbox/db"
 	"github.com/flatgrassdotnet/cloudbox/utils"
+
+	appticket "github.com/tmcarey/steam-appticket-go"
 )
 
 // auth logs someone into the toybox api
@@ -46,27 +49,24 @@ func Auth(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// "u" value (steamid64) is ignored - we get it from steam
-	// "vac" value is ignored - we get it from steam
+	token := utils.UnBinHex(utils.UnBinHexString(r.FormValue("token")))
 
-	user, err := utils.AuthenticateUserTicket(utils.UnBinHexString(r.FormValue("token")))
-	if err != nil {
-		// net/http errors shouldn't cause the game to exit
-		if !strings.Contains(err.Error(), "net/http:") {
-			fmt.Fprint(w, "chrome") // terminate game with anti-piracy error
-		}
+	steamid := utils.UnBinHexString(r.FormValue("u"))
 
-		utils.WriteError(w, r, fmt.Sprintf("failed to validate steam ticket: %s", err))
+	vac := utils.UnBinHexString(r.FormValue("vac"))
+	if !slices.Contains([]string{"good", "banned"}, vac) {
+		utils.WriteError(w, r, "invalid vac value")
 		return
 	}
 
-	vac := "good"
-	if user.VACBanned {
-		vac = "banned"
+	appticket, err := appticket.ParseAppTicket(token, false)
+	if err != nil || !appticket.IsValid || appticket.AppID != 4000 || strconv.Itoa(int(appticket.SteamID)) != steamid {
+		fmt.Fprint(w, "chrome") // terminate game with anti-piracy error
+		return
 	}
 
 	// store new profile or get its data
-	s, err := utils.GetPlayerSummaries(user.SteamID)
+	s, err := utils.GetPlayerSummaries(steamid)
 	if err != nil {
 		utils.WriteError(w, r, fmt.Sprintf("failed to get player summary: %s", err))
 		return
@@ -79,7 +79,7 @@ func Auth(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	err = db.InsertLogin(user.SteamID, vac, ticket)
+	err = db.InsertLogin(steamid, vac, ticket)
 	if err != nil {
 		utils.WriteError(w, r, fmt.Sprintf("failed to insert login: %s", err))
 		return
