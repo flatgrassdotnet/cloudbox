@@ -40,5 +40,5 @@ func GetID(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	w.Write([]byte(steamid))
+	fmt.Fprint(w, steamid)
 }

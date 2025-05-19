@@ -53,7 +53,7 @@ func Auth(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		// net/http errors shouldn't cause the game to exit
 		if !strings.Contains(err.Error(), "net/http:") {
-			w.Write([]byte("chrome")) // terminate game with anti-piracy error
+			fmt.Fprint(w, "chrome") // terminate game with anti-piracy error
 		}
 
 		utils.WriteError(w, r, fmt.Sprintf("failed to validate steam ticket: %s", err))
@@ -85,7 +85,7 @@ func Auth(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	w.Write([]byte(base64.StdEncoding.EncodeToString(ticket)))
+	base64.NewEncoder(base64.StdEncoding, w).Write(ticket)
 
 	// webhook related
 	err = utils.SendDiscordMessage(utils.DiscordStatsWebhookURL, utils.DiscordWebhookRequest{

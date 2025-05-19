@@ -87,5 +87,5 @@ func Upload(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	w.Write([]byte(strconv.Itoa(id)))
+	fmt.Fprint(w, id)
 }
