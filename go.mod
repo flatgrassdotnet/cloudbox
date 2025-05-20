@@ -8,10 +8,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/s3 v1.78.2
 	github.com/blezek/tga v0.0.0-20150626111426-80720cbc1017
 	github.com/go-sql-driver/mysql v1.9.0
-	github.com/tmcarey/steam-appticket-go v0.0.0-20250415182558-823c1784f126
 )
-
-require google.golang.org/protobuf v1.30.0 // indirect
 
 require (
 	filippo.io/edwards25519 v1.1.0 // indirect
@@ -29,6 +26,6 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/sso v1.25.1 // indirect
 	github.com/aws/aws-sdk-go-v2/service/ssooidc v1.29.1 // indirect
 	github.com/aws/aws-sdk-go-v2/service/sts v1.33.17 // indirect
-	github.com/aws/smithy-go v1.22.3 // indirect
+	github.com/aws/smithy-go v1.22.2 // indirect
 	github.com/ftrvxmtrx/tga v0.0.0-20150524081124-bd8e8d5be13a // indirect
 )

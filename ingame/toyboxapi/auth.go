@@ -23,13 +23,10 @@ import (
 	"encoding/base64"
 	"fmt"
 	"net/http"
-	"slices"
-	"strconv"
+	"strings"
 
 	"github.com/flatgrassdotnet/cloudbox/db"
 	"github.com/flatgrassdotnet/cloudbox/utils"
-
-	appticket "github.com/tmcarey/steam-appticket-go"
 )
 
 // auth logs someone into the toybox api
@@ -49,18 +46,22 @@ func Auth(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	token := utils.UnBinHex(utils.UnBinHexString(r.FormValue("token")))
-
+	token := utils.UnBinHexString(r.FormValue("token"))
 	steamid := utils.UnBinHexString(r.FormValue("u"))
-
 	vac := utils.UnBinHexString(r.FormValue("vac"))
-	if !slices.Contains([]string{"good", "banned"}, vac) {
-		utils.WriteError(w, r, "invalid vac value")
+
+	user, err := utils.AuthenticateUserTicket(token)
+	if err != nil {
+		utils.WriteError(w, r, fmt.Sprintf("failed to validate steam ticket: %s", err))
+
+		// net/http errors shouldn't cause the game to exit
+		if !strings.Contains(err.Error(), "net/http:") {
+			fmt.Fprint(w, "chrome") // terminate game with anti-piracy error
+		}
+
 		return
 	}
-
-	appticket, err := appticket.ParseAppTicket(token, false)
-	if err != nil || !appticket.IsValid || appticket.AppID != 4000 || strconv.Itoa(int(appticket.SteamID)) != steamid {
+	if user.SteamID != steamid {
 		fmt.Fprint(w, "chrome") // terminate game with anti-piracy error
 		return
 	}
