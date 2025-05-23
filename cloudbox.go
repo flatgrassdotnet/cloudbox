@@ -67,8 +67,8 @@ func main() {
 	http.HandleFunc("GET /content/getzip", content.GetZIP)
 	http.HandleFunc("GET /content/fastdl", content.FastDL)
 
-	// stats.garrysmod.com
-	http.HandleFunc("GET stats.garrysmod.com/API/mapload_001/", stats.MapLoad) // v102 - v142
+	// stats.garrysmod.com (routed to toyboxapi)
+	http.HandleFunc("GET toyboxapi.garrysmod.com/mapload_001/", stats.MapLoad) // v102 - v142
 
 	// toyboxapi.garrysmod.com
 	// auth
