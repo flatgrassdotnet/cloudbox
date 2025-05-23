@@ -21,6 +21,7 @@ package stats
 import (
 	"fmt"
 	"net/http"
+	"slices"
 	"strconv"
 
 	"github.com/flatgrassdotnet/cloudbox/db"
@@ -53,7 +54,7 @@ func MapLoad(w http.ResponseWriter, r *http.Request) {
 
 	// platform ("win32", "linux", or "osx")
 	platform := utils.UnBinHexString(r.URL.Query().Get("platform"))
-	if !(platform == "win32" || platform == "linux" || platform == "osx") {
+	if !slices.Contains([]string{"win32", "linux", "osx"}, platform) {
 		utils.WriteError(w, r, "invalid platform value")
 		return
 	}

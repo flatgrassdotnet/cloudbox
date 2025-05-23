@@ -21,6 +21,7 @@ package toyboxapi
 import (
 	"fmt"
 	"net/http"
+	"slices"
 
 	"github.com/flatgrassdotnet/cloudbox/db"
 	"github.com/flatgrassdotnet/cloudbox/utils"
@@ -48,14 +49,14 @@ func Error(w http.ResponseWriter, r *http.Request) {
 
 	// realm ("client", or "server")
 	realm := utils.UnBinHexString(r.URL.Query().Get("realm"))
-	if !(realm == "client" || realm == "server") {
+	if !slices.Contains([]string{"client", "server"}, realm) {
 		utils.WriteError(w, r, "invalid realm value")
 		return
 	}
 
 	// platform ("win32", "linux", or "osx")
 	platform := utils.UnBinHexString(r.URL.Query().Get("platform"))
-	if !(platform == "win32" || platform == "linux" || platform == "osx") {
+	if !slices.Contains([]string{"win32", "linux", "osx"}, platform) {
 		utils.WriteError(w, r, "invalid platform value")
 		return
 	}
