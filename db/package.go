@@ -182,6 +182,122 @@ func FetchPackageList(category string, dataname string, author string, search st
 	return list, nil
 }
 
+func FetchPackageListAll(category string, dataname string, author string, search string, offset int, count int, sort string) ([]common.Package, error) {
+	var args []any
+	q := `WITH latest_packages AS (
+	SELECT *
+	FROM (
+		SELECT *,
+			ROW_NUMBER() OVER (PARTITION BY id ORDER BY rev DESC) AS rn
+		FROM packages
+	) AS ranked
+	WHERE rn = 1
+),
+latest_scraped AS (
+	SELECT *
+	FROM (
+		SELECT *,
+			ROW_NUMBER() OVER (PARTITION BY id ORDER BY rev DESC) AS rn
+		FROM scraped
+	) AS ranked
+	WHERE rn = 1
+),
+combined AS (
+	SELECT 
+		p.id,
+		p.rev,
+		p.type,
+		p.name,
+		COALESCE(p.dataname, '') AS dataname,
+		COALESCE(p.author, '') AS author,
+		COALESCE(pr.personaname, s.author, '') AS personaname,
+		COALESCE(pr.avatarmedium, '') AS avatarmedium,
+		COALESCE(p.description, s.description, '') AS description,
+		COALESCE(s.downloads, 0) AS downloads,
+		COALESCE(s.favorites, 0) AS favorites,
+		COALESCE(s.goods, 0) AS goods,
+		COALESCE(s.bads, 0) AS bads,
+		p.time
+	FROM latest_packages p
+	LEFT JOIN profiles pr ON p.author = pr.steamid
+	LEFT JOIN latest_scraped s ON p.id = s.id
+
+	UNION ALL
+
+	SELECT
+		s.id,
+		s.rev,
+		s.type,
+		s.name,
+		'' AS dataname,
+		'' AS author,
+		s.author AS personaname,
+		'' AS avatarmedium,
+		s.description,
+		s.downloads,
+		s.favorites,
+		s.goods,
+		s.bads,
+		STR_TO_DATE('2012-10-25', '%Y-%c-%d') AS time
+	FROM latest_scraped s
+	WHERE NOT EXISTS (SELECT 1 FROM latest_packages p WHERE p.id = s.id)
+)
+
+SELECT *
+FROM combined
+WHERE 1 = 1`
+
+	if category != "" {
+		q += " AND type = ?"
+		args = append(args, category)
+	}
+
+	if author != "" {
+		q += " AND author = ?"
+		args = append(args, author)
+	}
+
+	if search != "" {
+		q += " AND name LIKE CONCAT('%', ?, '%')"
+		args = append(args, search)
+	}
+
+	if dataname != "" {
+		q += " AND dataname = ?"
+		args = append(args, dataname)
+	}
+
+	// dangerous!
+	if sort != "" {
+		q += fmt.Sprintf(" ORDER BY %s DESC", sort)
+	}
+
+	if count != 0 {
+		q += " LIMIT ?, ?"
+		args = append(args, offset)
+		args = append(args, count)
+	}
+
+	var list []common.Package
+
+	rows, err := handle.Query(q, args...)
+	if err != nil {
+		return list, err
+	}
+
+	for rows.Next() {
+		var pkg common.Package
+		err := rows.Scan(&pkg.ID, &pkg.Revision, &pkg.Type, &pkg.Name, &pkg.Dataname, &pkg.Author, &pkg.AuthorName, &pkg.AuthorIcon, &pkg.Description, &pkg.Downloads, &pkg.Favorites, &pkg.Goods, &pkg.Bads, &pkg.Uploaded)
+		if err != nil {
+			return list, err
+		}
+
+		list = append(list, pkg)
+	}
+
+	return list, nil
+}
+
 func FetchFileInfoFromPath(path string) (int, error) {
 	var id int
 	err := handle.QueryRow("SELECT id FROM files WHERE path = ?", path).Scan(&id)

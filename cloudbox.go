@@ -59,6 +59,7 @@ func main() {
 	http.HandleFunc("GET /auth/getid", auth.GetID)
 	http.HandleFunc("GET /news/list", news.List)
 	http.HandleFunc("GET /packages/list", packages.List)
+	http.HandleFunc("GET /packages/listall", packages.ListAll)
 	http.HandleFunc("GET /packages/get", packages.Get)
 	http.HandleFunc("GET /packages/getscript", packages.GetScript)
 	http.HandleFunc("GET /packages/getgma", packages.GetGMA)
