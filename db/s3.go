@@ -47,7 +47,6 @@ func PutThumbnail(id int, data io.Reader) error {
 		Key:            aws.String(fmt.Sprintf("%d_thumb_128.png", id)),
 		ACL:            types.ObjectCannedACLPublicRead,
 		Body:           data,
-		ChecksumSHA256: aws.String("UNSIGNED-PAYLOAD"), // required otherwise OVH S3 rejects
 	})
 	if err != nil {
 		return err
