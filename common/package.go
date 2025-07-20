@@ -26,18 +26,30 @@ import (
 )
 
 type Package struct {
-	ID          int       `json:"id"`
-	Revision    int       `json:"rev"`
-	Type        string    `json:"type"`
-	Name        string    `json:"name"`
-	Dataname    string    `json:"dataname,omitempty"`
+	ID       int       `json:"id"`
+	Revision int       `json:"rev"`
+	Type     string    `json:"type"`
+	Name     string    `json:"name"`
+	Dataname string    `json:"dataname,omitempty"`
+	Content  []Content `json:"content,omitempty"`
+	Includes []Include `json:"includes,omitempty"`
+	Data     []byte    `json:"data,omitempty"`
+
+	// only used by Install packages
+
+	LuaMenuInstalled   string `json:"-"`
+	LuaMenuAction      string `json:"-"`
+	LuaClientInstalled string `json:"-"`
+	LuaClientAction    string `json:"-"`
+	LuaServerInstalled string `json:"-"`
+	LuaServerAction    string `json:"-"`
+
+	// metadata
+
 	Author      string    `json:"author,omitempty"`
 	AuthorName  string    `json:"authorname,omitempty"`
 	AuthorIcon  string    `json:"authoricon,omitempty"`
 	Description string    `json:"description,omitempty"`
-	Data        []byte    `json:"data,omitempty"`
-	Content     []Content `json:"content,omitempty"`
-	Includes    []Include `json:"includes,omitempty"`
 	Uploaded    time.Time `json:"uploaded,omitempty"`
 
 	Downloads int `json:"downloads,omitempty"`
@@ -47,10 +59,11 @@ type Package struct {
 }
 
 type Content struct {
-	ID    int    `json:"id"`
-	Path  string `json:"path"`
-	Size  int    `json:"size"`
-	PSize int    `json:"psize"`
+	ID       int    `json:"id"`
+	Revision int    `json:"rev"` // not stored by cloudbox, always 1
+	Path     string `json:"path"`
+	Size     int    `json:"size"`  // raw size
+	PSize    int    `json:"psize"` // compressed size
 }
 
 type Include struct {
@@ -59,7 +72,7 @@ type Include struct {
 	Type     string `json:"type"`
 }
 
-func (pkg Package) Marshal() []byte {
+func (pkg Package) Marshal(install bool) []byte {
 	script := make(VDF)
 
 	script["scriptid"] = pkg.ID
@@ -68,11 +81,26 @@ func (pkg Package) Marshal() []byte {
 	script["dataname"] = pkg.Dataname
 	script["name"] = pkg.Name
 
-	// maps have extra stuff
-	if pkg.Type == "map" {
-		script["uid"] = fmt.Sprintf("map_%d", pkg.ID)
-		script["luamenu_installed"] = "OnMapDownloaded();"
-		script["luamenu_action"] = fmt.Sprintf("OnMapSelected('%s');", pkg.RealMapName())
+	if install {
+		script["uid"] = pkg.UID()
+		if pkg.LuaMenuInstalled != "" {
+			script["luamenu_installed"] = pkg.LuaMenuInstalled
+		}
+		if pkg.LuaMenuAction != "" {
+			script["luamenu_action"] = pkg.LuaMenuAction
+		}
+		if pkg.LuaClientInstalled != "" {
+			script["luaclient_installed"] = pkg.LuaClientInstalled
+		}
+		if pkg.LuaClientAction != "" {
+			script["luaclient_action"] = pkg.LuaClientAction
+		}
+		if pkg.LuaServerInstalled != "" {
+			script["luaserver_installed"] = pkg.LuaServerInstalled
+		}
+		if pkg.LuaServerAction != "" {
+			script["luaserver_action"] = pkg.LuaServerAction
+		}
 	}
 
 	if len(pkg.Content) != 0 {
@@ -82,11 +110,12 @@ func (pkg Package) Marshal() []byte {
 			item := make(VDF)
 
 			item["id"] = c.ID
-			item["rev"] = 1
+			item["rev"] = c.Revision
 			item["name"] = c.Path
 			item["url"] = fmt.Sprintf("http://api.cl0udb0x.com/content/getzip?id=%d", c.ID)
 			item["size"] = c.PSize
 
+			// name doesn't matter
 			content[fmt.Sprintf("content_%d", c.ID)] = item
 		}
 
@@ -103,6 +132,7 @@ func (pkg Package) Marshal() []byte {
 			item["rev"] = i.Revision
 			item["type"] = i.Type
 
+			// name doesn't matter
 			includes[fmt.Sprintf("include_%d", i.ID)] = item
 		}
 
@@ -119,15 +149,17 @@ func (pkg Package) Marshal() []byte {
 	return []byte(root.Marshal())
 }
 
-func (pkg Package) RealMapName() string {
-	mapname := pkg.Name
+func (pkg Package) BSPName() string {
 	for _, c := range pkg.Content {
-		if filepath.Ext(c.Path) != ".bsp" {
-			continue
+		if filepath.Ext(c.Path) == ".bsp" {
+			return strings.TrimSuffix(filepath.Base(c.Path), filepath.Ext(c.Path))
 		}
-
-		mapname = strings.TrimSuffix(filepath.Base(c.Path), filepath.Ext(c.Path))
 	}
 
-	return mapname
+	return pkg.Name
+}
+
+// used by Install packages only
+func (pkg Package) UID() string {
+	return fmt.Sprintf("%s_%d", pkg.Type, pkg.ID)
 }

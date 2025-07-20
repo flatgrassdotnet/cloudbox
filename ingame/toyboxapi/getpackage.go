@@ -68,7 +68,15 @@ func GetPackage(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	w.Write(pkg.Marshal())
+	var install bool
+	if pkg.Type == "map" {
+		install = true
+
+		pkg.LuaMenuInstalled = "OnMapDownloaded();"
+		pkg.LuaMenuAction = fmt.Sprintf("OnMapSelected('%s');", pkg.BSPName())
+	}
+
+	w.Write(pkg.Marshal(install))
 
 	// webhook related
 	err = utils.SendDiscordMessage(utils.DiscordStatsWebhookURL, utils.DiscordWebhookRequest{

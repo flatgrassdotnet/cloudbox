@@ -81,6 +81,8 @@ func FetchPackage(id int, rev int) (common.Package, error) {
 			return pkg, err
 		}
 
+		content.Revision = 1
+
 		pkg.Content = append(pkg.Content, content)
 	}
 
