@@ -38,6 +38,7 @@ import (
 func main() {
 	dbuser := flag.String("dbuser", "cloudbox", "database user's name")
 	dbpass := flag.String("dbpass", "", "database user's password")
+	dbproto := flag.String("dbproto", "tcp", "database connection protocol")
 	dbaddr := flag.String("dbaddr", "localhost", "database server address")
 	dbname := flag.String("dbname", "cloudbox", "database name")
 	apikey := flag.String("apikey", "", "steam web api key")
@@ -46,7 +47,7 @@ func main() {
 	port := flag.Int("port", 80, "web server listen port")
 	flag.Parse()
 
-	err := db.Init(*dbuser, *dbpass, *dbaddr, *dbname)
+	err := db.Init(*dbuser, *dbpass, *dbproto, *dbaddr, *dbname)
 	if err != nil {
 		log.Fatalf("failed to init database: %s", err)
 	}

@@ -33,8 +33,8 @@ var (
 	s3client *s3.Client
 )
 
-func Init(username string, password string, address string, database string) error {
-	db, err := sql.Open("mysql", fmt.Sprintf("%s:%s@tcp(%s)/%s?parseTime=true", username, password, address, database))
+func Init(username string, password string, protocol string, address string, database string) error {
+	db, err := sql.Open("mysql", fmt.Sprintf("%s:%s@%s(%s)/%s?parseTime=true", username, password, protocol, address, database))
 	if err != nil {
 		return err
 	}
