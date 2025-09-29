@@ -20,9 +20,10 @@ package main
 
 import (
 	"flag"
-	"fmt"
 	"log"
+	"net"
 	"net/http"
+	"os"
 
 	"github.com/flatgrassdotnet/cloudbox/api/auth"
 	"github.com/flatgrassdotnet/cloudbox/api/content"
@@ -44,7 +45,8 @@ func main() {
 	apikey := flag.String("apikey", "", "steam web api key")
 	statswebhook := flag.String("statswebhook", "", "discord stats webhook url")
 	savewebhook := flag.String("savewebhook", "", "discord save webhook url")
-	port := flag.Int("port", 80, "web server listen port")
+	proto := flag.String("proto", "tcp", "proto for web server")
+	addr := flag.String("addr", "127.0.0.1:80", "address for web server")
 	flag.Parse()
 
 	err := db.Init(*dbuser, *dbpass, *dbproto, *dbaddr, *dbname)
@@ -99,8 +101,27 @@ func main() {
 	http.HandleFunc("POST toyboxapi.garrysmod.com/publishsave_001/", publishsave.Publish) // v106 - v108
 	http.HandleFunc("POST toyboxapi.garrysmod.com/publishsave_002/", publishsave.Publish) // v109 - v142
 
-	err = http.ListenAndServe(fmt.Sprintf(":%d", *port), nil)
-	if err != nil {
-		log.Fatalf("error while serving: %s", err)
+	// http stuff
+	if *proto == "unix" {
+		err = os.Remove(*addr)
+		if err != nil && !os.IsNotExist(err) {
+			log.Fatalf("failed to delete unix socket: %s", err)
+		}
 	}
+
+	l, err := net.Listen(*proto, *addr)
+	if err != nil {
+		log.Fatalf("failed to create web server listener: %s", err)
+	}
+
+	defer l.Close()
+
+	if *proto == "unix" {
+		err = os.Chmod(*addr, 0777)
+		if err != nil {
+			log.Fatalf("failed to set unix socket permissions: %s", err)
+		}
+	}
+
+	http.Serve(l, nil)
 }
