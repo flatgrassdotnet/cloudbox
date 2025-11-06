@@ -80,6 +80,7 @@ func main() {
 	http.HandleFunc("POST toyboxapi.garrysmod.com/auth_003/", toyboxapi.Auth) // v134 - v142
 
 	// getinstall
+	http.HandleFunc("GET toyboxapi.garrysmod.com/getinstall_001/", toyboxapi.GetPackage) // v100 - v133
 	http.HandleFunc("GET toyboxapi.garrysmod.com/getinstall_003/", toyboxapi.GetPackage) // v134 - v142
 
 	// getscript
