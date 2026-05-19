@@ -121,7 +121,7 @@ func Publish(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	err = db.PutThumbnail(pkgID, buf)
+	err = db.PutThumbnail(r.Context(), pkgID, buf)
 	if err != nil {
 		utils.WriteError(w, r, fmt.Sprintf("failed to upload thumbnail: %s", err))
 		return

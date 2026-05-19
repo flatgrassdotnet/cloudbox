@@ -49,7 +49,7 @@ func FastDL(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	f, err := db.GetContentFile(id)
+	f, err := db.GetContentFile(r.Context(), id)
 	if err != nil {
 		utils.WriteError(w, r, fmt.Sprintf("failed to open content file: %s", err))
 		return

@@ -29,8 +29,8 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/s3/types"
 )
 
-func GetContentFile(id int) (*s3.GetObjectOutput, error) {
-	o, err := s3client.GetObject(context.TODO(), &s3.GetObjectInput{
+func GetContentFile(ctx context.Context, id int) (*s3.GetObjectOutput, error) {
+	o, err := s3client.GetObject(ctx, &s3.GetObjectInput{
 		Bucket: aws.String("flatgrass-toybox-content"),
 		Key:    aws.String(strconv.Itoa(id)),
 	})
@@ -41,12 +41,12 @@ func GetContentFile(id int) (*s3.GetObjectOutput, error) {
 	return o, nil
 }
 
-func PutThumbnail(id int, data io.Reader) error {
+func PutThumbnail(ctx context.Context, id int, data io.Reader) error {
 	_, err := s3client.PutObject(context.TODO(), &s3.PutObjectInput{
-		Bucket:         aws.String("flatgrass-toybox-image"),
-		Key:            aws.String(fmt.Sprintf("%d_thumb_128.png", id)),
-		ACL:            types.ObjectCannedACLPublicRead,
-		Body:           data,
+		Bucket: aws.String("flatgrass-toybox-image"),
+		Key:    aws.String(fmt.Sprintf("%d_thumb_128.png", id)),
+		ACL:    types.ObjectCannedACLPublicRead,
+		Body:   data,
 	})
 	if err != nil {
 		return err

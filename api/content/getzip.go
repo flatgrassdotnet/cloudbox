@@ -37,7 +37,7 @@ func GetZIP(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	o, err := db.GetContentFile(id)
+	o, err := db.GetContentFile(r.Context(), id)
 	if err != nil {
 		utils.WriteError(w, r, fmt.Sprintf("failed to open content file for reading: %s", err))
 		return
