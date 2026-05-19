@@ -25,6 +25,7 @@ import (
 	"net/http"
 	"strconv"
 
+	"github.com/flatgrassdotnet/cloudbox/pages"
 	"github.com/flatgrassdotnet/cloudbox/utils"
 )
 
@@ -34,7 +35,7 @@ type SaveData struct {
 	Map string
 }
 
-var ts = template.Must(template.New("save.html").ParseGlob("data/templates/publishsave/*.html"))
+var ts = template.Must(template.New("save.html").ParseFS(pages.TemplatesFS, "publishsave/*.html"))
 
 func Save(w http.ResponseWriter, r *http.Request) {
 	sd := SaveData{

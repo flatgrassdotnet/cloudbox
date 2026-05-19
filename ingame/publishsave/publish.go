@@ -31,10 +31,11 @@ import (
 	"github.com/blezek/tga"
 	"github.com/flatgrassdotnet/cloudbox/common"
 	"github.com/flatgrassdotnet/cloudbox/db"
+	"github.com/flatgrassdotnet/cloudbox/pages"
 	"github.com/flatgrassdotnet/cloudbox/utils"
 )
 
-var tp = template.Must(template.New("publish.html").ParseGlob("data/templates/publishsave/*.html"))
+var tp = template.Must(template.New("publish.html").ParseFS(pages.TemplatesFS, "publishsave/*.html"))
 
 func Publish(w http.ResponseWriter, r *http.Request) {
 	err := r.ParseForm()
